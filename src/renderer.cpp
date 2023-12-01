@@ -94,24 +94,18 @@ int main()
     // Unbind
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
-    
+
     // Read in the vertex shader
-    /*std::ifstream vertex_shader_file("assets\shaders\vertex.glsl", std::fstream::in);
-    const char* vertex_shader_source;
+    std::ifstream vertex_shader_file("assets/shaders/vertex.glsl", std::fstream::in);
+    std::string vertex_shader_source;
     if (vertex_shader_file.is_open())
     {
-        vertex_shader_source = std::string(std::istreambuf_iterator<char>(vertex_shader_file), std::istreambuf_iterator<char>()).c_str();
-    }*/
-
-    const char* vertex_shader_source = "#version 330 core\n"
-        "layout (location = 0) in vec3 aPos;\n"
-        "void main()\n"
-        "{\n"
-        "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
-        "}\0";
+        vertex_shader_source = std::string(std::istreambuf_iterator<char>(vertex_shader_file), std::istreambuf_iterator<char>());
+    }
+    const char* vertex_shader_source_c = vertex_shader_source.c_str();
 
     unsigned int vertex_shader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertex_shader, 1, &vertex_shader_source, nullptr);
+    glShaderSource(vertex_shader, 1, &vertex_shader_source_c, nullptr);
     glCompileShader(vertex_shader);
     int success;
     glGetShaderiv(vertex_shader, GL_COMPILE_STATUS, &success);
@@ -123,15 +117,16 @@ int main()
         std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
     }
 
-    const char* fragment_shader_source = "#version 330 core\n"
-        "out vec4 fragment_colour; \n"
-        "void main()\n"
-        "{\n"
-        "   fragment_colour = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
-        "}\0";
+    std::ifstream fragment_shader_file("assets/shaders/fragment.glsl", std::fstream::in);
+    std::string fragment_shader_source;
+    if (fragment_shader_file.is_open())
+    {
+        fragment_shader_source = std::string(std::istreambuf_iterator<char>(fragment_shader_file), std::istreambuf_iterator<char>());
+    }
+    const char* fragment_shader_source_c = fragment_shader_source.c_str();
 
     unsigned int fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragment_shader, 1, &fragment_shader_source, nullptr);
+    glShaderSource(fragment_shader, 1, &fragment_shader_source_c, nullptr);
     glCompileShader(fragment_shader);
     glGetShaderiv(fragment_shader, GL_COMPILE_STATUS, &success);
 
@@ -152,7 +147,7 @@ int main()
     {
         char infoLog[512];
         glGetProgramInfoLog(shader_program, 512, NULL, infoLog);
-        std::cout << "ERROR::SHADER::PROGRAME::LINKING_FAILED\n" << infoLog << std::endl;
+        std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
     }
 
     glDeleteShader(vertex_shader);
