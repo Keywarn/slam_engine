@@ -1,6 +1,6 @@
 #version 330 core
 
-in vec4 vertex_colour;
+uniform vec4 vertex_colour;
 
 out vec4 fragment_colour;
 

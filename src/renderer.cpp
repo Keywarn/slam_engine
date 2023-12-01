@@ -162,8 +162,13 @@ int main()
 
         render();
 
+        float timeValue = glfwGetTime();
+        float greenValue = (sin(timeValue) / 2.0f) + 0.5f;
+        int vertex_colour_location = glGetUniformLocation(shader_program, "vertex_colour");
+
         // TODO Eventually move this stuff to the render method
         glUseProgram(shader_program);
+        glUniform4f(vertex_colour_location, 0.0f, greenValue, 0.0f, 1.0f);
         glBindVertexArray(vertex_array);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         glBindVertexArray(0); // Don't have to unbind since we only have one
