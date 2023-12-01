@@ -3,15 +3,14 @@
 #include <iostream>
 #include <fstream>
 
-float rectangle_vertices[] = {
-     0.5f,  0.5f, 0.0f,  // top right
-     0.5f, -0.5f, 0.0f,  // bottom right
-    -0.5f, -0.5f, 0.0f,  // bottom left
-    -0.5f,  0.5f, 0.0f   // top left 
+float vertices[] = {
+    // positions         // colors
+    0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,   // bottom right
+   -0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,   // bottom left
+    0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f    // top 
 };
-unsigned int rectangle_indices[] = {
-    0, 1, 3,   // first triangle
-    1, 2, 3    // second triangle
+unsigned int indices[] = {
+    0, 1, 2,   // first triangle
 };
 
 bool filledRender = true;
@@ -80,16 +79,19 @@ int main()
     unsigned int vertex_buffer;
     glGenBuffers(1, &vertex_buffer);
     glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(rectangle_vertices), rectangle_vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
     unsigned int element_buffer;
     glGenBuffers(1, &element_buffer);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, element_buffer);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(rectangle_indices), rectangle_indices, GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
     
     
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
+
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3* sizeof(float)));
+    glEnableVertexAttribArray(1);
 
     // Unbind
     glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -162,13 +164,8 @@ int main()
 
         render();
 
-        float timeValue = glfwGetTime();
-        float greenValue = (sin(timeValue) / 2.0f) + 0.5f;
-        int vertex_colour_location = glGetUniformLocation(shader_program, "vertex_colour");
-
         // TODO Eventually move this stuff to the render method
         glUseProgram(shader_program);
-        glUniform4f(vertex_colour_location, 0.0f, greenValue, 0.0f, 1.0f);
         glBindVertexArray(vertex_array);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         glBindVertexArray(0); // Don't have to unbind since we only have one
