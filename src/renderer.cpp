@@ -42,9 +42,9 @@ shader* renderer::register_shader(const char* vertex_path, const char* fragment_
     return &m_shaders.back();
 }
 
-mesh* renderer::register_mesh(vertices vertices, faces faces, shader* shader)
+mesh* renderer::register_mesh(vertices vertices, faces faces, shader* shader, glm::mat4 transform)
 {
-    m_meshes.push_back(mesh(vertices, faces, shader));
+    m_meshes.push_back(mesh(vertices, faces, shader, transform));
     return &m_meshes.back();
 }
 

@@ -1,5 +1,8 @@
 #include "renderer.h"
 
+#include <glm/glm/glm.hpp>
+#include <glm/glm/gtc/matrix_transform.hpp>
+
 renderer::vertices triangle_vertices{
     // positions         // colors          //UVs
     0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,  1.0f, 0.0f, // bottom right
@@ -65,7 +68,13 @@ int main()
     
     renderer::texture* texture = render_engine->register_texture("assets/textures/checker.png");
     renderer::shader* shader = render_engine->register_shader("assets/shaders/vertex.glsl", "assets/shaders/fragment.glsl", texture);
-    render_engine->register_mesh(triangle_vertices, triangle_indices, shader);
+    
+    // Some transform stuff for our triangle
+    glm::mat4 transform = glm::mat4(1.0f);
+    transform = glm::rotate(transform, glm::radians(90.f), glm::vec3(0.f, 0.f, 1.f));
+    transform = glm::scale(transform, glm::vec3(0.5, 0.5, 0.5));
+
+    render_engine->register_mesh(triangle_vertices, triangle_indices, shader, transform);
 
     while (!glfwWindowShouldClose(window))
     {

@@ -1,9 +1,12 @@
 #include "mesh.h"
 
+#include <glm/glm/gtc/type_ptr.hpp>
+
 namespace renderer
 {
-mesh::mesh(vertices vertices, faces faces, renderer::shader* shader)
-    : m_vertices(vertices)
+mesh::mesh(vertices vertices, faces faces, renderer::shader* shader, glm::mat4 transform)
+    : m_transform(transform)
+    , m_vertices(vertices)
     , m_faces(faces)
     , m_shader(shader)
 {
@@ -38,6 +41,9 @@ mesh::mesh(vertices vertices, faces faces, renderer::shader* shader)
 void mesh::draw()
 {
     m_shader->use();
+    unsigned int transform_uniform = glGetUniformLocation(m_shader->m_id, "transform");
+    glUniformMatrix4fv(transform_uniform, 1, GL_FALSE, glm::value_ptr(m_transform));
+
     glBindVertexArray(m_vertex_array);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);

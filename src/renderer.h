@@ -22,7 +22,7 @@ public:
 
     texture* register_texture(const char* path);
     shader* register_shader(const char* vertex_path, const char* fragment_path, texture* texture);
-    mesh* register_mesh(vertices vertices, faces faces, shader* shader);
+    mesh* register_mesh(vertices vertices, faces faces, shader* shader, glm::mat4 transform);
 
     void free();
 
