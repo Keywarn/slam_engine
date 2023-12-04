@@ -5,8 +5,10 @@
 
 #include "shader.h"
 
-namespace renderer
+namespace render_engine
 {
+class renderer;
+
 typedef std::vector<float> vertices;
 typedef std::vector<unsigned int> faces;
 
@@ -15,7 +17,7 @@ typedef std::vector<float> texture_uvs;
 class mesh
 {
 public:
-    mesh(vertices vertices, faces faces, shader* shader, glm::mat4 transform);
+    mesh(renderer* renderer, vertices vertices, faces faces, shader* shader, glm::mat4 transform);
 
     void draw();
 
@@ -32,6 +34,8 @@ private:
     unsigned int m_element_buffer;
 
     shader* m_shader;
+
+    renderer* m_renderer;
 };
 }
 

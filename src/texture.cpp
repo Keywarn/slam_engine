@@ -3,7 +3,7 @@
 #include <stb_image/stb_image.h>
 #include <iostream>
 
-namespace renderer
+namespace render_engine
 {
 texture::texture(const char* path)
 {

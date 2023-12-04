@@ -1,24 +1,25 @@
 #include "renderer.h"
 
-#include <glm/glm/glm.hpp>
-#include <glm/glm/gtc/matrix_transform.hpp>
-
-renderer::vertices triangle_vertices{
+render_engine::vertices triangle_vertices{
     // positions         // colors          //UVs
     0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,  1.0f, 0.0f, // bottom right
    -0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,  0.0f, 0.0f, // bottom left
     0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f,  0.5f, 1.0f // top 
 };
 
-renderer::faces triangle_indices{
+render_engine::faces triangle_indices{
     0, 1, 2,   // first triangle
 };
 
-renderer::renderer* render_engine;
+render_engine::renderer* renderer;
+
+unsigned int window_width = 1280;
+unsigned int window_height = 720;
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
     glViewport(0, 0, width, height);
+    renderer->recalculate_projection();
 }
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
@@ -30,7 +31,12 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 
     if (key == GLFW_KEY_L && action == GLFW_PRESS)
     {
-        render_engine->toggle_wireframe();
+        renderer->toggle_wireframe();
+    }
+
+    if (key == GLFW_KEY_O && action == GLFW_PRESS)
+    {
+        renderer->toggle_persepctive();
     }
 }
 
@@ -46,7 +52,7 @@ int main()
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    GLFWwindow* window = glfwCreateWindow(1280, 720, "OpenGL Renderer", nullptr, nullptr);
+    GLFWwindow* window = glfwCreateWindow(window_width, window_height, "OpenGL Renderer", nullptr, nullptr);
     if (window == nullptr)
     {
         std::cout << "Failed to create GLFW Window" << std::endl;
@@ -64,30 +70,30 @@ int main()
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     glfwSetKeyCallback(window, key_callback);
 
-    render_engine = new renderer::renderer(window);
+    renderer = new render_engine::renderer(window);
     
-    renderer::texture* texture = render_engine->register_texture("assets/textures/checker.png");
-    renderer::shader* shader = render_engine->register_shader("assets/shaders/vertex.glsl", "assets/shaders/fragment.glsl", texture);
+    render_engine::texture* texture = renderer->register_texture("assets/textures/checker.png");
+    render_engine::shader* shader = renderer->register_shader("assets/shaders/vertex.glsl", "assets/shaders/fragment.glsl", texture);
     
     // Some transform stuff for our triangle
     glm::mat4 transform = glm::mat4(1.0f);
-    transform = glm::rotate(transform, glm::radians(90.f), glm::vec3(0.f, 0.f, 1.f));
+    transform = glm::rotate(transform, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
     transform = glm::scale(transform, glm::vec3(0.5, 0.5, 0.5));
 
-    render_engine->register_mesh(triangle_vertices, triangle_indices, shader, transform);
+    renderer->register_mesh(triangle_vertices, triangle_indices, shader, transform);
 
     while (!glfwWindowShouldClose(window))
     {
         process_input(window);
 
-        render_engine->render();
+        renderer->render();
 
         // Swap the buffers and poll
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
 
-    render_engine->free();
+    renderer->free();
 
     glfwTerminate();
     return 0;

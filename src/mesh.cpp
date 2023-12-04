@@ -1,11 +1,12 @@
 #include "mesh.h"
 
-#include <glm/glm/gtc/type_ptr.hpp>
+#include "renderer.h"
 
-namespace renderer
+namespace render_engine
 {
-mesh::mesh(vertices vertices, faces faces, renderer::shader* shader, glm::mat4 transform)
-    : m_transform(transform)
+mesh::mesh(renderer* renderer, vertices vertices, faces faces, render_engine::shader* shader, glm::mat4 transform)
+    : m_renderer(renderer)
+    , m_transform(transform)
     , m_vertices(vertices)
     , m_faces(faces)
     , m_shader(shader)
@@ -41,8 +42,9 @@ mesh::mesh(vertices vertices, faces faces, renderer::shader* shader, glm::mat4 t
 void mesh::draw()
 {
     m_shader->use();
-    unsigned int transform_uniform = glGetUniformLocation(m_shader->m_id, "transform");
-    glUniformMatrix4fv(transform_uniform, 1, GL_FALSE, glm::value_ptr(m_transform));
+    m_shader->set_mat4("transform", m_transform);
+    m_shader->set_mat4("view", m_renderer->get_view());
+    m_shader->set_mat4("projection", m_renderer->get_projection());
 
     glBindVertexArray(m_vertex_array);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);

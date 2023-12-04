@@ -1,6 +1,8 @@
 #include "shader.h"
 
-namespace renderer
+#include <glm/glm/gtc/type_ptr.hpp>
+
+namespace render_engine
 {
 shader::shader(const char* vertex_path, const char* fragment_path, texture* texture)
     : m_texture(texture)
@@ -114,6 +116,19 @@ void shader::set_float(const std::string& name, float value) const
 {
     glUniform1f(glGetUniformLocation(m_id, name.c_str()), value);
 }
+void shader::set_mat4(const std::string& name, glm::mat4& mat) const
+{
+    int uniform = glGetUniformLocation(m_id, name.c_str());
+
+    if (uniform == -1)
+    {
+        std::cout << "ERROR::SHADER::COULD NOT UPDATE UNIFORM: " << name << std::endl;
+        return;
+    }
+
+    glUniformMatrix4fv(uniform, 1, GL_FALSE, glm::value_ptr(mat));
+}
+
 
 void shader::free()
 {

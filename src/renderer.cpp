@@ -1,6 +1,6 @@
 #include "renderer.h"
 
-namespace renderer
+namespace render_engine
 {
 
 renderer::renderer(GLFWwindow* window)
@@ -10,6 +10,13 @@ renderer::renderer(GLFWwindow* window)
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    m_orthographic = glm::ortho(0.0f, 800.0f, 0.0f, 600.0f, 0.1f, 100.0f);
+    recalculate_projection();
+
+    // Camera setup
+    m_view = glm::mat4(1.0f);
+    m_view = glm::translate(m_view, glm::vec3(0.0f, 0.0f, -3.0f));
 }
 
 void renderer::toggle_wireframe()
@@ -19,6 +26,11 @@ void renderer::toggle_wireframe()
     GLenum mode = m_wireframe ? GL_LINE : GL_FILL;
 
     glPolygonMode(GL_FRONT_AND_BACK, mode);
+}
+
+void renderer::toggle_persepctive()
+{
+    m_perspective = !m_perspective;
 }
 
 void renderer::render()
@@ -44,10 +56,16 @@ shader* renderer::register_shader(const char* vertex_path, const char* fragment_
 
 mesh* renderer::register_mesh(vertices vertices, faces faces, shader* shader, glm::mat4 transform)
 {
-    m_meshes.push_back(mesh(vertices, faces, shader, transform));
+    m_meshes.push_back(mesh(this, vertices, faces, shader, transform));
     return &m_meshes.back();
 }
 
+void renderer::recalculate_projection()
+{
+    int width, height;
+    glfwGetWindowSize(m_window, &width, &height);
+    m_projection = glm::perspective(glm::radians(45.0f), (float)width / (float)height, 0.1f, 100.0f);
+}
 
 void renderer::free()
 {
