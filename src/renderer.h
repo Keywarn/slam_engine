@@ -7,6 +7,7 @@
 
 #include "shader.h"
 #include "mesh.h"
+#include "texture.h"
 
 namespace renderer
 {
@@ -19,7 +20,8 @@ public:
 
     void toggle_wireframe();
 
-    shader* register_shader(const char* vertex_path, const char* fragment_path);
+    texture* register_texture(const char* path);
+    shader* register_shader(const char* vertex_path, const char* fragment_path, texture* texture);
     mesh* register_mesh(vertices vertices, faces faces, shader* shader);
 
     void free();
@@ -27,8 +29,10 @@ public:
 private:
     GLFWwindow* m_window;
 
+    std::vector<texture> m_textures;
     std::vector<shader> m_shaders;
     std::vector<mesh> m_meshes;
+
 
     bool m_wireframe = false;
 };

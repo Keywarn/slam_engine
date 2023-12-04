@@ -7,12 +7,14 @@
 #include <sstream>
 #include <iostream>
 
+#include "texture.h"
+
 namespace renderer
 {
 class shader
 {
 public:
-    shader(const char* vertex_path, const char* frament_path);
+    shader(const char* vertex_path, const char* frament_path, texture* texture);
 
     void use();
 
@@ -25,5 +27,8 @@ public:
 public:
 
     unsigned int m_id;
+
+private:
+    texture* m_texture;
 };
 }

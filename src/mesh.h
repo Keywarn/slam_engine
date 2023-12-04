@@ -8,6 +8,8 @@ namespace renderer
 typedef std::vector<float> vertices;
 typedef std::vector<unsigned int> faces;
 
+typedef std::vector<float> texture_uvs;
+
 class mesh
 {
 public:

@@ -2,7 +2,8 @@
 
 namespace renderer
 {
-shader::shader(const char* vertex_path, const char* fragment_path)
+shader::shader(const char* vertex_path, const char* fragment_path, texture* texture)
+    : m_texture(texture)
 {
     // Read in the vertex shader
     std::ifstream vertex_shader_file(vertex_path, std::fstream::in);
@@ -97,6 +98,7 @@ shader::shader(const char* vertex_path, const char* fragment_path)
 
 void shader::use()
 {
+    glBindTexture(GL_TEXTURE_2D, m_texture->get_id());
     glUseProgram(m_id);
 }
 

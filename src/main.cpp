@@ -1,10 +1,10 @@
 #include "renderer.h"
 
 renderer::vertices triangle_vertices{
-    // positions         // colors
-    0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,   // bottom right
-   -0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,   // bottom left
-    0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f    // top 
+    // positions         // colors          //UVs
+    0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,  1.0f, 1.0f, // bottom right
+   -0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,  0.0f, 1.0f, // bottom left
+    0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f,  0.5f, 0.0f // top 
 };
 
 renderer::faces triangle_indices{
@@ -63,8 +63,8 @@ int main()
 
     render_engine = new renderer::renderer(window);
     
-    // Create shader
-    renderer::shader* shader = render_engine->register_shader("assets/shaders/vertex.glsl", "assets/shaders/fragment.glsl");
+    renderer::texture* texture = render_engine->register_texture("assets/textures/checker.png");
+    renderer::shader* shader = render_engine->register_shader("assets/shaders/vertex.glsl", "assets/shaders/fragment.glsl", texture);
     render_engine->register_mesh(triangle_vertices, triangle_indices, shader);
 
     while (!glfwWindowShouldClose(window))
