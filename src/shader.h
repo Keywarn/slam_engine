@@ -7,6 +7,8 @@
 #include <sstream>
 #include <iostream>
 
+namespace renderer
+{
 class shader
 {
 public:
@@ -24,4 +26,4 @@ public:
 
     unsigned int m_id;
 };
-
+}

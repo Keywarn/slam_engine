@@ -1,5 +1,7 @@
 #include "shader.h"
 
+namespace renderer
+{
 shader::shader(const char* vertex_path, const char* fragment_path)
 {
     // Read in the vertex shader
@@ -114,4 +116,5 @@ void shader::set_float(const std::string& name, float value) const
 void shader::free()
 {
     glDeleteProgram(m_id);
+}
 }
