@@ -7,16 +7,16 @@ renderer::renderer(GLFWwindow* window)
     : m_window(window)
 {
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+    glEnable(GL_DEPTH_TEST);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-    m_orthographic = glm::ortho(0.0f, 800.0f, 0.0f, 600.0f, 0.1f, 100.0f);
-    recalculate_projection();
-
+    
     // Camera setup
     m_view = glm::mat4(1.0f);
     m_view = glm::translate(m_view, glm::vec3(0.0f, 0.0f, -3.0f));
+
+    recalculate_projection();
 }
 
 void renderer::toggle_wireframe()
@@ -35,7 +35,7 @@ void renderer::toggle_persepctive()
 
 void renderer::render()
 {
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     for (mesh& mesh : m_meshes)
     {
@@ -65,6 +65,8 @@ void renderer::recalculate_projection()
     int width, height;
     glfwGetWindowSize(m_window, &width, &height);
     m_projection = glm::perspective(glm::radians(45.0f), (float)width / (float)height, 0.1f, 100.0f);
+
+    m_orthographic = glm::ortho(0.0f, (float)width, 0.0f, (float)height, 0.01f, 500.0f);
 }
 
 void renderer::free()
