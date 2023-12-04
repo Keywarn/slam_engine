@@ -51,6 +51,7 @@ private:
 
     glm::mat4 m_projection;
     glm::mat4 m_orthographic;
+    float m_orthographic_size = 1000.f;
 
     glm::mat4 m_view;
 

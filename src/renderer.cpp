@@ -5,6 +5,7 @@ namespace render_engine
 
 renderer::renderer(GLFWwindow* window)
     : m_window(window)
+    , m_orthographic_size(1000.f)
 {
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glEnable(GL_DEPTH_TEST);
@@ -66,7 +67,7 @@ void renderer::recalculate_projection()
     glfwGetWindowSize(m_window, &width, &height);
     m_projection = glm::perspective(glm::radians(45.0f), (float)width / (float)height, 0.1f, 100.0f);
 
-    m_orthographic = glm::ortho(0.0f, (float)width, 0.0f, (float)height, 0.01f, 500.0f);
+    m_orthographic = glm::ortho(-width / m_orthographic_size, width / m_orthographic_size, -height / m_orthographic_size, height / m_orthographic_size, 0.01f, 500.0f);
 }
 
 void renderer::free()
