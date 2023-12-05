@@ -42,6 +42,11 @@ public:
         return m_perspective ? m_camera.get_perspective() : m_camera.get_orthographic();
     }
 
+    camera& get_camera()
+    {
+        return m_camera;
+    }
+
 private:
     GLFWwindow* m_window;
     camera m_camera;

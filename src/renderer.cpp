@@ -5,8 +5,9 @@ namespace render_engine
 
 renderer::renderer(GLFWwindow* window)
     : m_window(window)
-    , m_camera(glm::vec3(0.f, 0.f, 3.f), glm::vec3(0.f, 0.f, 0.f))
+    , m_camera(glm::vec3(0.f, 0.f, 3.f))
 {
+    m_camera.recalculate_projections(m_window);
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glEnable(GL_DEPTH_TEST);
 
@@ -30,9 +31,7 @@ void renderer::toggle_persepctive()
 
 void renderer::render(float delta)
 {
-    int width, height;
-    glfwGetWindowSize(m_window, &width, &height);
-    m_camera.update(delta, width, height);
+    m_camera.update(delta, m_window);
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 

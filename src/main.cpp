@@ -55,6 +55,7 @@ unsigned int window_height = 720;
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
     glViewport(0, 0, width, height);
+    renderer->get_camera().recalculate_projections(window);
 }
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
@@ -122,7 +123,8 @@ int main()
 
     while (!glfwWindowShouldClose(window))
     {
-        process_input(window);
+        // TODO handle input as a state/object rather than in individual components
+        //process_input(window);
 
         renderer->render(delta);
 

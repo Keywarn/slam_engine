@@ -1,6 +1,7 @@
 #pragma once
 
 #include <glm/glm/glm.hpp>
+#include <GLFW/glfw3.h>
 
 namespace render_engine
 {
@@ -8,10 +9,13 @@ namespace render_engine
 class camera
 {
 public:
-    camera(glm::vec3 position, glm::vec3 target);
+    camera(glm::vec3 position);
 
-    void update(float delta, int window_width, int window_height);
+    void update(float delta, GLFWwindow* window);
 
+    void move(float delta, GLFWwindow* window);
+
+    void recalculate_projections(GLFWwindow* window);
 
     glm::mat4& get_view()
     {
@@ -30,8 +34,7 @@ public:
 
 private:
     glm::vec3 m_position;
-    glm::vec3 m_target;
-    glm::vec3 m_direction;
+    glm::vec3 m_forwards;
 
     glm::vec3 m_right;
     glm::vec3 m_up;
@@ -40,6 +43,8 @@ private:
     glm::mat4 m_perspective;
     glm::mat4 m_orthographic;
     float m_orthographic_size = 1000.f;
+
+    float m_speed = 3.f;
 };
 }
 
