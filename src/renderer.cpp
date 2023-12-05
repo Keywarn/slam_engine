@@ -5,19 +5,13 @@ namespace render_engine
 
 renderer::renderer(GLFWwindow* window)
     : m_window(window)
-    , m_orthographic_size(1000.f)
+    , m_camera(glm::vec3(0.f, 0.f, 3.f), glm::vec3(0.f, 0.f, 0.f))
 {
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glEnable(GL_DEPTH_TEST);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    
-    // Camera setup
-    m_view = glm::mat4(1.0f);
-    m_view = glm::translate(m_view, glm::vec3(0.0f, 0.0f, -3.0f));
-
-    recalculate_projection();
 }
 
 void renderer::toggle_wireframe()
@@ -34,13 +28,17 @@ void renderer::toggle_persepctive()
     m_perspective = !m_perspective;
 }
 
-void renderer::render()
+void renderer::render(float delta)
 {
+    int width, height;
+    glfwGetWindowSize(m_window, &width, &height);
+    m_camera.update(delta, width, height);
+
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     for (mesh& mesh : m_meshes)
     {
-        mesh.draw();
+        mesh.draw(delta);
     }
 }
 texture* renderer::register_texture(const char* path)
@@ -59,15 +57,6 @@ mesh* renderer::register_mesh(vertices vertices, faces faces, shader* shader, gl
 {
     m_meshes.push_back(mesh(this, vertices, faces, shader, transform));
     return &m_meshes.back();
-}
-
-void renderer::recalculate_projection()
-{
-    int width, height;
-    glfwGetWindowSize(m_window, &width, &height);
-    m_projection = glm::perspective(glm::radians(45.0f), (float)width / (float)height, 0.1f, 100.0f);
-
-    m_orthographic = glm::ortho(-width / m_orthographic_size, width / m_orthographic_size, -height / m_orthographic_size, height / m_orthographic_size, 0.01f, 500.0f);
 }
 
 void renderer::free()

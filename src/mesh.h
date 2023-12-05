@@ -19,7 +19,7 @@ class mesh
 public:
     mesh(renderer* renderer, vertices vertices, faces faces, shader* shader, glm::mat4 transform);
 
-    void draw();
+    void draw(float delta);
 
     void free();
 

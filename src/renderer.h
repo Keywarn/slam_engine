@@ -11,15 +11,17 @@
 #include "shader.h"
 #include "mesh.h"
 #include "texture.h"
+#include "camera.h"
 
 namespace render_engine
 {
+
 class renderer
 {
 public:
     renderer(GLFWwindow* window);
 
-    void render();
+    void render(float delta);
 
     void toggle_wireframe();
     void toggle_persepctive();
@@ -28,32 +30,25 @@ public:
     shader* register_shader(const char* vertex_path, const char* fragment_path, texture* texture);
     mesh* register_mesh(vertices vertices, faces faces, shader* shader, glm::mat4 transform);
 
-    void recalculate_projection();
-
     void free();
 
     glm::mat4& get_view()
     {
-        return m_view;
+        return m_camera.get_view();
     }
 
     glm::mat4& get_projection()
     {
-        return m_perspective ? m_projection : m_orthographic;
+        return m_perspective ? m_camera.get_perspective() : m_camera.get_orthographic();
     }
 
 private:
     GLFWwindow* m_window;
+    camera m_camera;
 
     std::vector<texture> m_textures;
     std::vector<shader> m_shaders;
     std::vector<mesh> m_meshes;
-
-    glm::mat4 m_projection;
-    glm::mat4 m_orthographic;
-    float m_orthographic_size = 1000.f;
-
-    glm::mat4 m_view;
 
     bool m_wireframe = false;
     bool m_perspective = true;

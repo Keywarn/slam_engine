@@ -55,7 +55,6 @@ unsigned int window_height = 720;
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
     glViewport(0, 0, width, height);
-    renderer->recalculate_projection();
 }
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
@@ -118,15 +117,20 @@ int main()
 
     renderer->register_mesh(cube_vertices, cube_indices, shader, transform);
 
+    float previous_time = (float)glfwGetTime();
+    float delta = 0.f;
+
     while (!glfwWindowShouldClose(window))
     {
         process_input(window);
 
-        renderer->render();
+        renderer->render(delta);
 
         // Swap the buffers and poll
         glfwSwapBuffers(window);
         glfwPollEvents();
+        delta = glfwGetTime() - previous_time;
+        previous_time = glfwGetTime();
     }
 
     renderer->free();

@@ -42,10 +42,10 @@ mesh::mesh(renderer* renderer, vertices vertices, faces faces, render_engine::sh
     glBindVertexArray(0);
 }
 
-void mesh::draw()
+void mesh::draw(float delta)
 {
     //animate first
-    m_transform = glm::rotate(m_transform, (float)glfwGetTime() * glm::radians(0.5f), glm::vec3(0.5f, 1.0f, 0.0f));
+    m_transform = glm::rotate(m_transform, delta * glm::radians(90.f), glm::vec3(0.5f, 1.0f, 0.0f));
 
     m_shader->use();
     m_shader->set_mat4("transform", m_transform);
