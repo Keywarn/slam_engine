@@ -55,7 +55,7 @@ unsigned int window_height = 720;
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
     glViewport(0, 0, width, height);
-    renderer->get_camera().recalculate_projections(window);
+    renderer->get_camera()->recalculate_projections(window);
 }
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
@@ -105,6 +105,7 @@ int main()
 
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     glfwSetKeyCallback(window, key_callback);
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
     renderer = new render_engine::renderer(window);
     

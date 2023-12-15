@@ -34,22 +34,22 @@ public:
 
     glm::mat4& get_view()
     {
-        return m_camera.get_view();
+        return m_camera->get_view();
     }
 
     glm::mat4& get_projection()
     {
-        return m_perspective ? m_camera.get_perspective() : m_camera.get_orthographic();
+        return m_perspective ? m_camera->get_perspective() : m_camera->get_orthographic();
     }
 
-    camera& get_camera()
+    camera* get_camera()
     {
         return m_camera;
     }
 
 private:
     GLFWwindow* m_window;
-    camera m_camera;
+    camera* m_camera;
 
     std::vector<texture> m_textures;
     std::vector<shader> m_shaders;
