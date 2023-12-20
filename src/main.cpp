@@ -52,6 +52,8 @@ render_engine::renderer* renderer;
 unsigned int window_width = 1280;
 unsigned int window_height = 720;
 
+bool cursor_enabled = false;
+
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
     glViewport(0, 0, width, height);
@@ -73,6 +75,13 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
     if (key == GLFW_KEY_O && action == GLFW_PRESS)
     {
         renderer->toggle_persepctive();
+    }
+
+    if (key == GLFW_KEY_C && action == GLFW_PRESS)
+    {
+        cursor_enabled = !cursor_enabled;
+        int mode = cursor_enabled ? GLFW_CURSOR_NORMAL : GLFW_CURSOR_DISABLED;
+        glfwSetInputMode(window, GLFW_CURSOR, mode);
     }
 }
 
@@ -110,12 +119,20 @@ int main()
     renderer = new render_engine::renderer(window);
     
     render_engine::texture* texture = renderer->register_texture("assets/textures/checker.png");
-    render_engine::shader* shader = renderer->register_shader("assets/shaders/vertex.glsl", "assets/shaders/fragment.glsl", texture);
+    std::shared_ptr<render_engine::shader> shader = renderer->register_shader("assets/shaders/vertex.glsl", "assets/shaders/unlit_fragment.glsl", glm::vec3(1.0f, 1.0f, 1.0f), nullptr);
+    std::shared_ptr<render_engine::shader> shader_lit = renderer->register_shader("assets/shaders/vertex.glsl", "assets/shaders/lit_fragment.glsl", glm::vec3(1.0f, 0.5f, 0.3f), nullptr);
     
-    // Some transform stuff for our triangle
+    // Main cube
     glm::mat4 transform = glm::mat4(1.0f);
     transform = glm::rotate(transform, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
     transform = glm::scale(transform, glm::vec3(0.5, 0.5, 0.5));
+
+    renderer->register_mesh(cube_vertices, cube_indices, shader_lit, transform);
+
+    // Light cube
+    transform = glm::mat4(1.0f);
+    transform = glm::scale(transform, glm::vec3(0.2, 0.2, 0.2));
+    transform = glm::translate(transform, glm::vec3(4.f, 4.f, -5.f));
 
     renderer->register_mesh(cube_vertices, cube_indices, shader, transform);
 

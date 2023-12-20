@@ -7,7 +7,7 @@
 
 namespace render_engine
 {
-mesh::mesh(renderer* renderer, vertices vertices, faces faces, render_engine::shader* shader, glm::mat4 transform)
+mesh::mesh(renderer* renderer, vertices vertices, faces faces, std::shared_ptr<shader> shader, glm::mat4 transform)
     : m_renderer(renderer)
     , m_transform(transform)
     , m_vertices(vertices)
@@ -45,7 +45,7 @@ mesh::mesh(renderer* renderer, vertices vertices, faces faces, render_engine::sh
 void mesh::draw(float delta)
 {
     //animate first
-    m_transform = glm::rotate(m_transform, delta * glm::radians(90.f), glm::vec3(0.5f, 1.0f, 0.0f));
+    //m_transform = glm::rotate(m_transform, delta * glm::radians(90.f), glm::vec3(0.5f, 1.0f, 0.0f));
 
     m_shader->use();
     m_shader->set_mat4("transform", m_transform);

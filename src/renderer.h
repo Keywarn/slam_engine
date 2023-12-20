@@ -27,8 +27,8 @@ public:
     void toggle_persepctive();
 
     texture* register_texture(const char* path);
-    shader* register_shader(const char* vertex_path, const char* fragment_path, texture* texture);
-    mesh* register_mesh(vertices vertices, faces faces, shader* shader, glm::mat4 transform);
+    std::shared_ptr<shader> register_shader(const char* vertex_path, const char* fragment_path, glm::vec3 albedo, texture* texture);
+    mesh* register_mesh(vertices vertices, faces faces, std::shared_ptr<render_engine::shader> shader, glm::mat4 transform);
 
     void free();
 
@@ -52,7 +52,7 @@ private:
     camera* m_camera;
 
     std::vector<texture> m_textures;
-    std::vector<shader> m_shaders;
+    std::vector<std::shared_ptr<shader>> m_shaders;
     std::vector<mesh> m_meshes;
 
     bool m_wireframe = false;

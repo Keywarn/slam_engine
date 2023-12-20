@@ -17,7 +17,7 @@ typedef std::vector<float> texture_uvs;
 class mesh
 {
 public:
-    mesh(renderer* renderer, vertices vertices, faces faces, shader* shader, glm::mat4 transform);
+    mesh(renderer* renderer, vertices vertices, faces faces, std::shared_ptr<shader> shader, glm::mat4 transform);
 
     void draw(float delta);
 
@@ -33,7 +33,7 @@ private:
     unsigned int m_vertex_buffer;
     unsigned int m_element_buffer;
 
-    shader* m_shader;
+    std::shared_ptr<shader> m_shader;
 
     renderer* m_renderer;
 };

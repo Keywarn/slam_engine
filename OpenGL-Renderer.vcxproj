@@ -141,7 +141,9 @@
     <ClCompile Include="src\texture.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="assets\shaders\fragment.glsl" />
+    <None Include="assets\shaders\lit_fragment.glsl" />
+    <None Include="assets\shaders\textured_fragment.glsl" />
+    <None Include="assets\shaders\unlit_fragment.glsl" />
     <None Include="assets\shaders\vertex.glsl" />
   </ItemGroup>
   <ItemGroup>

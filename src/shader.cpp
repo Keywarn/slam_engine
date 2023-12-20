@@ -4,8 +4,9 @@
 
 namespace render_engine
 {
-shader::shader(const char* vertex_path, const char* fragment_path, texture* texture)
+shader::shader(const char* vertex_path, const char* fragment_path, glm::vec3 albedo, texture* texture)
     : m_texture(texture)
+    , m_albedo(albedo)
 {
     // Read in the vertex shader
     std::ifstream vertex_shader_file(vertex_path, std::fstream::in);
@@ -100,8 +101,13 @@ shader::shader(const char* vertex_path, const char* fragment_path, texture* text
 
 void shader::use()
 {
-    glBindTexture(GL_TEXTURE_2D, m_texture->get_id());
+    if (m_texture != nullptr)
+    {
+        glBindTexture(GL_TEXTURE_2D, m_texture->get_id());
+    }
     glUseProgram(m_id);
+    // TODO this should eventually be handled by a 'material'
+    set_vec3("albedo", m_albedo);
 }
 
 void shader::set_bool(const std::string& name, bool value) const
@@ -116,6 +122,19 @@ void shader::set_float(const std::string& name, float value) const
 {
     glUniform1f(glGetUniformLocation(m_id, name.c_str()), value);
 }
+
+void shader::set_vec3(const std::string& name, glm::vec3& vec) const
+{
+    int uniform = glGetUniformLocation(m_id, name.c_str());
+
+    if (uniform == -1)
+    {
+        std::cout << "ERROR::SHADER::COULD NOT UPDATE UNIFORM: " << name << std::endl;
+        return;
+    }
+    glUniform3fv(uniform, 1, glm::value_ptr(vec));
+}
+
 void shader::set_mat4(const std::string& name, glm::mat4& mat) const
 {
     int uniform = glGetUniformLocation(m_id, name.c_str());

@@ -41,10 +41,16 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="assets\shaders\fragment.glsl">
+    <None Include="assets\shaders\textured_fragment.glsl">
       <Filter>Source Files\Shaders</Filter>
     </None>
     <None Include="assets\shaders\vertex.glsl">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="assets\shaders\lit_fragment.glsl">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="assets\shaders\unlit_fragment.glsl">
       <Filter>Source Files\Shaders</Filter>
     </None>
   </ItemGroup>
