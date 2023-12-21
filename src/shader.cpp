@@ -4,9 +4,10 @@
 
 namespace render_engine
 {
-shader::shader(const char* vertex_path, const char* fragment_path, glm::vec3 albedo, texture* texture)
+shader::shader(const char* vertex_path, const char* fragment_path, glm::vec3 albedo, texture* texture, shader_type type)
     : m_texture(texture)
     , m_albedo(albedo)
+    , m_type(type)
 {
     // Read in the vertex shader
     std::ifstream vertex_shader_file(vertex_path, std::fstream::in);
@@ -108,6 +109,12 @@ void shader::use()
     glUseProgram(m_id);
     // TODO this should eventually be handled by a 'material'
     set_vec3("albedo", m_albedo);
+    //TODO this should probably be handled by some kind of 'light' object
+    if (m_type == shader_type::lit)
+    {
+        glm::vec3 light = glm::vec3(1.f, 1.f, 1.f);
+        set_vec3("light", light);
+    }
 }
 
 void shader::set_bool(const std::string& name, bool value) const

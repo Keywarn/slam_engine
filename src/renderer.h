@@ -29,7 +29,7 @@ public:
     void toggle_persepctive();
 
     texture* register_texture(const char* path);
-    std::shared_ptr<shader> register_shader(const char* vertex_path, const char* fragment_path, glm::vec3 albedo, texture* texture);
+    std::shared_ptr<shader> register_shader(const char* vertex_path, const char* fragment_path, glm::vec3 albedo, texture* texture, shader_type type = shader_type::unlit);
     mesh* register_mesh(vertices vertices, faces faces, std::shared_ptr<render_engine::shader> shader, glm::mat4 transform);
 
     void free();

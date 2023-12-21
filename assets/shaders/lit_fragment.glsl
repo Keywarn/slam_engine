@@ -7,5 +7,7 @@ out vec4 fragment_colour;
 
 void main()
 {
-    fragment_colour = vec4(albedo * light, 1.0);
+    float ambient_strength = 0.1;
+    vec3 ambient = ambient_strength * light;
+    fragment_colour = vec4(albedo * ambient, 1.0);
 }

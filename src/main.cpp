@@ -118,7 +118,7 @@ int main()
     
     render_engine::texture* texture = render_engine::renderer::get_instance()->register_texture("assets/textures/checker.png");
     std::shared_ptr<render_engine::shader> shader = render_engine::renderer::get_instance()->register_shader("assets/shaders/vertex.glsl", "assets/shaders/unlit_fragment.glsl", glm::vec3(1.0f, 1.0f, 1.0f), nullptr);
-    std::shared_ptr<render_engine::shader> shader_lit = render_engine::renderer::get_instance()->register_shader("assets/shaders/vertex.glsl", "assets/shaders/lit_fragment.glsl", glm::vec3(1.0f, 0.5f, 0.3f), nullptr);
+    std::shared_ptr<render_engine::shader> shader_lit = render_engine::renderer::get_instance()->register_shader("assets/shaders/vertex.glsl", "assets/shaders/lit_fragment.glsl", glm::vec3(1.0f, 0.5f, 0.3f), nullptr, render_engine::shader_type::lit);
     
     // Main cube
     glm::mat4 transform = glm::mat4(1.0f);

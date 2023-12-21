@@ -12,10 +12,16 @@
 
 namespace render_engine
 {
+enum class shader_type
+{
+    lit,
+    unlit
+};
+
 class shader
 {
 public:
-    shader(const char* vertex_path, const char* frament_path, glm::vec3 albedo, texture* texture);
+    shader(const char* vertex_path, const char* frament_path, glm::vec3 albedo, texture* texture, shader_type type = shader_type::unlit);
 
     void use();
 
@@ -34,5 +40,7 @@ public:
 private:
     glm::vec3 m_albedo = glm::vec3(0.f);
     texture* m_texture = nullptr;
+
+    shader_type m_type = shader_type::unlit;
 };
 }
