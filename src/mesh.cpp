@@ -21,9 +21,9 @@ mesh::mesh(renderer* renderer, vertices vertices, faces faces, std::shared_ptr<s
     glBindBuffer(GL_ARRAY_BUFFER, m_vertex_buffer);
     glBufferData(GL_ARRAY_BUFFER, m_vertices.size() * sizeof(float), &m_vertices.front(), GL_STATIC_DRAW);
 
-    glGenBuffers(1, &m_element_buffer);
+    /*glGenBuffers(1, &m_element_buffer);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_element_buffer);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_faces.size() * sizeof(unsigned int), &m_faces.front(), GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_faces.size() * sizeof(unsigned int), &m_faces.front(), GL_STATIC_DRAW);*/
 
     // Co-ords
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
@@ -57,7 +57,8 @@ void mesh::draw(float delta)
     m_shader->set_mat4("projection", m_renderer->get_projection());
 
     glBindVertexArray(m_vertex_array);
-    glDrawElements(GL_TRIANGLES, m_faces.size(), GL_UNSIGNED_INT, 0);
+    //glDrawElements(GL_TRIANGLES, m_faces.size(), GL_UNSIGNED_INT, 0);
+    glDrawArrays(GL_TRIANGLES, 0, 36);
     glBindVertexArray(0);
 }
 

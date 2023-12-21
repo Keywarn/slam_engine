@@ -1,6 +1,8 @@
 #include "shader.h"
 
 #include <glm/glm/gtc/type_ptr.hpp>
+#include "light.h"
+#include "renderer.h"
 
 namespace render_engine
 {
@@ -112,8 +114,10 @@ void shader::use()
     //TODO this should probably be handled by some kind of 'light' object
     if (m_type == shader_type::lit)
     {
-        glm::vec3 light = glm::vec3(1.f, 1.f, 1.f);
-        set_vec3("light", light);
+        const directional_light* sun = renderer::get_instance()->get_sun();
+        set_vec3("light_colour", sun->get_colour());
+        set_vec3("light_position", sun->get_position());
+        set_vec3("camera_position", renderer::get_instance()->get_camera()->get_position());
     }
 }
 
@@ -130,7 +134,7 @@ void shader::set_float(const std::string& name, float value) const
     glUniform1f(glGetUniformLocation(m_id, name.c_str()), value);
 }
 
-void shader::set_vec3(const std::string& name, glm::vec3& vec) const
+void shader::set_vec3(const std::string& name, const glm::vec3& vec) const
 {
     int uniform = glGetUniformLocation(m_id, name.c_str());
 

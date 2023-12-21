@@ -13,6 +13,7 @@
 #include "texture.h"
 #include "camera.h"
 #include "singleton.h"
+#include "light.h"
 
 namespace render_engine
 {
@@ -49,6 +50,15 @@ public:
         return m_camera;
     }
 
+    void create_sun(glm::vec3 direction, glm::vec3 position, glm::vec3 colour, float strength)
+    {
+        m_sun = directional_light(direction, position, colour, strength);
+    }
+    const directional_light* get_sun() const
+    {
+        return &m_sun;
+    }
+
 private:
     GLFWwindow* m_window;
     camera* m_camera;
@@ -59,5 +69,9 @@ private:
 
     bool m_wireframe = false;
     bool m_perspective = true;
+
+    //TODO don't just create a light in main
+    directional_light m_sun = directional_light(glm::vec3(0,0,0), glm::vec3(0, 0, 0), glm::vec3(0, 0, 0), 0.f);
+
 };
 }

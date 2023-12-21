@@ -138,15 +138,21 @@ int main()
     
     // Main cube
     glm::mat4 transform = glm::mat4(1.0f);
-    transform = glm::rotate(transform, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+    transform = glm::rotate(transform, glm::radians(-55.0f), glm::vec3(1.0f, 0.5f, 0.0f));
     transform = glm::scale(transform, glm::vec3(0.5, 0.5, 0.5));
 
     render_engine::renderer::get_instance()->register_mesh(cube_vertices, cube_indices, shader_lit, transform);
 
+
     // Light cube
+    glm::vec3 sun_direction = glm::vec3(-1.f, -1.f, -1.f);
+    glm::vec3 sun_position = glm::vec3(1.f, 1.f, 1.f);
+    glm::vec3 sun_colour = glm::vec3(1, 1, 1);
+    render_engine::renderer::get_instance()->create_sun(sun_direction, sun_position, sun_colour, 1.f);
+    
     transform = glm::mat4(1.0f);
-    transform = glm::scale(transform, glm::vec3(0.2, 0.2, 0.2));
-    transform = glm::translate(transform, glm::vec3(4.f, 4.f, -5.f));
+    transform = glm::translate(transform, sun_position);
+    transform = glm::scale(transform, glm::vec3(0.05, 0.05, 0.05));
 
     render_engine::renderer::get_instance()->register_mesh(cube_vertices, cube_indices, shader, transform);
 

@@ -18,6 +18,11 @@ public:
 
     void recalculate_projections(GLFWwindow* window);
 
+    glm::vec3 get_position()
+    {
+        return m_position;
+    }
+
     glm::mat4& get_view()
     {
         return m_view;
