@@ -12,13 +12,15 @@
 #include "mesh.h"
 #include "texture.h"
 #include "camera.h"
+#include "singleton.h"
 
 namespace render_engine
 {
 
-class renderer
+class renderer : public singleton<renderer>
 {
 public:
+    friend class singleton;
     renderer(GLFWwindow* window);
 
     void render(float delta);
