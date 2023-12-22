@@ -49,16 +49,21 @@ texture* renderer::register_texture(const char* path)
     return &m_textures.back();
 }
 
-std::shared_ptr<shader> renderer::register_shader(const char* vertex_path, const char* fragment_path, glm::vec3 albedo, texture* texture, shader_type type)
+std::shared_ptr<shader> renderer::register_shader(const char* vertex_path, const char* fragment_path, shader_type type)
 {
-    std::shared_ptr<shader> shader_ptr = std::make_shared<shader>(shader(vertex_path, fragment_path, albedo, texture, type));
+    std::shared_ptr<shader> shader_ptr = std::make_shared<shader>(shader(vertex_path, fragment_path, type));
     m_shaders.push_back(shader_ptr);
     return shader_ptr;
 }
 
-mesh* renderer::register_mesh(vertices vertices, faces faces, std::shared_ptr<render_engine::shader> shader, glm::mat4 transform)
+void renderer::register_material(std::shared_ptr<material> material)
 {
-    m_meshes.push_back(mesh(this, vertices, faces, shader, transform));
+    m_materials.push_back(material);
+}
+
+mesh* renderer::register_mesh(vertices vertices, faces faces, std::shared_ptr<render_engine::material> material, glm::mat4 transform)
+{
+    m_meshes.push_back(mesh(vertices, faces, material, transform));
     return &m_meshes.back();
 }
 

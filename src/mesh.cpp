@@ -7,12 +7,11 @@
 
 namespace render_engine
 {
-mesh::mesh(renderer* renderer, vertices vertices, faces faces, std::shared_ptr<shader> shader, glm::mat4 transform)
-    : m_renderer(renderer)
-    , m_transform(transform)
+mesh::mesh(vertices vertices, faces faces, std::shared_ptr<material> material, glm::mat4 transform)
+    : m_transform(transform)
     , m_vertices(vertices)
     , m_faces(faces)
-    , m_shader(shader)
+    , m_material(material)
 {
     glGenVertexArrays(1, &m_vertex_array);
     glBindVertexArray(m_vertex_array);
@@ -51,10 +50,7 @@ void mesh::draw(float delta)
     //animate first
     //m_transform = glm::rotate(m_transform, delta * glm::radians(90.f), glm::vec3(0.5f, 1.0f, 0.0f));
 
-    m_shader->use();
-    m_shader->set_mat4("transform", m_transform);
-    m_shader->set_mat4("view", m_renderer->get_view());
-    m_shader->set_mat4("projection", m_renderer->get_projection());
+    m_material->use(m_transform);
 
     glBindVertexArray(m_vertex_array);
     //glDrawElements(GL_TRIANGLES, m_faces.size(), GL_UNSIGNED_INT, 0);

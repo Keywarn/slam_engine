@@ -1,32 +1,28 @@
 #pragma once
 #include <glm/glm/glm.hpp>
+#include "shader.h"
 
 namespace render_engine
 {
 class light
 {
 public:
-    light(glm::vec3 position, glm::vec3 colour, float strength);
+    light(glm::vec3 position, glm::vec3 colour, float diffuse, float ambient, float specular);
 
-    const glm::vec3 get_position() const
-    {
-        return m_position;
-    }
-    const glm::vec3 get_colour() const
-    {
-        return m_colour;
-    }
+    void const load_to_shader(shader* shader) const;
 
 private:
     glm::vec3 m_position;
-    glm::vec3 m_colour;
-    float m_strength;
+    glm::vec3 m_diffuse;
+    glm::vec3 m_ambient;
+    glm::vec3 m_specular;
+    
 };
 
 class directional_light : public light
 {
 public:
-    directional_light(glm::vec3 direction, glm::vec3 position, glm::vec3 colour, float strength);
+    directional_light(glm::vec3 direction, glm::vec3 position, glm::vec3 colour, float diffuse, float ambient, float specular);
 
     const glm::vec3& get_direction() const
     {

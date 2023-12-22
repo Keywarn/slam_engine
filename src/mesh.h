@@ -3,7 +3,7 @@
 #include <vector>
 #include <glm/glm/glm.hpp>
 
-#include "shader.h"
+#include "material.h"
 
 namespace render_engine
 {
@@ -17,7 +17,7 @@ typedef std::vector<float> texture_uvs;
 class mesh
 {
 public:
-    mesh(renderer* renderer, vertices vertices, faces faces, std::shared_ptr<shader> shader, glm::mat4 transform);
+    mesh(vertices vertices, faces faces, std::shared_ptr<material> material, glm::mat4 transform);
 
     void draw(float delta);
 
@@ -33,9 +33,7 @@ private:
     unsigned int m_vertex_buffer;
     unsigned int m_element_buffer;
 
-    std::shared_ptr<shader> m_shader;
-
-    renderer* m_renderer;
+    std::shared_ptr<material> m_material;
 };
 }
 

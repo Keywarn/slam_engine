@@ -133,28 +133,33 @@ int main()
     new render_engine::renderer(window);
     
     render_engine::texture* texture = render_engine::renderer::get_instance()->register_texture("assets/textures/checker.png");
-    std::shared_ptr<render_engine::shader> shader = render_engine::renderer::get_instance()->register_shader("assets/shaders/vertex.glsl", "assets/shaders/unlit_fragment.glsl", glm::vec3(1.0f, 1.0f, 1.0f), nullptr);
-    std::shared_ptr<render_engine::shader> shader_lit = render_engine::renderer::get_instance()->register_shader("assets/shaders/vertex.glsl", "assets/shaders/lit_fragment.glsl", glm::vec3(1.0f, 0.5f, 0.3f), nullptr, render_engine::shader_type::lit);
+    std::shared_ptr<render_engine::shader> unlit_shader = render_engine::renderer::get_instance()->register_shader("assets/shaders/vertex.glsl", "assets/shaders/unlit_fragment.glsl");
+    std::shared_ptr<render_engine::shader> lit_shader = render_engine::renderer::get_instance()->register_shader("assets/shaders/vertex.glsl", "assets/shaders/lit_fragment.glsl", render_engine::shader_type::lit);
     
-    // Main cube
+    // Main cube ==============================================
     glm::mat4 transform = glm::mat4(1.0f);
     transform = glm::rotate(transform, glm::radians(-55.0f), glm::vec3(1.0f, 0.5f, 0.0f));
     transform = glm::scale(transform, glm::vec3(0.5, 0.5, 0.5));
 
-    render_engine::renderer::get_instance()->register_mesh(cube_vertices, cube_indices, shader_lit, transform);
+    std::shared_ptr<render_engine::material> cube_material = std::make_shared<render_engine::material>(lit_shader, nullptr, 32.f, glm::vec3(0.7f, 0.5f, 0.2f), 1.f, 0.1f, 0.5f);
 
+    render_engine::renderer::get_instance()->register_mesh(cube_vertices, cube_indices, cube_material, transform);
+    // ========================================================
 
-    // Light cube
+    // Light cube =============================================
     glm::vec3 sun_direction = glm::vec3(-1.f, -1.f, -1.f);
     glm::vec3 sun_position = glm::vec3(1.f, 1.f, 1.f);
     glm::vec3 sun_colour = glm::vec3(1, 1, 1);
-    render_engine::renderer::get_instance()->create_sun(sun_direction, sun_position, sun_colour, 1.f);
+    render_engine::renderer::get_instance()->create_sun(sun_direction, sun_position, sun_colour, 1.f, 0.1f, 0.5f);
     
     transform = glm::mat4(1.0f);
     transform = glm::translate(transform, sun_position);
     transform = glm::scale(transform, glm::vec3(0.05, 0.05, 0.05));
 
-    render_engine::renderer::get_instance()->register_mesh(cube_vertices, cube_indices, shader, transform);
+    std::shared_ptr<render_engine::material> light_material = std::make_shared<render_engine::material>(unlit_shader, nullptr, 1.f);
+
+    render_engine::renderer::get_instance()->register_mesh(cube_vertices, cube_indices, light_material, transform);
+    // ========================================================
 
     float previous_time = (float)glfwGetTime();
     float delta = 0.f;
