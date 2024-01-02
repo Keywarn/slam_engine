@@ -103,14 +103,6 @@ shader::shader(const char* vertex_path, const char* fragment_path, shader_type t
 void shader::use()
 {
     glUseProgram(m_id);
-    
-    //TODO this should probably be handled by some kind of 'light' object
-    if (m_type == shader_type::lit)
-    {
-        const directional_light* sun = renderer::get_instance()->get_sun();
-        sun->load_to_shader(this);
-        set_vec3("camera_position", renderer::get_instance()->get_camera()->get_position());
-    }
 }
 
 void shader::set_bool(const std::string& name, bool value) const

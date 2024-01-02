@@ -9,7 +9,7 @@ class light
 public:
     light(glm::vec3 position, glm::vec3 colour, float diffuse, float ambient, float specular);
 
-    void const load_to_shader(shader* shader) const;
+    void const load_to_shader(std::shared_ptr<shader> shader) const;
 
 private:
     glm::vec3 m_position;

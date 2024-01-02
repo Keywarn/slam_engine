@@ -30,7 +30,7 @@ public:
     void toggle_wireframe();
     void toggle_persepctive();
 
-    texture* register_texture(const char* path);
+    std::shared_ptr<texture> register_texture(const char* path);
     std::shared_ptr<shader> register_shader(const char* vertex_path, const char* fragment_path, shader_type type = shader_type::unlit);
     void register_material(std::shared_ptr<material> material);
     mesh* register_mesh(vertices vertices, faces faces, std::shared_ptr<render_engine::material> material, glm::mat4 transform);
@@ -65,7 +65,7 @@ private:
     GLFWwindow* m_window;
     camera* m_camera;
 
-    std::vector<texture> m_textures;
+    std::vector<std::shared_ptr<texture>> m_textures;
     std::vector<std::shared_ptr<shader>> m_shaders;
     std::vector<std::shared_ptr<material>> m_materials;
     std::vector<mesh> m_meshes;

@@ -10,22 +10,37 @@ class material
 {
 public:
     // Just use the texture and set everything else to white
-    material(std::shared_ptr<shader> shader, texture* texture, float shininess);
+    material(std::shared_ptr<shader> shader, std::shared_ptr<texture> texture, float shininess);
     // Same colour for all and just use strength values
-    material(std::shared_ptr<shader> shader, texture* texture, float shininess, glm::vec3 colour, float albedo, float ambient, float specular);
+    material(std::shared_ptr<shader> shader, std::shared_ptr<texture> texture, float shininess, glm::vec3 colour, float albedo, float specular);
     // Different colours for each property
-    material(std::shared_ptr<shader> shader, texture* texture, float shininess, glm::vec3 albedo, glm::vec3 ambient, glm::vec3 specular);
+    material(std::shared_ptr<shader> shader, std::shared_ptr<texture> texture, float shininess, glm::vec3 albedo, glm::vec3 specular);
+
+    void set_specular_map(std::shared_ptr<texture> texture)
+    {
+        m_specular_map = texture;
+
+        m_shader->use();
+        int specular = glGetUniformLocation(m_shader->m_id, "u_material.specular_map");
+
+        if (specular == -1)
+        {
+            std::cout << "ERROR::MATERIAL::COULD NOT SET SPECULAR MAP EVEN THOUGH TEXTURE IS DEFINED: " << std::endl;
+            return;
+        }
+        glUniform1i(specular, 1);
+    }
 
     void use(glm::mat4 transform);
 
 private:
     glm::vec3 m_albedo;
-    glm::vec3 m_ambient;
     glm::vec3 m_specular;
     
     float m_shininess;
 
-    texture* m_texture = nullptr;
+    std::shared_ptr<texture> m_albedo_texture = nullptr;
+    std::shared_ptr<texture> m_specular_map = nullptr;
 
     std::shared_ptr<shader> m_shader;
 };

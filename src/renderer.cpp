@@ -43,10 +43,11 @@ void renderer::render(float delta)
         mesh.draw(delta);
     }
 }
-texture* renderer::register_texture(const char* path)
+std::shared_ptr<texture> renderer::register_texture(const char* path)
 {
-    m_textures.push_back(texture(path));
-    return &m_textures.back();
+    std::shared_ptr<texture> texture_ptr = std::make_shared<texture>(path);
+    m_textures.push_back(texture_ptr);
+    return texture_ptr;
 }
 
 std::shared_ptr<shader> renderer::register_shader(const char* vertex_path, const char* fragment_path, shader_type type)
@@ -79,9 +80,9 @@ void renderer::free()
         shader->free();
     }
 
-    for (texture& texture : m_textures)
+    for (auto& texture : m_textures)
     {
-        texture.free();
+        texture->free();
     }
 }
 

@@ -11,7 +11,7 @@ light::light(glm::vec3 position, glm::vec3 colour, float diffuse, float ambient,
 
 }
 
-void const light::load_to_shader(shader * shader) const
+void const light::load_to_shader(std::shared_ptr<shader> shader) const
 {
     shader->set_vec3("u_light.diffuse", m_diffuse);
     shader->set_vec3("u_light.ambient", m_ambient);

@@ -18,8 +18,15 @@ texture::texture(const char* path)
     }
 
     glGenTextures(1, &m_id);
+
+    GLenum format = GL_RED;
+    if (m_channels == 3)
+        format = GL_RGB;
+    else if (m_channels == 4)
+        format = GL_RGBA;
+
     glBindTexture(GL_TEXTURE_2D, m_id);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, m_width, m_height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+    glTexImage2D(GL_TEXTURE_2D, 0, format, m_width, m_height, 0, format, GL_UNSIGNED_BYTE, data);
     glGenerateMipmap(GL_TEXTURE_2D);
 
     stbi_image_free(data);
