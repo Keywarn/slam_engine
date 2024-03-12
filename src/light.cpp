@@ -50,4 +50,22 @@ void point_light::load_to_shader(std::shared_ptr<shader> shader) const
     shader->set_float("u_light.linear", m_linear);
     shader->set_float("u_light.quadratic", m_quadratic);
 }
+
+spot_light::spot_light(float angle, float outer_angle, glm::vec3 direction, glm::vec3 position, glm::vec3 colour, float diffuse, float ambient, float specular)
+    : light(position, colour, diffuse, ambient, specular)
+    , m_angle(angle)
+    , m_outer_angle(outer_angle)
+    , m_direction(direction)
+{
+    m_type = light_type::spot;
+}
+
+void spot_light::load_to_shader(std::shared_ptr<shader> shader) const
+{
+    light::load_to_shader(shader);
+
+    shader->set_float("u_light.angle_cos", glm::cos(glm::radians(m_angle)));
+    shader->set_float("u_light.outer_angle_cos", glm::cos(glm::radians(m_outer_angle)));
+    shader->set_vec3("u_light.direction", m_direction);
+}
 }

@@ -15,14 +15,18 @@ uniform material u_material;
 
 struct light {
     vec3 position;
-    vec3 direction;
     vec3 ambient;
     vec3 diffuse;
     vec3 specular;
 
+    vec3 direction;
+    
     float constant;
     float linear;
     float quadratic;
+
+    float angle_cos;
+    float outer_angle_cos;
 };
 
 uniform light u_light;
@@ -42,9 +46,14 @@ void main()
     // Diffuse
     // point light
     vec3 to_light = normalize(u_light.position - fragment_position);
-    float distance = length(u_light.position - fragment_position);
-    float attenuation = 1.0 / (u_light.constant + u_light.linear * distance + u_light.quadratic * (distance * distance));
+    // point light
+//    float distance = length(u_light.position - fragment_position);
+//    float attenuation = 1.0 / (u_light.constant + u_light.linear * distance + u_light.quadratic * (distance * distance));
 
+    // spot
+    float theta = dot(to_light, normalize(-u_light.direction));
+    float epsilon = u_light.angle_cos - u_light.outer_angle_cos;
+    float intensity = clamp((theta - u_light.outer_angle_cos) / epsilon, 0.0, 1.0);
 
     // directional light
     //vec3 to_light = normalize(-u_light.direction);
@@ -78,9 +87,13 @@ void main()
     }
 
     // point light
-    ambient *= attenuation;
-    diffuse *= attenuation;
-    specular *= attenuation;
+//    ambient *= attenuation;
+//    diffuse *= attenuation;
+//    specular *= attenuation;
+
+// spot light
+    diffuse *= intensity;
+    specular *= intensity;
 
     fragment_colour = vec4((ambient + diffuse + specular), 1.0);
 }

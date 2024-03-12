@@ -55,5 +55,18 @@ private:
     float m_linear;
     float m_quadratic;
 };
+
+class spot_light : public light
+{
+public:
+    spot_light(float angle, float outer_angle, glm::vec3 direction, glm::vec3 position, glm::vec3 colour, float diffuse, float ambient, float specular);
+
+    void load_to_shader(std::shared_ptr<shader> shader) const override;
+
+private:
+    float m_angle;
+    float m_outer_angle;
+    glm::vec3 m_direction;
+};
 }
 

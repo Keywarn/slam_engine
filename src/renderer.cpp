@@ -82,6 +82,13 @@ std::shared_ptr<point_light> renderer::register_point_light(float constant, floa
     return light_ptr;
 }
 
+std::shared_ptr<spot_light> renderer::register_spot_light(float angle, float outer_angle, glm::vec3 direction, glm::vec3 position, glm::vec3 colour, float diffuse, float ambient, float specular)
+{
+    std::shared_ptr<spot_light> light_ptr = std::make_shared<spot_light>(angle, outer_angle, direction, position, colour, diffuse, ambient, specular);
+    m_lights.push_back(light_ptr);
+    return light_ptr;
+}
+
 void renderer::free()
 {
     for (mesh& mesh : m_meshes)
