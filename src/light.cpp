@@ -8,10 +8,10 @@ light::light(glm::vec3 position, glm::vec3 colour, float diffuse, float ambient,
     , m_ambient(colour * ambient)
     , m_specular(colour * specular)
 {
-
+    m_type = light_type::none;
 }
 
-void const light::load_to_shader(std::shared_ptr<shader> shader) const
+void light::load_to_shader(std::shared_ptr<shader> shader) const
 {
     shader->set_vec3("u_light.diffuse", m_diffuse);
     shader->set_vec3("u_light.ambient", m_ambient);
@@ -23,6 +23,31 @@ directional_light::directional_light(glm::vec3 direction, glm::vec3 position, gl
     : light(position, colour, diffuse, ambient, specular)
     , m_direction(direction)
 {
+    m_type = light_type::directional;
+}
 
+void directional_light::load_to_shader(std::shared_ptr<shader> shader) const
+{
+    light::load_to_shader(shader);
+
+    shader->set_vec3("u_light.direction", m_direction);
+}
+
+point_light::point_light(float constant, float linear, float quadratic, glm::vec3 position, glm::vec3 colour, float diffuse, float ambient, float specular)
+    : light(position, colour, diffuse, ambient, specular)
+    , m_constant(constant)
+    , m_linear(linear)
+    , m_quadratic(quadratic)
+{
+    m_type = light_type::point;
+}
+
+void point_light::load_to_shader(std::shared_ptr<shader> shader) const
+{
+    light::load_to_shader(shader);
+
+    shader->set_float("u_light.constant", m_constant);
+    shader->set_float("u_light.linear", m_linear);
+    shader->set_float("u_light.quadratic", m_quadratic);
 }
 }

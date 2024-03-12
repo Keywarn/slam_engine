@@ -4,19 +4,28 @@
 
 namespace render_engine
 {
+
+    enum class light_type {
+        none,
+        directional,
+        point,
+        spot
+    };
+
 class light
 {
 public:
     light(glm::vec3 position, glm::vec3 colour, float diffuse, float ambient, float specular);
 
-    void const load_to_shader(std::shared_ptr<shader> shader) const;
+    virtual void load_to_shader(std::shared_ptr<shader> shader) const;
 
-private:
+protected:
     glm::vec3 m_position;
     glm::vec3 m_diffuse;
     glm::vec3 m_ambient;
     glm::vec3 m_specular;
-    
+
+    light_type m_type;
 };
 
 class directional_light : public light
@@ -24,6 +33,7 @@ class directional_light : public light
 public:
     directional_light(glm::vec3 direction, glm::vec3 position, glm::vec3 colour, float diffuse, float ambient, float specular);
 
+    void load_to_shader(std::shared_ptr<shader> shader) const override;
     const glm::vec3& get_direction() const
     {
         return m_direction;
@@ -31,6 +41,19 @@ public:
 
 private:
     glm::vec3 m_direction;
+};
+
+class point_light : public light
+{
+public:
+    point_light(float constant, float linear, float quadratic, glm::vec3 position, glm::vec3 colour, float diffuse, float ambient, float specular);
+
+    void load_to_shader(std::shared_ptr<shader> shader) const override;
+
+private:
+    float m_constant;
+    float m_linear;
+    float m_quadratic;
 };
 }
 

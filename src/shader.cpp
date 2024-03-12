@@ -122,7 +122,7 @@ void shader::set_vec3(const std::string& name, const glm::vec3& vec) const
 {
     int uniform = glGetUniformLocation(m_id, name.c_str());
 
-    if (uniform == -1)
+    if (SHADER_VERBOSE_ERRORS && uniform == -1)
     {
         std::cout << "ERROR::SHADER::COULD NOT UPDATE UNIFORM: " << name << std::endl;
         return;
@@ -134,7 +134,7 @@ void shader::set_mat4(const std::string& name, glm::mat4& mat) const
 {
     int uniform = glGetUniformLocation(m_id, name.c_str());
 
-    if (uniform == -1)
+    if (SHADER_VERBOSE_ERRORS && uniform == -1)
     {
         std::cout << "ERROR::SHADER::COULD NOT UPDATE UNIFORM: " << name << std::endl;
         return;

@@ -8,7 +8,7 @@ renderer::renderer(GLFWwindow* window)
 {
     int window_width, window_height;
     glfwGetWindowSize(window, &window_width, &window_height);
-    m_camera = new camera(glm::vec3(0.f, 0.f, 3.f), { window_width / 2.f, window_height / 2.f });
+    m_camera = new camera(glm::vec3(0.f, 0.f, 5.f), { window_width / 2.f, window_height / 2.f });
     
     m_camera->recalculate_projections(m_window);
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
@@ -66,6 +66,20 @@ mesh* renderer::register_mesh(vertices vertices, faces faces, std::shared_ptr<re
 {
     m_meshes.push_back(mesh(vertices, faces, material, transform));
     return &m_meshes.back();
+}
+
+std::shared_ptr<directional_light> renderer::register_directional_light(glm::vec3 direction, glm::vec3 position, glm::vec3 colour, float diffuse, float ambient, float specular)
+{
+    std::shared_ptr<directional_light> light_ptr = std::make_shared<directional_light>(direction, position, colour, diffuse, ambient, specular);
+    m_lights.push_back(light_ptr);
+    return light_ptr;
+}
+
+std::shared_ptr<point_light> renderer::register_point_light(float constant, float linear, float quadratic, glm::vec3 position, glm::vec3 colour, float diffuse, float ambient, float specular)
+{
+    std::shared_ptr<point_light> light_ptr = std::make_shared<point_light>(constant, linear, quadratic, position, colour, diffuse, ambient, specular);
+    m_lights.push_back(light_ptr);
+    return light_ptr;
 }
 
 void renderer::free()

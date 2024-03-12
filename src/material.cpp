@@ -81,10 +81,12 @@ void material::use(glm::mat4 transform)
         m_shader->set_vec3("u_material.specular", m_specular);
         m_shader->set_float("u_material.shininess", m_shininess);
 
-        //TODO this should probably be handled by some kind of 'light' object
-        const directional_light* sun = renderer::get_instance()->get_sun();
-        sun->load_to_shader(m_shader);
-        m_shader->set_vec3("camera_position", renderer::get_instance()->get_camera()->get_position());
+        
+        for (auto& light : renderer->get_lights())
+        {
+            light->load_to_shader(m_shader);
+       }
     }
+    m_shader->set_vec3("camera_position", renderer::get_instance()->get_camera()->get_position());
 }
 }

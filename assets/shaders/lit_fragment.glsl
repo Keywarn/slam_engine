@@ -15,9 +15,14 @@ uniform material u_material;
 
 struct light {
     vec3 position;
+    vec3 direction;
     vec3 ambient;
     vec3 diffuse;
     vec3 specular;
+
+    float constant;
+    float linear;
+    float quadratic;
 };
 
 uniform light u_light;
@@ -35,7 +40,14 @@ void main()
     vec3 ambient, diffuse, specular;
     
     // Diffuse
+    // point light
     vec3 to_light = normalize(u_light.position - fragment_position);
+    float distance = length(u_light.position - fragment_position);
+    float attenuation = 1.0 / (u_light.constant + u_light.linear * distance + u_light.quadratic * (distance * distance));
+
+
+    // directional light
+    //vec3 to_light = normalize(-u_light.direction);
     float diffuse_strength = max(dot(normal, to_light), 0.0);
     
     if(u_material.sample_albedo)
@@ -64,6 +76,11 @@ void main()
     {
         specular = specular_factor * u_material.specular * u_light.specular;
     }
+
+    // point light
+    ambient *= attenuation;
+    diffuse *= attenuation;
+    specular *= attenuation;
 
     fragment_colour = vec4((ambient + diffuse + specular), 1.0);
 }

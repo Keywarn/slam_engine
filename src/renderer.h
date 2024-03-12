@@ -35,6 +35,9 @@ public:
     void register_material(std::shared_ptr<material> material);
     mesh* register_mesh(vertices vertices, faces faces, std::shared_ptr<render_engine::material> material, glm::mat4 transform);
 
+    std::shared_ptr<directional_light> register_directional_light(glm::vec3 direction, glm::vec3 position, glm::vec3 colour, float diffuse, float ambient, float specular);
+    std::shared_ptr<point_light> register_point_light(float constant, float linear, float quadratic, glm::vec3 position, glm::vec3 colour, float diffuse, float ambient, float specular);
+
     void free();
 
     glm::mat4& get_view()
@@ -52,13 +55,9 @@ public:
         return m_camera;
     }
 
-    void create_sun(glm::vec3 direction, glm::vec3 position, glm::vec3 colour, float diffuse, float ambient, float specular)
+    const std::vector<std::shared_ptr<light>>& get_lights() const
     {
-        m_sun = directional_light(direction, position, colour, diffuse, ambient, specular);
-    }
-    const directional_light* get_sun() const
-    {
-        return &m_sun;
+        return m_lights;
     }
 
 private:
@@ -70,11 +69,9 @@ private:
     std::vector<std::shared_ptr<material>> m_materials;
     std::vector<mesh> m_meshes;
 
+    std::vector<std::shared_ptr<light>> m_lights;
+
     bool m_wireframe = false;
     bool m_perspective = true;
-
-    //TODO don't just create a light in main
-    directional_light m_sun = directional_light(glm::vec3(0,0,0), glm::vec3(0, 0, 0), glm::vec3(0, 0, 0), 0.f, 0.f, 0.f);
-
 };
 }

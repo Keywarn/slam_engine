@@ -1,5 +1,7 @@
 #include "renderer.h"
 
+#define CUBE_PARTY 1
+
 render_engine::vertices cube_vertices{
     // positions          // normals           // texture coords
     -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 0.0f,
@@ -61,6 +63,18 @@ render_engine::faces cube_indices{
     27, 12, 29,
     30, 31, 32,
     33, 34, 35
+};
+
+glm::vec3 cube_positions[] = {
+    glm::vec3(2.0f,  5.0f, -15.0f),
+    glm::vec3(-1.5f, -2.2f, -2.5f),
+    glm::vec3(-3.8f, -2.0f, -12.3f),
+    glm::vec3(2.4f, -0.4f, -3.5f),
+    glm::vec3(-1.7f,  3.0f, -7.5f),
+    glm::vec3(1.3f, -2.0f, -2.5f),
+    glm::vec3(1.5f,  2.0f, -2.5f),
+    glm::vec3(1.5f,  0.2f, -1.5f),
+    glm::vec3(-1.3f,  1.0f, -1.5f)
 };
 
 unsigned int window_width = 1280;
@@ -132,7 +146,7 @@ int main()
 
     // Setup renderer, shaders and textures ===================
     new render_engine::renderer(window);
-    
+
     std::shared_ptr<render_engine::texture> texture = render_engine::renderer::get_instance()->register_texture("assets/textures/crate.png");
     std::shared_ptr < render_engine::texture> specular_map = render_engine::renderer::get_instance()->register_texture("assets/textures/crate_specular.png");
     std::shared_ptr<render_engine::shader> unlit_shader = render_engine::renderer::get_instance()->register_shader("assets/shaders/vertex.glsl", "assets/shaders/unlit_fragment.glsl");
@@ -141,21 +155,37 @@ int main()
 
     // Main cube ==============================================
     glm::mat4 transform = glm::mat4(1.0f);
-    transform = glm::rotate(transform, glm::radians(-55.0f), glm::vec3(1.0f, 0.5f, 0.0f));
     transform = glm::scale(transform, glm::vec3(0.5, 0.5, 0.5));
+    transform = glm::rotate(transform, glm::radians(-55.0f), glm::vec3(1.0f, 0.5f, 0.0f));
 
     std::shared_ptr<render_engine::material> cube_material = std::make_shared<render_engine::material>(lit_shader, texture, 32.f, glm::vec3(1.f, 1.f, 1.f), 1.f, 1.f);
     cube_material->set_specular_map(specular_map);
-
+    
     render_engine::renderer::get_instance()->register_mesh(cube_vertices, cube_indices, cube_material, transform);
+
+    if (CUBE_PARTY)
+    {
+        for (int i = 0; i < sizeof(cube_positions)/sizeof(glm::vec3); ++i)
+        {
+            transform = glm::mat4(1.0f);
+            transform = glm::scale(transform, glm::vec3(0.5, 0.5, 0.5));
+            float angle = 20.0f * i;
+            transform = glm::rotate(transform, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
+            transform = glm::translate(transform, cube_positions[i]);
+
+            render_engine::renderer::get_instance()->register_mesh(cube_vertices, cube_indices, cube_material, transform);
+        }
+    }
+
     // ========================================================
 
     // Light cube =============================================
     glm::vec3 sun_direction = glm::vec3(-1.f, -1.f, -1.f);
     glm::vec3 sun_position = glm::vec3(1.f, 1.f, 1.f);
     glm::vec3 sun_colour = glm::vec3(1, 1, 1);
-    render_engine::renderer::get_instance()->create_sun(sun_direction, sun_position, sun_colour, 1.f, 0.1f, 1.f);
-    
+    //render_engine::renderer::get_instance()->register_directional_light(sun_direction, sun_position, sun_colour, 1.f, 0.1f, 1.f);
+    render_engine::renderer::get_instance()->register_point_light(1.0f, 0.09f, 0.032f, sun_position, sun_colour, 1.f, 0.1f, 1.f);
+
     transform = glm::mat4(1.0f);
     transform = glm::translate(transform, sun_position);
     transform = glm::scale(transform, glm::vec3(0.05, 0.05, 0.05));
