@@ -113,7 +113,7 @@ vec3 calculate_point_light(point_light light, vec3 normal, vec3 fragment_positio
 
     // Attenuation
     float distance = length(light.light.position - fragment_position);
-    float attenuation = 1.0 / (light.constant + light.linear * distance + light.quadratic * (distance * distance));
+    float attenuation = clamp(1.0 / (light.constant + light.linear * distance + light.quadratic * (distance * distance)), 0., 1.);
 
     ambient *= attenuation;
     diffuse *= attenuation;
@@ -176,12 +176,8 @@ void main()
 
     for(int i = 0; i < MAX_NUM_POINT_LIGHTS; i++)
     {
-        if(u_point_lights[i].constant > 0.0)
-        {
-            output += calculate_point_light(u_point_lights[i], normal, fragment_position, view_direction);
-        }
+        output += calculate_point_light(u_point_lights[i], normal, fragment_position, view_direction);
     }
-//output += calculate_point_light(u_point_lights[0], normal, fragment_position, view_direction);
     //output += calculate_spot_light();
 
     fragment_colour = vec4(output, 1.0);
