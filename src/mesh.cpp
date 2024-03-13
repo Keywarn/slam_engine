@@ -50,12 +50,12 @@ void mesh::setup()
     glBindVertexArray(0);
 }
 
-void mesh::draw(float delta)
+void mesh::draw(float delta, glm::mat4 parent_transform)
 {
     //animate first
     //m_transform = glm::rotate(m_transform, delta * glm::radians(90.f), glm::vec3(0.5f, 1.0f, 0.0f));
 
-    m_material->use(m_transform);
+    m_material->use(parent_transform * m_transform);
 
     glBindVertexArray(m_vertex_array);
     glDrawElements(GL_TRIANGLES, m_faces.size(), GL_UNSIGNED_INT, 0);

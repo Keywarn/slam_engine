@@ -8,12 +8,17 @@ void model::draw(float delta)
 {
     for (unsigned int i = 0; i < m_meshes.size(); ++i)
     {
-        m_meshes[i].draw(delta);
+        m_meshes[i].draw(delta, m_transform);
     }
 }
 
 void model::load(std::string path)
 {
+    m_directory = path.substr(0, path.find_last_of('/')) + "/";
+    m_name = path.substr(path.find_last_of('/'));
+
+    std::cout << "MODEL::LOADING: " << m_name << " from " << m_directory << std::endl;
+
     Assimp::Importer importer;
     const aiScene* ai_scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_GenNormals);
 
@@ -22,7 +27,6 @@ void model::load(std::string path)
         std::cout << "ERROR::MODEL::" << importer.GetErrorString() << std::endl;
         return;
     }
-
     process_node(ai_scene->mRootNode, ai_scene);
 }
 
@@ -100,7 +104,7 @@ mesh model::process_mesh(aiMesh* ai_mesh, const aiScene* ai_scene)
                 // TODO fetch the texture from the renderer first using the path if possible
                 aiString path;
                 ai_material->GetTexture(aiTextureType_DIFFUSE, 0, &path);
-                albedo = renderer->register_texture(path.C_Str());
+                albedo = renderer->get_register_texture(m_directory + path.C_Str());
             }
             // TODO we just get the shader using a magic number...
             mesh_material = std::make_shared<material>(renderer->get_shader(0), albedo, 32.f, glm::vec3(1.f, 1.f, 1.f), 1.f, 1.f);
@@ -111,10 +115,13 @@ mesh model::process_mesh(aiMesh* ai_mesh, const aiScene* ai_scene)
                 // TODO fetch the texture from the renderer first using the path if possible
                 aiString path;
                 ai_material->GetTexture(aiTextureType_SPECULAR, 0, &path);
-                specular = renderer->register_texture(path.C_Str());
+                specular = renderer->get_register_texture(m_directory + path.C_Str());
 
                 mesh_material->set_specular_map(specular);
             }
+
+            mesh_material->set_name(ai_material->GetName().C_Str());
+            renderer->register_material(mesh_material);
         }
     }
 

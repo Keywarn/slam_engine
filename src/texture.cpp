@@ -5,10 +5,11 @@
 
 namespace render_engine
 {
-texture::texture(const char* path)
+texture::texture(std::string path)
+    : m_path(path)
 {
     stbi_set_flip_vertically_on_load(true);
-    unsigned char* data = stbi_load(path, &m_width, &m_height, &m_channels, 0);
+    unsigned char* data = stbi_load(path.c_str(), &m_width, &m_height, &m_channels, 0);
 
     if (!data)
     {

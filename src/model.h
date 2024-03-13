@@ -11,12 +11,21 @@ namespace render_engine
 class model
 {
 public:
-    model(char* path)
+    model(std::string path, glm::mat4 transform)
+        : m_transform(transform)
     {
         load(path);
     }
 
     void draw(float delta);
+
+    void free()
+    {
+        for (mesh& mesh : m_meshes)
+        {
+            mesh.free();
+        }
+    }
 
 private:
     void load(std::string path);
@@ -25,5 +34,10 @@ private:
 
     // TODO these should probably be node-like and contain child meshes for transforms etc.
     std::vector<mesh> m_meshes;
+
+    std::string m_directory;
+    std::string m_name;
+
+    glm::mat4 m_transform;
 };
 }

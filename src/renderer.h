@@ -9,7 +9,7 @@
 #include <vector>
 
 #include "shader.h"
-#include "mesh.h"
+#include "model.h"
 #include "texture.h"
 #include "camera.h"
 #include "singleton.h"
@@ -30,10 +30,10 @@ public:
     void toggle_wireframe();
     void toggle_persepctive();
 
-    std::shared_ptr<texture> register_texture(const char* path);
+    std::shared_ptr<texture> get_register_texture(std::string path);
     std::shared_ptr<shader> register_shader(const char* vertex_path, const char* fragment_path, shader_type type = shader_type::unlit);
     void register_material(std::shared_ptr<material> material);
-    mesh* register_mesh(vertices vertices, faces faces, std::shared_ptr<render_engine::material> material, glm::mat4 transform);
+    model* register_model(std::string path, glm::mat4 transform);
 
     std::shared_ptr<directional_light> register_directional_light(glm::vec3 direction, glm::vec3 position, glm::vec3 colour, float diffuse, float ambient, float specular);
     std::shared_ptr<point_light> register_point_light(float constant, float linear, float quadratic, glm::vec3 position, glm::vec3 colour, float diffuse, float ambient, float specular);
@@ -102,7 +102,7 @@ private:
     std::vector<std::shared_ptr<texture>> m_textures;
     std::vector<std::shared_ptr<shader>> m_shaders;
     std::vector<std::shared_ptr<material>> m_materials;
-    std::vector<mesh> m_meshes;
+    std::vector<model> m_models;
 
     std::vector<std::shared_ptr<light>> m_lights;
 

@@ -38,16 +38,29 @@ void renderer::render(float delta)
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    for (mesh& mesh : m_meshes)
+    for (model& model : m_models)
     {
-        mesh.draw(delta);
+        model.draw(delta);
     }
 }
-std::shared_ptr<texture> renderer::register_texture(const char* path)
+std::shared_ptr<texture> renderer::get_register_texture(std::string path)
 {
-    std::shared_ptr<texture> texture_ptr = std::make_shared<texture>(path);
-    m_textures.push_back(texture_ptr);
-    return texture_ptr;
+    auto predicate = [path](std::shared_ptr<texture>& texture)
+        {
+            return texture->get_path() == path;
+        };
+
+    if (const auto it = std::find_if(m_textures.begin(), m_textures.end(), predicate); it != m_textures.end())
+    {
+        return *it;
+    }
+    else
+    {
+        std::cout << "TEXTURE::REGISTER: " << path << std::endl;
+        std::shared_ptr<texture> texture_ptr = std::make_shared<texture>(path);
+        m_textures.push_back(texture_ptr);
+        return texture_ptr;
+    }
 }
 
 std::shared_ptr<shader> renderer::register_shader(const char* vertex_path, const char* fragment_path, shader_type type)
@@ -59,13 +72,14 @@ std::shared_ptr<shader> renderer::register_shader(const char* vertex_path, const
 
 void renderer::register_material(std::shared_ptr<material> material)
 {
+    std::cout << "MATERIAL::REGISTER: " << material->get_name() << std::endl;
     m_materials.push_back(material);
 }
 
-mesh* renderer::register_mesh(vertices vertices, faces faces, std::shared_ptr<render_engine::material> material, glm::mat4 transform)
+model* renderer::register_model(std::string path, glm::mat4 transform)
 {
-    m_meshes.push_back(mesh(vertices, faces, material, transform));
-    return &m_meshes.back();
+    m_models.push_back(model(path, transform));
+    return &m_models.back();
 }
 
 std::shared_ptr<directional_light> renderer::register_directional_light(glm::vec3 direction, glm::vec3 position, glm::vec3 colour, float diffuse, float ambient, float specular)
@@ -91,9 +105,9 @@ std::shared_ptr<spot_light> renderer::register_spot_light(float angle, float out
 
 void renderer::free()
 {
-    for (mesh& mesh : m_meshes)
+    for (model& model : m_models)
     {
-        mesh.free();
+        model.free();
     }
 
     for (auto& shader : m_shaders)

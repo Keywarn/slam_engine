@@ -25,7 +25,7 @@ public:
 
         if (specular == -1)
         {
-            std::cout << "ERROR::MATERIAL::COULD NOT SET SPECULAR MAP EVEN THOUGH TEXTURE IS DEFINED: " << std::endl;
+            std::cout << "ERROR::MATERIAL::COULD NOT SET SPECULAR MAP EVEN THOUGH TEXTURE IS DEFINED " << std::endl;
             return;
         }
         glUniform1i(specular, 1);
@@ -38,7 +38,7 @@ public:
         m_name = name;
     }
 
-    std::string get_name()
+    const std::string& get_name() const
     {
         return m_name;
     }
