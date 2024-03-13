@@ -46,9 +46,9 @@ void point_light::load_to_shader(std::shared_ptr<shader> shader, std::string pre
 {
     light::load_to_shader(shader, prefix);
 
-    shader->set_float("u_light.constant", m_constant);
-    shader->set_float("u_light.linear", m_linear);
-    shader->set_float("u_light.quadratic", m_quadratic);
+    shader->set_float(prefix + ".constant", m_constant);
+    shader->set_float(prefix + ".linear", m_linear);
+    shader->set_float(prefix + ".quadratic", m_quadratic);
 }
 
 spot_light::spot_light(float angle, float outer_angle, glm::vec3 direction, glm::vec3 position, glm::vec3 colour, float diffuse, float ambient, float specular)
@@ -64,8 +64,8 @@ void spot_light::load_to_shader(std::shared_ptr<shader> shader, std::string pref
 {
     light::load_to_shader(shader, prefix);
 
-    shader->set_float("u_light.angle_cos", glm::cos(glm::radians(m_angle)));
-    shader->set_float("u_light.outer_angle_cos", glm::cos(glm::radians(m_outer_angle)));
-    shader->set_vec3("u_light.direction", m_direction);
+    shader->set_float(prefix + ".angle_cos", glm::cos(glm::radians(m_angle)));
+    shader->set_float(prefix + ".outer_angle_cos", glm::cos(glm::radians(m_outer_angle)));
+    shader->set_vec3(prefix + ".direction", m_direction);
 }
 }

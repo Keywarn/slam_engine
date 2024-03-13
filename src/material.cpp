@@ -2,6 +2,10 @@
 
 #include "renderer.h"
 
+#include <format>
+
+#define MAX_NUM_POINT_LIGHTS 4
+
 namespace render_engine
 {
 // TODO make these call the most descriptive ctor so we can do any processing for all
@@ -81,7 +85,7 @@ void material::use(glm::mat4 transform)
         m_shader->set_vec3("u_material.specular", m_specular);
         m_shader->set_float("u_material.shininess", m_shininess);
 
-        
+        size_t point_count = 0;
         for (auto& light : renderer->get_lights())
         {
             switch (light->get_type())
@@ -91,12 +95,18 @@ void material::use(glm::mat4 transform)
                 light->load_to_shader(m_shader, "u_directional_light");
                 break;
             }
+            case (light_type::point):
+            {
+                light->load_to_shader(m_shader, std::format("u_point_lights[{}]", point_count));
+                point_count = (point_count + 1) % MAX_NUM_POINT_LIGHTS;
+                break;
+            }
             /*default:
                 std::cout << "ERROR::MATERIAL::LIGHT TYPE NOT SUPPORTED: " << (int)light->get_type() << std::endl;*/
             }
             
        }
     }
-    m_shader->set_vec3("camera_position", renderer::get_instance()->get_camera()->get_position());
+    m_shader->set_vec3("u_camera_position", renderer::get_instance()->get_camera()->get_position());
 }
 }

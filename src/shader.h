@@ -10,7 +10,7 @@
 
 #include "texture.h"
 
-#define SHADER_VERBOSE_ERRORS 1
+#define SHADER_VERBOSE_ERRORS 0
 
 namespace render_engine
 {
