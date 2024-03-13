@@ -42,8 +42,17 @@ struct point_light
     float quadratic;
 };
 
+struct spot_light
+{
+    base_light light;
+    float angle_cos;
+    float outer_angle_cos;
+    vec3 direction;
+};
+
 uniform directional_light u_directional_light;
 uniform point_light u_point_lights[MAX_NUM_POINT_LIGHTS];
+uniform spot_light u_spot_light;
 
 uniform vec3 u_camera_position;
 
@@ -122,53 +131,32 @@ vec3 calculate_point_light(point_light light, vec3 normal, vec3 fragment_positio
     return (ambient + diffuse + specular);
 }
 
+vec3 calculate_spot_light(spot_light light, vec3 normal, vec3 fragment_position, vec3 view_direction)
+{
+    vec3 to_light = normalize(light.light.position - fragment_position);
+
+    // Diffuse
+    float diffuse_factor = max(dot(normal, to_light), 0.0);
+    vec3 diffuse = light.light.diffuse * diffuse_factor * get_albedo();
+
+     // Specular
+    vec3 reflection_direction = reflect(-to_light, normal);
+    float specular_factor = pow(max(dot(view_direction, reflection_direction), 0.0), u_material.shininess);
+    vec3 specular = light.light.specular * specular_factor * get_specular();
+
+    // Intensity
+    float theta = dot(to_light, normalize(-light.direction));
+    float epsilon = light.angle_cos - light.outer_angle_cos;
+    float intensity = clamp((theta - light.outer_angle_cos) / epsilon, 0.0, 1.0);
+
+    diffuse *= intensity;
+    specular *= intensity;
+
+    return (diffuse + specular);
+}
+
 void main()
 {
-//    
-//    
-//    // Diffuse
-//    // point light
-//    vec3 to_light = normalize(u_light.position - fragment_position);
-//    // point light
-////    float distance = length(u_light.position - fragment_position);
-////    float attenuation = 1.0 / (u_light.constant + u_light.linear * distance + u_light.quadratic * (distance * distance));
-//
-//    // spot
-//    float theta = dot(to_light, normalize(-u_light.direction));
-//    float epsilon = u_light.angle_cos - u_light.outer_angle_cos;
-//    float intensity = clamp((theta - u_light.outer_angle_cos) / epsilon, 0.0, 1.0);
-//
-//    // directional light
-//    //vec3 to_light = normalize(-u_light.direction);
-//    float diffuse_strength = max(dot(normal, to_light), 0.0);
-//    
-//    if(u_material.sample_albedo)
-//    {
-//        diffuse = vec3(texture(u_material.albedo_texture, uv)) * diffuse_strength * u_light.diffuse * u_material.albedo;
-//        // Ambient
-//        ambient = vec3(texture(u_material.albedo_texture, uv)) * u_light.ambient;
-//    }
-//    else
-//    {
-//        diffuse = u_material.albedo * diffuse_strength * u_light.diffuse;
-//        // Ambient
-//        ambient = u_material.albedo * u_light.ambient;
-//    } 
-//
-//    // Specular
-//    
-//    
-//
-//    // point light
-////    ambient *= attenuation;
-////    diffuse *= attenuation;
-////    specular *= attenuation;
-//
-//// spot light
-//    diffuse *= intensity;
-//    specular *= intensity;
-
-    //=============================================================
     vec3 output = vec3(0.0);
     vec3 view_direction = normalize(u_camera_position - fragment_position);
 
@@ -178,7 +166,8 @@ void main()
     {
         output += calculate_point_light(u_point_lights[i], normal, fragment_position, view_direction);
     }
-    //output += calculate_spot_light();
+
+    output += calculate_spot_light(u_spot_light, normal, fragment_position, view_direction);
 
     fragment_colour = vec4(output, 1.0);
 }

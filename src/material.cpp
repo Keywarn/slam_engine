@@ -101,8 +101,15 @@ void material::use(glm::mat4 transform)
                 point_count = (point_count + 1) % MAX_NUM_POINT_LIGHTS;
                 break;
             }
-            /*default:
-                std::cout << "ERROR::MATERIAL::LIGHT TYPE NOT SUPPORTED: " << (int)light->get_type() << std::endl;*/
+            case (light_type::spot):
+            {
+                light->load_to_shader(m_shader, "u_spot_light");
+                break;
+            }
+            default:
+            {
+                std::cout << "ERROR::MATERIAL::LIGHT TYPE NOT SUPPORTED: " << (int)light->get_type() << std::endl;
+            }
             }
             
        }
