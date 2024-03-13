@@ -188,8 +188,8 @@ int main()
     glm::vec3 sun_colour = glm::vec3(1, 1, 1);
 
     render_engine::renderer::get_instance()->register_directional_light(sun_direction, sun_position, sun_colour, 0.5f, 0.1f, 1.f);
-    render_engine::renderer::get_instance()->register_point_light(1.0f, 0.09f, 0.032f, sun_position, glm::vec3(0,0,1), 0.5f, 0.1f, 1.f);
-    render_engine::renderer::get_instance()->register_spot_light(10.f, 20.f, sun_direction, sun_position, glm::vec3(0,1,0), 1.f, 0.1f, 1.f);
+    //render_engine::renderer::get_instance()->register_point_light(1.0f, 0.09f, 0.032f, sun_position, glm::vec3(0,0,1), 0.5f, 0.1f, 1.f);
+    //render_engine::renderer::get_instance()->register_spot_light(10.f, 20.f, sun_direction, sun_position, glm::vec3(0,1,0), 1.f, 0.1f, 1.f);
 
     //transform = glm::mat4(1.0f);
     //transform = glm::translate(transform, sun_position);

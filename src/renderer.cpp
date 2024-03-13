@@ -11,7 +11,7 @@ renderer::renderer(GLFWwindow* window)
     m_camera = new camera(glm::vec3(0.f, 0.f, 5.f), { window_width / 2.f, window_height / 2.f });
     
     m_camera->recalculate_projections(m_window);
-    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+    glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
     glEnable(GL_DEPTH_TEST);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);

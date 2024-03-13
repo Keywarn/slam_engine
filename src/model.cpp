@@ -88,6 +88,7 @@ mesh model::process_mesh(aiMesh* ai_mesh, const aiScene* ai_scene)
     // TODO we should get some kind of default material from the renderer
     std::shared_ptr<material> mesh_material;
 
+    // TODO maybe we should just be able to pass the aiMaterial to a material to init from the constructor
     if (ai_mesh->mMaterialIndex >= 0)
     {
         aiMaterial* ai_material = ai_scene->mMaterials[ai_mesh->mMaterialIndex];
@@ -97,6 +98,9 @@ mesh model::process_mesh(aiMesh* ai_mesh, const aiScene* ai_scene)
         //// No material so we create it
         if(mesh_material == nullptr)
         {
+            aiColor3D color(0.f, 0.f, 0.f);
+            float shininess;
+
             std::shared_ptr<texture> albedo, specular;
             // TODO support mulitple textures of each type per material
             if (ai_material->GetTextureCount(aiTextureType_DIFFUSE) > 0)
@@ -107,6 +111,7 @@ mesh model::process_mesh(aiMesh* ai_mesh, const aiScene* ai_scene)
                 albedo = renderer->get_register_texture(m_directory + path.C_Str());
             }
             // TODO we just get the shader using a magic number...
+            // TODO load the colours for the material if we don't have a texture
             mesh_material = std::make_shared<material>(renderer->get_shader(0), albedo, 32.f, glm::vec3(1.f, 1.f, 1.f), 1.f, 1.f);
 
             // TODO remove duplicated code here and create a method
