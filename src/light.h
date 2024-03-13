@@ -17,7 +17,12 @@ class light
 public:
     light(glm::vec3 position, glm::vec3 colour, float diffuse, float ambient, float specular);
 
-    virtual void load_to_shader(std::shared_ptr<shader> shader) const;
+    virtual void load_to_shader(std::shared_ptr<shader> shader, std::string prefix) const;
+
+    light_type get_type() const
+    {
+        return m_type;
+    }
 
 protected:
     glm::vec3 m_position;
@@ -33,7 +38,7 @@ class directional_light : public light
 public:
     directional_light(glm::vec3 direction, glm::vec3 position, glm::vec3 colour, float diffuse, float ambient, float specular);
 
-    void load_to_shader(std::shared_ptr<shader> shader) const override;
+    void load_to_shader(std::shared_ptr<shader> shader, std::string prefix) const override;
     const glm::vec3& get_direction() const
     {
         return m_direction;
@@ -48,7 +53,7 @@ class point_light : public light
 public:
     point_light(float constant, float linear, float quadratic, glm::vec3 position, glm::vec3 colour, float diffuse, float ambient, float specular);
 
-    void load_to_shader(std::shared_ptr<shader> shader) const override;
+    void load_to_shader(std::shared_ptr<shader> shader, std::string prefix) const override;
 
 private:
     float m_constant;
@@ -61,7 +66,7 @@ class spot_light : public light
 public:
     spot_light(float angle, float outer_angle, glm::vec3 direction, glm::vec3 position, glm::vec3 colour, float diffuse, float ambient, float specular);
 
-    void load_to_shader(std::shared_ptr<shader> shader) const override;
+    void load_to_shader(std::shared_ptr<shader> shader, std::string prefix) const override;
 
 private:
     float m_angle;

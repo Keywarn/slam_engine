@@ -124,7 +124,7 @@ void shader::set_vec3(const std::string& name, const glm::vec3& vec) const
 
     if (SHADER_VERBOSE_ERRORS && uniform == -1)
     {
-        std::cout << "ERROR::SHADER::COULD NOT UPDATE UNIFORM: " << name << std::endl;
+        std::cout << "ERROR::SHADER::COULD NOT UPDATE UNIFORM: " << name.c_str() << std::endl;
         return;
     }
     glUniform3fv(uniform, 1, glm::value_ptr(vec));

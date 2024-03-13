@@ -84,7 +84,17 @@ void material::use(glm::mat4 transform)
         
         for (auto& light : renderer->get_lights())
         {
-            light->load_to_shader(m_shader);
+            switch (light->get_type())
+            {
+            case (light_type::directional):
+            {
+                light->load_to_shader(m_shader, "u_directional_light");
+                break;
+            }
+            /*default:
+                std::cout << "ERROR::MATERIAL::LIGHT TYPE NOT SUPPORTED: " << (int)light->get_type() << std::endl;*/
+            }
+            
        }
     }
     m_shader->set_vec3("camera_position", renderer::get_instance()->get_camera()->get_position());
