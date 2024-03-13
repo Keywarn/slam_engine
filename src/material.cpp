@@ -50,7 +50,6 @@ material::material(std::shared_ptr<shader> shader, std::shared_ptr<texture> text
             return;
         }
         glUniform1i(albedo, 0);
-
     }
 }
 

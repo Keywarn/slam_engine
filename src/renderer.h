@@ -61,6 +61,40 @@ public:
         return m_lights;
     }
 
+    const std::shared_ptr<material> find_material(std::string name)
+    {
+        if (name.empty())
+        {
+            std::cout << "ERROR::MATERIAL::CANNOT FETCH A MATERIAL WITH BLANK NAME" << std::endl;
+            return nullptr;
+        }
+        auto predicate = [name](std::shared_ptr<material>& material)
+            {
+                return material->get_name() == name;
+            };
+
+        if (const auto it = std::find_if(m_materials.begin(), m_materials.end(), predicate); it != m_materials.end())
+        {
+            return *it;
+        }
+        else
+        {
+            return nullptr;
+        }
+
+    }
+
+    const std::shared_ptr<shader> get_shader(unsigned int index)
+    {
+        if (index >= m_shaders.size())
+        {
+            std::cout << "ERROR::SHADER::OUT OF BOUNDS index: " << index << std::endl;
+            return nullptr;
+        }
+
+        return m_shaders[index];
+    }
+
 private:
     GLFWwindow* m_window;
     camera* m_camera;

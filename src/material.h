@@ -33,7 +33,18 @@ public:
 
     void use(glm::mat4 transform);
 
+    void set_name(std::string name)
+    {
+        m_name = name;
+    }
+
+    std::string get_name()
+    {
+        return m_name;
+    }
+
 private:
+    std::string m_name;
     glm::vec3 m_albedo;
     glm::vec3 m_specular;
     

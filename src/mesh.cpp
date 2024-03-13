@@ -13,23 +13,28 @@ mesh::mesh(vertices vertices, faces faces, std::shared_ptr<material> material, g
     , m_faces(faces)
     , m_material(material)
 {
+    setup();
+}
+
+void mesh::setup()
+{
     glGenVertexArrays(1, &m_vertex_array);
     glBindVertexArray(m_vertex_array);
 
     glGenBuffers(1, &m_vertex_buffer);
     glBindBuffer(GL_ARRAY_BUFFER, m_vertex_buffer);
-    glBufferData(GL_ARRAY_BUFFER, m_vertices.size() * sizeof(float), &m_vertices.front(), GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, m_vertices.size() * sizeof(vertex), &m_vertices.front(), GL_STATIC_DRAW);
 
-    /*glGenBuffers(1, &m_element_buffer);
+    glGenBuffers(1, &m_element_buffer);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_element_buffer);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_faces.size() * sizeof(unsigned int), &m_faces.front(), GL_STATIC_DRAW);*/
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_faces.size() * sizeof(unsigned int), &m_faces.front(), GL_STATIC_DRAW);
 
-    // Co-ords
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+    // Vertex positions
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(vertex), (void*)0);
     glEnableVertexAttribArray(0);
 
     // Normals
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(vertex), (void*)offsetof(vertex, m_normal));
     glEnableVertexAttribArray(1);
 
     //// Colour
@@ -37,7 +42,7 @@ mesh::mesh(vertices vertices, faces faces, std::shared_ptr<material> material, g
     //glEnableVertexAttribArray(1);
 
     // UVs
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(vertex), (void*)offsetof(vertex, m_uv));
     glEnableVertexAttribArray(2);
 
     // Unbind
@@ -53,8 +58,7 @@ void mesh::draw(float delta)
     m_material->use(m_transform);
 
     glBindVertexArray(m_vertex_array);
-    //glDrawElements(GL_TRIANGLES, m_faces.size(), GL_UNSIGNED_INT, 0);
-    glDrawArrays(GL_TRIANGLES, 0, 36);
+    glDrawElements(GL_TRIANGLES, m_faces.size(), GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
 }
 

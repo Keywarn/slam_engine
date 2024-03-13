@@ -5,4 +5,5 @@ I have (sort of) structured the project in such a way that it is modular and eas
 ## How to use
 
 - `L` - toggle the wireframe rendering mode
+- `C` - toggle cursor lock
 - `Esc` - quit the application

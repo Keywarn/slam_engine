@@ -9,10 +9,15 @@ namespace render_engine
 {
 class renderer;
 
-typedef std::vector<float> vertices;
-typedef std::vector<unsigned int> faces;
+struct vertex
+{
+    glm::vec3 m_position;
+    glm::vec3 m_normal;
+    glm::vec2 m_uv;
+};
 
-typedef std::vector<float> texture_uvs;
+typedef std::vector<vertex> vertices;
+typedef std::vector<unsigned int> faces;
 
 class mesh
 {
@@ -20,6 +25,8 @@ public:
     mesh(vertices vertices, faces faces, std::shared_ptr<material> material, glm::mat4 transform);
 
     void draw(float delta);
+
+    void setup();
 
     void free();
 
