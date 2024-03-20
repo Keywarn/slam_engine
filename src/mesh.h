@@ -30,6 +30,11 @@ public:
 
     void free();
 
+    void override_material(std::shared_ptr<material> material)
+    {
+        m_material = material;
+    }
+
 private:
     glm::mat4 m_transform;
 

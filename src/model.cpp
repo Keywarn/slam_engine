@@ -112,7 +112,7 @@ mesh model::process_mesh(aiMesh* ai_mesh, const aiScene* ai_scene)
             }
             // TODO we just get the shader using a magic number...
             // TODO load the colours for the material if we don't have a texture
-            mesh_material = std::make_shared<material>(renderer->get_shader(0), albedo, 32.f, glm::vec3(1.f, 1.f, 1.f), 1.f, 1.f);
+            mesh_material = std::make_shared<material>(renderer->get_shader(m_shader_index), albedo, 32.f, glm::vec3(1.f, 1.f, 1.f), 1.f, 1.f);
 
             // TODO remove duplicated code here and create a method
             if (ai_material->GetTextureCount(aiTextureType_SPECULAR) > 0)

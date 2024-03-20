@@ -30,10 +30,10 @@ public:
     void toggle_wireframe();
     void toggle_persepctive();
 
-    std::shared_ptr<texture> get_register_texture(std::string path);
+    std::shared_ptr<texture> get_register_texture(std::string path, texture_type type = texture_type::texture_2d);
     std::shared_ptr<shader> register_shader(const char* vertex_path, const char* fragment_path, shader_type type = shader_type::unlit);
     void register_material(std::shared_ptr<material> material);
-    model* register_model(std::string path, glm::mat4 transform);
+    model* register_model(std::string path, glm::mat4 transform, unsigned int shader_index = 0);
 
     std::shared_ptr<directional_light> register_directional_light(glm::vec3 direction, glm::vec3 position, glm::vec3 colour, float diffuse, float ambient, float specular);
     std::shared_ptr<point_light> register_point_light(float constant, float linear, float quadratic, glm::vec3 position, glm::vec3 colour, float diffuse, float ambient, float specular);

@@ -17,7 +17,8 @@ namespace render_engine
 enum class shader_type
 {
     lit,
-    unlit
+    unlit,
+    unlit_cube // Doesn't write to depth
 };
 
 class shader

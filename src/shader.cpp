@@ -103,6 +103,8 @@ shader::shader(const char* vertex_path, const char* fragment_path, shader_type t
 void shader::use()
 {
     glUseProgram(m_id);
+
+    glDepthMask(m_type != shader_type::unlit_cube);
 }
 
 void shader::set_bool(const std::string& name, bool value) const

@@ -61,8 +61,22 @@ void material::use(glm::mat4 transform)
     if (m_albedo_texture != nullptr)
     {
         glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, m_albedo_texture->get_id());
-        m_shader->set_bool("u_material.sample_albedo", true);
+
+        GLenum target = GL_TEXTURE_2D;
+        if (m_albedo_texture->get_type() == texture_type::cubemap)
+        {
+            target = GL_TEXTURE_CUBE_MAP;
+        }
+
+        glBindTexture(target, m_albedo_texture->get_id());
+        if (m_shader->get_type() == shader_type::lit)
+        {
+            m_shader->set_bool("u_material.sample_albedo", true);
+        }
+    }
+    else
+    {
+        m_shader->set_bool("u_material.sample_albedo", false);
     }
 
     if (m_specular_map != nullptr)
@@ -70,16 +84,31 @@ void material::use(glm::mat4 transform)
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, m_specular_map->get_id());
         m_shader->set_bool("u_material.sample_specular", true);
-    }    
+    }
+    else
+    {
+        m_shader->set_bool("u_material.sample_specular", false);
+    }
 
     renderer* renderer = renderer::get_instance();
 
-    m_shader->set_mat4("transform", transform);
-    m_shader->set_mat4("view", renderer->get_view());
+    if (m_shader->get_type() != shader_type::unlit_cube)
+    {
+        m_shader->set_vec3("u_camera_position", renderer::get_instance()->get_camera()->get_position());
+        m_shader->set_vec3("u_material.albedo", m_albedo);
+        m_shader->set_mat4("transform", transform);
+        m_shader->set_mat4("view", renderer->get_view());
+
+        m_shader->set_vec3("u_material.albedo", m_albedo);
+    }
+    else
+    {
+        glm::mat4 view = glm::mat4(glm::mat3(renderer->get_view()));
+        m_shader->set_mat4("view", view);
+    }
     m_shader->set_mat4("projection", renderer->get_projection());
 
-    m_shader->set_vec3("u_material.albedo", m_albedo);
-    if (m_shader->get_type() != shader_type::unlit)
+    if (m_shader->get_type() == shader_type::lit)
     {
         m_shader->set_vec3("u_material.specular", m_specular);
         m_shader->set_float("u_material.shininess", m_shininess);
@@ -113,6 +142,6 @@ void material::use(glm::mat4 transform)
             
        }
     }
-    m_shader->set_vec3("u_camera_position", renderer::get_instance()->get_camera()->get_position());
+    
 }
 }

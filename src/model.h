@@ -11,8 +11,9 @@ namespace render_engine
 class model
 {
 public:
-    model(std::string path, glm::mat4 transform)
+    model(std::string path, glm::mat4 transform, unsigned int shader_index = 0)
         : m_transform(transform)
+        , m_shader_index(shader_index)
     {
         load(path);
     }
@@ -24,6 +25,14 @@ public:
         for (mesh& mesh : m_meshes)
         {
             mesh.free();
+        }
+    }
+
+    void override_material(std::shared_ptr<material> material)
+    {
+        for (mesh& mesh : m_meshes)
+        {
+            mesh.override_material(material);
         }
     }
 
@@ -39,5 +48,7 @@ private:
     std::string m_name;
 
     glm::mat4 m_transform;
+
+    unsigned int m_shader_index = 0;
 };
 }

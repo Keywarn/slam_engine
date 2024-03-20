@@ -43,7 +43,7 @@ void renderer::render(float delta)
         model.draw(delta);
     }
 }
-std::shared_ptr<texture> renderer::get_register_texture(std::string path)
+std::shared_ptr<texture> renderer::get_register_texture(std::string path, texture_type type)
 {
     auto predicate = [path](std::shared_ptr<texture>& texture)
         {
@@ -57,7 +57,7 @@ std::shared_ptr<texture> renderer::get_register_texture(std::string path)
     else
     {
         std::cout << "TEXTURE::REGISTER: " << path << std::endl;
-        std::shared_ptr<texture> texture_ptr = std::make_shared<texture>(path);
+        std::shared_ptr<texture> texture_ptr = std::make_shared<texture>(path, type);
         m_textures.push_back(texture_ptr);
         return texture_ptr;
     }
@@ -76,9 +76,9 @@ void renderer::register_material(std::shared_ptr<material> material)
     m_materials.push_back(material);
 }
 
-model* renderer::register_model(std::string path, glm::mat4 transform)
+model* renderer::register_model(std::string path, glm::mat4 transform, unsigned int shader_index)
 {
-    m_models.push_back(model(path, transform));
+    m_models.push_back(model(path, transform, shader_index));
     return &m_models.back();
 }
 
