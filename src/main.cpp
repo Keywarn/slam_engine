@@ -82,9 +82,9 @@ int main()
     // ========================================================
 
     // Models =================================================
+    render_engine::renderer::get_instance()->register_model("assets/models/backpack/backpack.obj", glm::mat4(1.f), 0);
     render_engine::model* skybox_model = render_engine::renderer::get_instance()->register_model("assets/models/primitives/cube.obj", glm::mat4(1.f), 2);
     skybox_model->override_material(skybox_material);
-    render_engine::renderer::get_instance()->register_model("assets/models/backpack/backpack.obj", glm::mat4(1.f), 0);
 
     // Crate
     if (false)

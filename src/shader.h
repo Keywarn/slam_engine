@@ -27,6 +27,7 @@ public:
     shader(const char* vertex_path, const char* frament_path, shader_type type = shader_type::unlit);
 
     void use();
+    void post_draw();
 
     void set_bool(const std::string& name, bool value) const;
     void set_int(const std::string& name, int value) const;

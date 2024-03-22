@@ -60,6 +60,8 @@ void mesh::draw(float delta, glm::mat4 parent_transform)
     glBindVertexArray(m_vertex_array);
     glDrawElements(GL_TRIANGLES, m_faces.size(), GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
+
+    m_material->post_draw();
 }
 
 void mesh::free()

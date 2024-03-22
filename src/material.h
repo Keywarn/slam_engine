@@ -33,6 +33,8 @@ public:
 
     void use(glm::mat4 transform);
 
+    void post_draw();
+
     void set_name(std::string name)
     {
         m_name = name;

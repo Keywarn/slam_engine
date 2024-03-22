@@ -144,4 +144,9 @@ void material::use(glm::mat4 transform)
     }
     
 }
+
+void material::post_draw()
+{
+    m_shader->post_draw();
+}
 }
