@@ -93,8 +93,8 @@ vec3 calculate_directional_light(directional_light light, vec3 normal, vec3 view
     vec3 diffuse = light.light.diffuse * diffuse_factor * get_albedo();
 
     // Specular
-    vec3 reflection_direction = reflect(-to_light, normal);
-    float specular_factor = pow(max(dot(view_direction, reflection_direction), 0.0), u_material.shininess);
+    vec3 halfway_direction = normalize(to_light + view_direction);
+    float specular_factor = pow(max(dot(normal, halfway_direction), 0.0), u_material.shininess);
     vec3 specular = light.light.specular * specular_factor * get_specular();
 
     // Ambient
@@ -113,8 +113,8 @@ vec3 calculate_point_light(point_light light, vec3 normal, vec3 fragment_positio
     vec3 diffuse = light.light.diffuse * diffuse_factor * get_albedo();
 
     // Specular
-    vec3 reflection_direction = reflect(-to_light, normal);
-    float specular_factor = pow(max(dot(view_direction, reflection_direction), 0.0), u_material.shininess);
+    vec3 halfway_direction = normalize(to_light + view_direction);
+    float specular_factor = pow(max(dot(normal, halfway_direction), 0.0), u_material.shininess);
     vec3 specular = light.light.specular * specular_factor * get_specular();
     
     // Ambient
@@ -139,9 +139,9 @@ vec3 calculate_spot_light(spot_light light, vec3 normal, vec3 fragment_position,
     float diffuse_factor = max(dot(normal, to_light), 0.0);
     vec3 diffuse = light.light.diffuse * diffuse_factor * get_albedo();
 
-     // Specular
-    vec3 reflection_direction = reflect(-to_light, normal);
-    float specular_factor = pow(max(dot(view_direction, reflection_direction), 0.0), u_material.shininess);
+    // Specular
+    vec3 halfway_direction = normalize(to_light + view_direction);
+    float specular_factor = pow(max(dot(normal, halfway_direction), 0.0), u_material.shininess);
     vec3 specular = light.light.specular * specular_factor * get_specular();
 
     // Intensity
