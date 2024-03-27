@@ -107,7 +107,12 @@ int main()
     //render_engine::renderer::get_instance()->register_point_light(1.0f, 0.09f, 0.032f, sun_position, glm::vec3(0,0,1), 0.5f, 0.1f, 1.f);
     //render_engine::renderer::get_instance()->register_spot_light(10.f, 20.f, sun_direction, sun_position, glm::vec3(0,1,0), 1.f, 0.1f, 1.f);
 
-    // ========================================================
+    // Framebuffers =======================================
+    std::shared_ptr<render_engine::framebuffer> framebuffer = render_engine::renderer::get_instance()->register_framebuffer();
+    framebuffer;
+    // framebuffer->bind();
+     
+    // ====================================================
 
     float previous_time = (float)glfwGetTime();
     float delta = 0.f;

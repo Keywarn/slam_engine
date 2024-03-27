@@ -141,6 +141,7 @@
   <ItemGroup>
     <ClCompile Include="glad.c" />
     <ClCompile Include="src\camera.cpp" />
+    <ClCompile Include="src\framebuffer.cpp" />
     <ClCompile Include="src\light.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\material.cpp" />
@@ -161,6 +162,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\camera.h" />
+    <ClInclude Include="src\framebuffer.h" />
     <ClInclude Include="src\light.h" />
     <ClInclude Include="src\material.h" />
     <ClInclude Include="src\mesh.h" />

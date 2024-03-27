@@ -17,6 +17,8 @@ class texture
 public:
     texture(std::string path, texture_type type = texture_type::texture_2d);
 
+    texture(unsigned int width, unsigned int height);
+
     void free();
 
     const unsigned int get_id() const
