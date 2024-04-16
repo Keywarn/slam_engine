@@ -166,6 +166,7 @@
     <None Include="assets\shaders\textured_fragment.glsl" />
     <None Include="assets\shaders\unlit_fragment.glsl" />
     <None Include="assets\shaders\vertex.glsl" />
+    <None Include="assets\shaders\vertex_screenspace.glsl" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\camera.h" />

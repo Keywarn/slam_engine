@@ -27,6 +27,11 @@ public:
         glDeleteFramebuffers(1, &m_id);
     }
 
+    const std::shared_ptr<texture> get_texture() const
+    {
+        return m_texture;
+    }
+
 private:
     unsigned int m_width = 0;
     unsigned int m_height = 0;

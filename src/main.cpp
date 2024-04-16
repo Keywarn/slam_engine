@@ -1,6 +1,6 @@
 #include "renderer.h"
 
-#define CUBE_PARTY 0
+#define SCREEN_TEXTURE 1
 
 unsigned int window_width = 1280;
 unsigned int window_height = 720;
@@ -89,7 +89,7 @@ int main()
     // Crate
     if (false)
     {
-        render_engine::model* crate_model = render_engine::renderer::get_instance()->register_model("assets/models/primitives/cube.obj", glm::mat4(1.f), 2);
+        render_engine::model* crate_model = render_engine::renderer::get_instance()->register_model("assets/models/primitives/cube.obj", glm::mat4(1.f), 0);
         std::shared_ptr<render_engine::texture> crate_texture = renderer->get_register_texture("assets/textures/crate.png");
         std::shared_ptr<render_engine::texture> crate_specular = renderer->get_register_texture("assets/textures/crate_specular.png");
         std::shared_ptr<render_engine::material> crate_material = std::make_shared<render_engine::material>(lit_shader, crate_texture, 32.f, glm::vec3(1.f, 1.f, 1.f), 1.f, 1.f);
@@ -108,9 +108,16 @@ int main()
     //render_engine::renderer::get_instance()->register_spot_light(10.f, 20.f, sun_direction, sun_position, glm::vec3(0,1,0), 1.f, 0.1f, 1.f);
 
     // Framebuffers =======================================
+#if SCREEN_TEXTURE
+
+    std::shared_ptr<render_engine::shader> scene_texture_shader = renderer->register_shader("assets/shaders/vertex_screenspace.glsl", "assets/shaders/textured_fragment.glsl", render_engine::shader_type::unlit);
     std::shared_ptr<render_engine::framebuffer> framebuffer = render_engine::renderer::get_instance()->register_framebuffer(render_engine::framebuffer_type::depth_stencil);
-    framebuffer;
-    // framebuffer->bind();
+
+    render_engine::model* plane_model = render_engine::renderer::get_instance()->register_model("assets/models/primitives/plane.obj", glm::mat4(1.f), 3);
+    std::shared_ptr<render_engine::material> screen_texture_material = std::make_shared<render_engine::material>(scene_texture_shader, framebuffer->get_texture(), 32.f);
+    renderer->register_material(screen_texture_material);
+    plane_model->override_material(screen_texture_material);
+#endif
      
     // ====================================================
 
