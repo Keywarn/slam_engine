@@ -36,11 +36,22 @@ namespace render_engine
     {
         m_camera->update(delta, m_window);
 
+        if (m_framebuffers.size() > 0)
+        {
+            m_framebuffers.at(0)->bind();
+        }
+
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         for (model& model : m_models)
         {
             model.draw(delta);
+        }
+
+        if (m_framebuffers.size() > 0)
+        {
+            glBindFramebuffer(GL_FRAMEBUFFER, 0);
+            m_framebuffers.at(0)->draw(delta);
         }
     }
     std::shared_ptr<texture> renderer::get_register_texture(std::string path, texture_type type, int width, int height)
@@ -122,17 +133,22 @@ namespace render_engine
         return light_ptr;
     }
 
-    std::shared_ptr<framebuffer> renderer::register_framebuffer(framebuffer_type type)
+    std::shared_ptr<framebuffer> renderer::register_framebuffer(framebuffer_type type, std::shared_ptr<shader> shader)
     {
         int width, height;
         get_resolution(&width, &height);
-        std::shared_ptr<framebuffer> framebuffer_ptr = std::make_shared<framebuffer>(width, height, type);
+        std::shared_ptr<framebuffer> framebuffer_ptr = std::make_shared<framebuffer>(width, height, shader, type);
         m_framebuffers.push_back(framebuffer_ptr);
         return framebuffer_ptr;
     }
 
 void renderer::free()
 {
+    for (auto& framebuffer : m_framebuffers)
+    {
+        framebuffer->free();
+    }
+
     for (model& model : m_models)
     {
         model.free();

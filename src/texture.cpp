@@ -19,6 +19,9 @@ texture::texture(std::string path, texture_type type)
     if (m_type == texture_type::texture_2d)
     {
         load_face(path, target, true);
+
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     }
     else if (m_type == texture_type::cubemap)
     {

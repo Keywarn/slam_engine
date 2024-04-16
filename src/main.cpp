@@ -111,12 +111,12 @@ int main()
 #if SCREEN_TEXTURE
 
     std::shared_ptr<render_engine::shader> scene_texture_shader = renderer->register_shader("assets/shaders/vertex_screenspace.glsl", "assets/shaders/textured_fragment.glsl", render_engine::shader_type::unlit);
-    std::shared_ptr<render_engine::framebuffer> framebuffer = render_engine::renderer::get_instance()->register_framebuffer(render_engine::framebuffer_type::depth_stencil);
+    std::shared_ptr<render_engine::framebuffer> framebuffer = render_engine::renderer::get_instance()->register_framebuffer(render_engine::framebuffer_type::depth_stencil, scene_texture_shader);
 
-    render_engine::model* plane_model = render_engine::renderer::get_instance()->register_model("assets/models/primitives/plane.obj", glm::mat4(1.f), 3);
-    std::shared_ptr<render_engine::material> screen_texture_material = std::make_shared<render_engine::material>(scene_texture_shader, framebuffer->get_texture(), 32.f);
-    renderer->register_material(screen_texture_material);
-    plane_model->override_material(screen_texture_material);
+    //render_engine::model* plane_model = render_engine::renderer::get_instance()->register_model("assets/models/primitives/screen_plane.obj", glm::mat4(1.f), 3);
+    //std::shared_ptr<render_engine::material> screen_texture_material = std::make_shared<render_engine::material>(scene_texture_shader, framebuffer->get_texture(), 32.f);
+    //renderer->register_material(screen_texture_material);
+   //plane_model->override_material(screen_texture_material);
 #endif
      
     // ====================================================
