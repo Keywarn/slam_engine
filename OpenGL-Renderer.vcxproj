@@ -159,6 +159,7 @@
     <ClCompile Include="src\texture.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="assets\shaders\depth_fragment.glsl" />
     <None Include="assets\shaders\lit_fragment.glsl" />
     <None Include="assets\shaders\skybox_vertex.glsl" />
     <None Include="assets\shaders\skybox_fragment.glsl" />
