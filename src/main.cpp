@@ -108,7 +108,7 @@ int main()
     //render_engine::renderer::get_instance()->register_spot_light(10.f, 20.f, sun_direction, sun_position, glm::vec3(0,1,0), 1.f, 0.1f, 1.f);
 
     // Framebuffers =======================================
-    std::shared_ptr<render_engine::framebuffer> framebuffer = render_engine::renderer::get_instance()->register_framebuffer();
+    std::shared_ptr<render_engine::framebuffer> framebuffer = render_engine::renderer::get_instance()->register_framebuffer(render_engine::framebuffer_type::depth_stencil);
     framebuffer;
     // framebuffer->bind();
      

@@ -36,8 +36,29 @@ public:
         return m_type;
     }
 
+    void bind() const
+    {
+        glBindTexture(get_gl_type(), m_id);
+    }
+
 private:
     void load_face(std::string path, GLenum target, bool generate_mips);
+
+    const GLenum get_gl_type() const
+    {
+        switch(m_type)
+        {
+        case texture_type::texture_2d:
+        {
+            return GL_TEXTURE_2D;
+        }
+        case texture_type::cubemap:
+        {
+            return GL_TEXTURE_CUBE_MAP;
+        }
+        }
+    }
+
 private:
 
     texture_type m_type;

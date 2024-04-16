@@ -10,6 +10,7 @@ framebuffer::framebuffer(unsigned int width, unsigned int height, framebuffer_ty
     , m_height(height)
 {
     glGenFramebuffers(1, &m_id);
+    glBindFramebuffer(GL_FRAMEBUFFER, m_id);
 
     m_texture = renderer::get_instance()->get_register_texture("", texture_type::texture_2d, width, height);
 
@@ -21,6 +22,7 @@ framebuffer::framebuffer(unsigned int width, unsigned int height, framebuffer_ty
         glBindRenderbuffer(GL_RENDERBUFFER, m_render_buffer_object);
         glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, width, height);
         glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, m_render_buffer_object);
+        glBindRenderbuffer(GL_RENDERBUFFER, 0);
     }
 
     if (int res = glCheckFramebufferStatus(GL_FRAMEBUFFER); res != GL_FRAMEBUFFER_COMPLETE)
@@ -31,10 +33,17 @@ framebuffer::framebuffer(unsigned int width, unsigned int height, framebuffer_ty
     {
         std::cout << "FRAMEBUFFER: Created " << m_id << std::endl;
     }
+
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
 void framebuffer::bind()
 {
     glBindFramebuffer(GL_FRAMEBUFFER, m_id);
+
+    if (m_texture != nullptr)
+    {
+        //m_texture->get_id
+    }
 }
 }

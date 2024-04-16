@@ -62,13 +62,7 @@ void material::use(glm::mat4 transform)
     {
         glActiveTexture(GL_TEXTURE0);
 
-        GLenum target = GL_TEXTURE_2D;
-        if (m_albedo_texture->get_type() == texture_type::cubemap)
-        {
-            target = GL_TEXTURE_CUBE_MAP;
-        }
-
-        glBindTexture(target, m_albedo_texture->get_id());
+        m_albedo_texture->bind();
         if (m_shader->get_type() == shader_type::lit)
         {
             m_shader->set_bool("u_material.sample_albedo", true);
@@ -82,7 +76,7 @@ void material::use(glm::mat4 transform)
     if (m_specular_map != nullptr)
     {
         glActiveTexture(GL_TEXTURE1);
-        glBindTexture(GL_TEXTURE_2D, m_specular_map->get_id());
+        m_specular_map->bind();
         m_shader->set_bool("u_material.sample_specular", true);
     }
     else

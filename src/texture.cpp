@@ -9,12 +9,8 @@ texture::texture(std::string path, texture_type type)
     : m_path(path)
     , m_type(type)
 {
-    GLenum target = GL_TEXTURE_2D;
+    GLenum target = get_gl_type();
 
-    if (m_type == texture_type::cubemap)
-    {
-        target = GL_TEXTURE_CUBE_MAP;
-    }
     glGenTextures(1, &m_id);
     glBindTexture(target, m_id);
 
@@ -42,6 +38,7 @@ texture::texture(std::string path, texture_type type)
     {
         std::cout << "ERROR::TEXTURE::UNSUPPORTED TEXTURE TYPE:  " << (int)m_type << std::endl;
     }
+    glBindTexture(target, 0);
 }
 
 texture::texture(unsigned int width, unsigned int height)
@@ -58,6 +55,7 @@ texture::texture(unsigned int width, unsigned int height)
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void texture::load_face(std::string path, GLenum target, bool generate_mips)

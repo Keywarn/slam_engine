@@ -50,35 +50,36 @@ namespace render_engine
                 return !path.empty() && texture->get_path() == path;
             };
 
-        // TODO skip finding if the path is empty
-        if (const auto it = std::find_if(m_textures.begin(), m_textures.end(), predicate); it != m_textures.end())
+        if (!path.empty())
         {
-            return *it;
+            if (const auto it = std::find_if(m_textures.begin(), m_textures.end(), predicate); it != m_textures.end())
+            {
+                return *it;
+            }
+        }
+
+        // Texture not found or path was empty so cannot be used to compare
+        std::shared_ptr<texture> texture_ptr = nullptr;
+        if (!path.empty())
+        {
+            std::cout << "TEXTURE::REGISTER: " << path << std::endl;
+            texture_ptr = std::make_shared<texture>(path, type);
+        }
+        else if (width > 0 && height > 0)
+        {
+            std::cout << "TEXTURE::REGISTER: " << width << "x" << height << std::endl;
+            texture_ptr = std::make_shared<texture>(width, height);
         }
         else
         {
-            std::shared_ptr<texture> texture_ptr = nullptr;
-            if (!path.empty())
-            {
-                std::cout << "TEXTURE::REGISTER: " << path << std::endl;
-                texture_ptr = std::make_shared<texture>(path, type);
-            }
-            else if (width > 0 && height > 0)
-            {
-                std::cout << "TEXTURE::REGISTER: " << width << "x" << height << std::endl;
-                texture_ptr = std::make_shared<texture>(width, height);
-            }
-            else
-            {
-                std::cout << "ERROR::TEXTURE::REGISTER: Invalid texture params: " << path << " | " << width << "x" << height << std::endl;
-            }
-
-            if (texture_ptr != nullptr)
-            {
-                m_textures.push_back(texture_ptr);
-            }
-            return texture_ptr;
+            std::cout << "ERROR::TEXTURE::REGISTER: Invalid texture params: " << path << " | " << width << "x" << height << std::endl;
         }
+
+        if (texture_ptr != nullptr)
+        {
+            m_textures.push_back(texture_ptr);
+        }
+        return texture_ptr;
     }
 
     std::shared_ptr<shader> renderer::register_shader(const char* vertex_path, const char* fragment_path, shader_type type)
@@ -121,11 +122,11 @@ namespace render_engine
         return light_ptr;
     }
 
-    std::shared_ptr<framebuffer> renderer::register_framebuffer()
+    std::shared_ptr<framebuffer> renderer::register_framebuffer(framebuffer_type type)
     {
         int width, height;
         get_resolution(&width, &height);
-        std::shared_ptr<framebuffer> framebuffer_ptr = std::make_shared<framebuffer>(width, height);
+        std::shared_ptr<framebuffer> framebuffer_ptr = std::make_shared<framebuffer>(width, height, type);
         m_framebuffers.push_back(framebuffer_ptr);
         return framebuffer_ptr;
     }
