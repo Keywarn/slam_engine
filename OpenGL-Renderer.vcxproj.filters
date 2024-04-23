@@ -16,6 +16,9 @@
     <Filter Include="Source Files\Shaders">
       <UniqueIdentifier>{15dce4f3-f898-4146-8273-9a7ffcfff211}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Shaders\Post Processing">
+      <UniqueIdentifier>{9fa477d8-51b8-45ec-a60a-a3576981586d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="glad.c">
@@ -79,6 +82,9 @@
     </None>
     <None Include="assets\shaders\vertex_screenspace.glsl">
       <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="assets\shaders\post_processing\inversion.glsl">
+      <Filter>Source Files\Shaders\Post Processing</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

@@ -161,6 +161,7 @@
   <ItemGroup>
     <None Include="assets\shaders\depth_fragment.glsl" />
     <None Include="assets\shaders\lit_fragment.glsl" />
+    <None Include="assets\shaders\post_processing\inversion.glsl" />
     <None Include="assets\shaders\skybox_vertex.glsl" />
     <None Include="assets\shaders\skybox_fragment.glsl" />
     <None Include="assets\shaders\textured_fragment.glsl" />

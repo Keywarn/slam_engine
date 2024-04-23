@@ -47,7 +47,10 @@ namespace render_engine
         {
             model.draw(delta);
         }
+    }
 
+    void renderer::post_render(float delta)
+    {
         if (m_framebuffers.size() > 0)
         {
             bool was_wireframe = m_wireframe;
@@ -64,6 +67,7 @@ namespace render_engine
             }
         }
     }
+
     std::shared_ptr<texture> renderer::get_register_texture(std::string path, texture_type type, int width, int height)
     {
         auto predicate = [path](std::shared_ptr<texture>& texture)
