@@ -86,6 +86,15 @@
     <None Include="assets\shaders\post_processing\inversion.glsl">
       <Filter>Source Files\Shaders\Post Processing</Filter>
     </None>
+    <None Include="assets\shaders\post_processing\blur.glsl">
+      <Filter>Source Files\Shaders\Post Processing</Filter>
+    </None>
+    <None Include="assets\shaders\post_processing\greyscale.glsl">
+      <Filter>Source Files\Shaders\Post Processing</Filter>
+    </None>
+    <None Include="assets\shaders\post_processing\sharpen.glsl">
+      <Filter>Source Files\Shaders\Post Processing</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\shader.h">
