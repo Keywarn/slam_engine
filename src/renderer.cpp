@@ -50,8 +50,18 @@ namespace render_engine
 
         if (m_framebuffers.size() > 0)
         {
+            bool was_wireframe = m_wireframe;
+            if (m_wireframe)
+            {
+                toggle_wireframe();
+            }
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
             m_framebuffers.at(0)->draw(delta);
+
+            if (was_wireframe)
+            {
+                toggle_wireframe();
+            }
         }
     }
     std::shared_ptr<texture> renderer::get_register_texture(std::string path, texture_type type, int width, int height)
