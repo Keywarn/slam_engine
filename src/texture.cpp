@@ -5,9 +5,10 @@
 
 namespace render_engine
 {
-texture::texture(std::string path, texture_type type)
+texture::texture(std::string path, texture_type type, bool isSRGB)
     : m_path(path)
     , m_type(type)
+    , m_isSRGB(isSRGB)
 {
     GLenum target = get_gl_type();
 
@@ -44,17 +45,18 @@ texture::texture(std::string path, texture_type type)
     glBindTexture(target, 0);
 }
 
-texture::texture(unsigned int width, unsigned int height)
+texture::texture(unsigned int width, unsigned int height, bool isSRGB)
     : m_path("")
     , m_type(texture_type::texture_2d)
     , m_width(width)
     , m_height(height)
     , m_channels(4)
+    , m_isSRGB(isSRGB)
 {
     glGenTextures(1, &m_id);
     glBindTexture(GL_TEXTURE_2D, m_id);
 
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+    glTexImage2D(GL_TEXTURE_2D, 0, m_isSRGB ? GL_SRGB_ALPHA : GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -74,13 +76,20 @@ void texture::load_face(std::string path, GLenum target, bool generate_mips)
         return;
     }
     
-    GLenum format = GL_RED;
+    GLenum internalFormat = GL_RED;
+    GLenum dataFormat = GL_RED;
     if (m_channels == 3)
-        format = GL_RGB;
+    {
+        internalFormat = m_isSRGB ? GL_SRGB : GL_RGB;
+        dataFormat = GL_RGB;
+    }
     else if (m_channels == 4)
-        format = GL_RGBA;
+    {
+        internalFormat = m_isSRGB ? GL_SRGB_ALPHA : GL_RGBA;
+        dataFormat = GL_RGB;
+    }
 
-    glTexImage2D(target, 0, format, m_width, m_height, 0, format, GL_UNSIGNED_BYTE, data);
+    glTexImage2D(target, 0, internalFormat, m_width, m_height, 0, dataFormat, GL_UNSIGNED_BYTE, data);
     
     if (generate_mips)
     {

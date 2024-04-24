@@ -68,7 +68,7 @@ namespace render_engine
         }
     }
 
-    std::shared_ptr<texture> renderer::get_register_texture(std::string path, texture_type type, int width, int height)
+    std::shared_ptr<texture> renderer::get_register_texture(std::string path, bool isSRGB, texture_type type, int width, int height)
     {
         auto predicate = [path](std::shared_ptr<texture>& texture)
             {
@@ -87,13 +87,13 @@ namespace render_engine
         std::shared_ptr<texture> texture_ptr = nullptr;
         if (!path.empty())
         {
-            std::cout << "TEXTURE::REGISTER: " << path << std::endl;
-            texture_ptr = std::make_shared<texture>(path, type);
+            std::cout << "TEXTURE::REGISTER: " << path  << " sRGB: " << isSRGB << std::endl;
+            texture_ptr = std::make_shared<texture>(path, type, isSRGB);
         }
         else if (width > 0 && height > 0)
         {
-            std::cout << "TEXTURE::REGISTER: " << width << "x" << height << std::endl;
-            texture_ptr = std::make_shared<texture>(width, height);
+            std::cout << "TEXTURE::REGISTER: " << width << "x" << height << " sRGB: " << isSRGB << std::endl;
+            texture_ptr = std::make_shared<texture>(width, height, isSRGB);
         }
         else
         {

@@ -15,9 +15,9 @@ enum class texture_type
 class texture
 {
 public:
-    texture(std::string path, texture_type type = texture_type::texture_2d);
+    texture(std::string path, texture_type type = texture_type::texture_2d, bool isSRGB = false);
 
-    texture(unsigned int width, unsigned int height);
+    texture(unsigned int width, unsigned int height, bool isSRGB = false);
 
     void free();
 
@@ -65,6 +65,7 @@ private:
     int m_width;
     int m_height;
     int m_channels;
+    bool m_isSRGB = false;
 
     unsigned int m_id = 0;
 

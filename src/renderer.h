@@ -32,7 +32,7 @@ public:
     void toggle_wireframe();
     void toggle_persepctive();
 
-    std::shared_ptr<texture> get_register_texture(std::string path, texture_type type = texture_type::texture_2d, int width = 0, int height = 0);
+    std::shared_ptr<texture> get_register_texture(std::string path, bool isSRGB = false, texture_type type = texture_type::texture_2d, int width = 0, int height = 0);
     std::shared_ptr<shader> register_shader(const char* vertex_path, const char* fragment_path, shader_type type = shader_type::unlit);
     void register_material(std::shared_ptr<material> material);
     model* register_model(std::string path, glm::mat4 transform, unsigned int shader_index = 0);

@@ -76,7 +76,7 @@ int main()
     std::shared_ptr<render_engine::shader> unlit_shader = renderer->register_shader("assets/shaders/vertex.glsl", "assets/shaders/unlit_fragment.glsl");
     std::shared_ptr<render_engine::shader> skybox_shader = renderer->register_shader("assets/shaders/skybox_vertex.glsl", "assets/shaders/skybox_fragment.glsl", render_engine::shader_type::unlit_cube);
 
-    std::shared_ptr<render_engine::texture> skybox_texture = renderer->get_register_texture("assets/textures/skybox/miramar.tga", render_engine::texture_type::cubemap);
+    std::shared_ptr<render_engine::texture> skybox_texture = renderer->get_register_texture("assets/textures/skybox/miramar.tga", true, render_engine::texture_type::cubemap);
     std::shared_ptr<render_engine::material> skybox_material = std::make_shared<render_engine::material>(skybox_shader, skybox_texture, 0);
     renderer->register_material(skybox_material);
     // ========================================================
@@ -111,7 +111,7 @@ int main()
 #if SCREEN_TEXTURE
 
     // Standard shader
-    std::shared_ptr<render_engine::shader> scene_texture_shader = renderer->register_shader("assets/shaders/vertex_screenspace.glsl", "assets/shaders/textured_fragment.glsl", render_engine::shader_type::unlit);
+    //std::shared_ptr<render_engine::shader> scene_texture_shader = renderer->register_shader("assets/shaders/vertex_screenspace.glsl", "assets/shaders/textured_fragment.glsl", render_engine::shader_type::unlit);
     
     // Inversion
     //std::shared_ptr<render_engine::shader> scene_texture_shader = renderer->register_shader("assets/shaders/vertex_screenspace.glsl", "assets/shaders/post_processing/inversion.glsl", render_engine::shader_type::unlit);
@@ -121,6 +121,8 @@ int main()
     //std::shared_ptr<render_engine::shader> scene_texture_shader = renderer->register_shader("assets/shaders/vertex_screenspace.glsl", "assets/shaders/post_processing/sharpen.glsl", render_engine::shader_type::unlit);
     // Blur
     //std::shared_ptr<render_engine::shader> scene_texture_shader = renderer->register_shader("assets/shaders/vertex_screenspace.glsl", "assets/shaders/post_processing/blur.glsl", render_engine::shader_type::unlit);
+    // Gamma Correction
+    std::shared_ptr<render_engine::shader> scene_texture_shader = renderer->register_shader("assets/shaders/vertex_screenspace.glsl", "assets/shaders/post_processing/gamma_correction.glsl", render_engine::shader_type::unlit);
 
     std::shared_ptr<render_engine::framebuffer> framebuffer = render_engine::renderer::get_instance()->register_framebuffer(render_engine::framebuffer_type::depth_stencil, scene_texture_shader);
 

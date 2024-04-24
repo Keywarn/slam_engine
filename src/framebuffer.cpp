@@ -26,7 +26,7 @@ framebuffer::framebuffer(unsigned int width, unsigned int height, std::shared_pt
     glGenFramebuffers(1, &m_id);
     glBindFramebuffer(GL_FRAMEBUFFER, m_id);
 
-    m_texture = renderer::get_instance()->get_register_texture("", texture_type::texture_2d, width, height);
+    m_texture = renderer::get_instance()->get_register_texture("", false, texture_type::texture_2d, width, height);
 
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_texture->get_id(), 0);
 

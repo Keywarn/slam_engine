@@ -108,7 +108,7 @@ mesh model::process_mesh(aiMesh* ai_mesh, const aiScene* ai_scene)
                 // TODO fetch the texture from the renderer first using the path if possible
                 aiString path;
                 ai_material->GetTexture(aiTextureType_DIFFUSE, 0, &path);
-                albedo = renderer->get_register_texture(m_directory + path.C_Str());
+                albedo = renderer->get_register_texture(m_directory + path.C_Str(), true);
             }
             // TODO we just get the shader using a magic number...
             // TODO load the colours for the material if we don't have a texture

@@ -162,6 +162,7 @@
     <None Include="assets\shaders\depth_fragment.glsl" />
     <None Include="assets\shaders\lit_fragment.glsl" />
     <None Include="assets\shaders\post_processing\blur.glsl" />
+    <None Include="assets\shaders\post_processing\gamma_correction.glsl" />
     <None Include="assets\shaders\post_processing\greyscale.glsl" />
     <None Include="assets\shaders\post_processing\inversion.glsl" />
     <None Include="assets\shaders\post_processing\sharpen.glsl" />
