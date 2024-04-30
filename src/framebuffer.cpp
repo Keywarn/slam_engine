@@ -26,11 +26,13 @@ framebuffer::framebuffer(unsigned int width, unsigned int height, std::shared_pt
     glGenFramebuffers(1, &m_id);
     glBindFramebuffer(GL_FRAMEBUFFER, m_id);
 
-    m_texture = renderer::get_instance()->get_register_texture("", false, texture_type::texture_2d, width, height);
+    if (m_type < framebuffer_type::no_colour)
+    {
+        m_texture = renderer::get_instance()->get_register_texture("", false, texture_type::texture_2d, width, height);
+        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_texture->get_id(), 0);
+    }
 
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_texture->get_id(), 0);
-
-    if (m_type == framebuffer_type::depth_stencil)
+    if (m_type == framebuffer_type::colour_depth_stencil)
     {
         glGenRenderbuffers(1, &m_render_buffer_object);
         glBindRenderbuffer(GL_RENDERBUFFER, m_render_buffer_object);
@@ -38,6 +40,15 @@ framebuffer::framebuffer(unsigned int width, unsigned int height, std::shared_pt
         glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, m_render_buffer_object);
         glBindRenderbuffer(GL_RENDERBUFFER, 0);
     }
+
+    if (m_type == framebuffer_type::depth)
+    {
+        m_texture = renderer::get_instance()->get_register_texture("", false, texture_type::depth_2d, width, height);
+        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, m_texture->get_id(), 0);
+        glDrawBuffer(GL_NONE);
+        glReadBuffer(GL_NONE);
+    }
+
 
     if (int res = glCheckFramebufferStatus(GL_FRAMEBUFFER); res != GL_FRAMEBUFFER_COMPLETE)
     {

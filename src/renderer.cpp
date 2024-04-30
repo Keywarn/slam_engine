@@ -93,7 +93,7 @@ namespace render_engine
         else if (width > 0 && height > 0)
         {
             std::cout << "TEXTURE::REGISTER: " << width << "x" << height << " sRGB: " << isSRGB << std::endl;
-            texture_ptr = std::make_shared<texture>(width, height, isSRGB);
+            texture_ptr = std::make_shared<texture>(width, height, type, isSRGB);
         }
         else
         {
@@ -147,10 +147,12 @@ namespace render_engine
         return light_ptr;
     }
 
-    std::shared_ptr<framebuffer> renderer::register_framebuffer(framebuffer_type type, std::shared_ptr<shader> shader)
+    std::shared_ptr<framebuffer> renderer::register_framebuffer(framebuffer_type type, std::shared_ptr<shader> shader, int width, int height)
     {
-        int width, height;
-        get_resolution(&width, &height);
+        if (width == 0 && height == 0)
+        {
+            get_resolution(&width, &height);
+        }
         std::shared_ptr<framebuffer> framebuffer_ptr = std::make_shared<framebuffer>(width, height, shader, type);
         m_framebuffers.push_back(framebuffer_ptr);
         return framebuffer_ptr;

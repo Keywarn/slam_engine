@@ -10,7 +10,7 @@ texture::texture(std::string path, texture_type type, bool isSRGB)
     , m_type(type)
     , m_isSRGB(isSRGB)
 {
-    GLenum target = get_gl_type();
+    GLenum target = get_gl_target();
 
     glGenTextures(1, &m_id);
     glBindTexture(target, m_id);
@@ -21,8 +21,8 @@ texture::texture(std::string path, texture_type type, bool isSRGB)
     {
         load_face(path, target, true);
 
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(target, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     }
     else if (m_type == texture_type::cubemap)
     {
@@ -32,11 +32,11 @@ texture::texture(std::string path, texture_type type, bool isSRGB)
             std::string extension = path.substr(path.find_last_of('.'));
             load_face(name + "_" + std::to_string(i) + extension, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, false);
         }
-        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+        glTexParameteri(target, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(target, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(target, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        glTexParameteri(target, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
     }
     else
     {
@@ -45,24 +45,28 @@ texture::texture(std::string path, texture_type type, bool isSRGB)
     glBindTexture(target, 0);
 }
 
-texture::texture(unsigned int width, unsigned int height, bool isSRGB)
+texture::texture(unsigned int width, unsigned int height, texture_type type, bool isSRGB)
     : m_path("")
-    , m_type(texture_type::texture_2d)
+    , m_type(type)
     , m_width(width)
     , m_height(height)
-    , m_channels(4)
+    , m_channels(type == texture_type::depth_2d ? 1 : 4)
     , m_isSRGB(isSRGB)
 {
     glGenTextures(1, &m_id);
-    glBindTexture(GL_TEXTURE_2D, m_id);
 
-    glTexImage2D(GL_TEXTURE_2D, 0, m_isSRGB ? GL_SRGB_ALPHA : GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+    GLenum target = get_gl_target();
+    GLenum internal_format, format, pixel_type;
+    get_gl_formats(internal_format, format, pixel_type);
 
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
-    glBindTexture(GL_TEXTURE_2D, 0);
+    glBindTexture(target, m_id);
+    glTexImage2D(target, 0, internal_format, width, height, 0, format, pixel_type, NULL);
+
+    glTexParameteri(target, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(target, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
+    glTexParameteri(target, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
+    glBindTexture(target, 0);
 }
 
 void texture::load_face(std::string path, GLenum target, bool generate_mips)
@@ -76,20 +80,10 @@ void texture::load_face(std::string path, GLenum target, bool generate_mips)
         return;
     }
     
-    GLenum internalFormat = GL_RED;
-    GLenum dataFormat = GL_RED;
-    if (m_channels == 3)
-    {
-        internalFormat = m_isSRGB ? GL_SRGB : GL_RGB;
-        dataFormat = GL_RGB;
-    }
-    else if (m_channels == 4)
-    {
-        internalFormat = m_isSRGB ? GL_SRGB_ALPHA : GL_RGBA;
-        dataFormat = GL_RGB;
-    }
+    GLenum internal_format, format, pixel_type;
+    get_gl_formats(internal_format, format, pixel_type);
 
-    glTexImage2D(target, 0, internalFormat, m_width, m_height, 0, dataFormat, GL_UNSIGNED_BYTE, data);
+    glTexImage2D(target, 0, internal_format, m_width, m_height, 0, format, pixel_type, data);
     
     if (generate_mips)
     {

@@ -12,8 +12,12 @@ namespace render_engine
 
 enum class framebuffer_type
 {
+    // Colour
     colour,
-    depth_stencil
+    colour_depth_stencil,
+    // No Colour
+    no_colour,
+    depth
 };
 
 class framebuffer
