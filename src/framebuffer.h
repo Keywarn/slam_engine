@@ -46,6 +46,16 @@ public:
         return m_texture;
     }
 
+    const int get_width() const
+    {
+        return m_width;
+    }
+
+    const int get_height() const
+    {
+        return m_height;
+    }
+
 private:
     unsigned int m_width = 0;
     unsigned int m_height = 0;

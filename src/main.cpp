@@ -98,15 +98,6 @@ int main()
         crate_model->override_material(crate_material);
     }
 
-    // Lights =============================================
-    glm::vec3 sun_direction = glm::vec3(-1.f, -1.f, -1.f);
-    glm::vec3 sun_position = glm::vec3(1.f, 1.f, 1.f);
-    glm::vec3 sun_colour = glm::vec3(1, 1, 1);
-
-    render_engine::renderer::get_instance()->register_directional_light(sun_direction, sun_position, sun_colour, 1.f, 0.1f, 1.f);
-    //render_engine::renderer::get_instance()->register_point_light(1.0f, 0.09f, 0.032f, sun_position, glm::vec3(1,1,1), 0.5f, 0.1f, 1.f);
-    //render_engine::renderer::get_instance()->register_spot_light(10.f, 20.f, sun_direction, sun_position, glm::vec3(0,1,0), 1.f, 0.1f, 1.f);
-
     // Framebuffers =======================================
 #if SCREEN_TEXTURE
 
@@ -126,15 +117,23 @@ int main()
 
     std::shared_ptr<render_engine::framebuffer> framebuffer = render_engine::renderer::get_instance()->register_framebuffer(render_engine::framebuffer_type::colour_depth_stencil, scene_texture_shader);
 
-    std::shared_ptr<render_engine::framebuffer> shadow_map = render_engine::renderer::get_instance()->register_framebuffer(render_engine::framebuffer_type::depth, nullptr, 1024, 1024);
-
     //render_engine::model* plane_model = render_engine::renderer::get_instance()->register_model("assets/models/primitives/screen_plane.obj", glm::mat4(1.f), 3);
     //std::shared_ptr<render_engine::material> screen_texture_material = std::make_shared<render_engine::material>(scene_texture_shader, framebuffer->get_texture(), 32.f);
     //renderer->register_material(screen_texture_material);
    //plane_model->override_material(screen_texture_material);
 #endif
-     
     // ====================================================
+
+    // Lights =============================================
+    glm::vec3 sun_direction = glm::vec3(-1.f, -1.f, -1.f);
+    glm::vec3 sun_position = glm::vec3(1.f, 1.f, 1.f);
+    glm::vec3 sun_colour = glm::vec3(1, 1, 1);
+
+    render_engine::renderer::get_instance()->register_directional_light(sun_direction, sun_position, sun_colour, 1.f, 0.1f, 1.f);
+    //render_engine::renderer::get_instance()->register_point_light(1.0f, 0.09f, 0.032f, sun_position, glm::vec3(1,1,1), 0.5f, 0.1f, 1.f);
+    //render_engine::renderer::get_instance()->register_spot_light(10.f, 20.f, sun_direction, sun_position, glm::vec3(0,1,0), 1.f, 0.1f, 1.f);
+    // ====================================================
+
 
     float previous_time = (float)glfwGetTime();
     float delta = 0.f;
@@ -145,13 +144,14 @@ int main()
         //process_input(window);
 
         render_engine::renderer::get_instance()->render(delta);
-        render_engine::renderer::get_instance()->post_render(delta);
 
         // Swap the buffers and poll
         glfwSwapBuffers(window);
         glfwPollEvents();
         delta = glfwGetTime() - previous_time;
         previous_time = glfwGetTime();
+
+        //std::cout << "FRAMETIME: " << delta * 1000 << "ms FPS: " << 1 / delta << std::endl;
     }
 
     render_engine::renderer::get_instance()->free();

@@ -27,6 +27,7 @@ public:
     renderer(GLFWwindow* window);
 
     void render(float delta);
+    void draw_models(float delta);
     void post_render(float delta);
 
     void toggle_wireframe();

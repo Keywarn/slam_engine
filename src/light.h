@@ -1,6 +1,7 @@
 #pragma once
 #include <glm/glm/glm.hpp>
 #include "shader.h"
+#include "framebuffer.h"
 
 namespace render_engine
 {
@@ -24,6 +25,11 @@ public:
         return m_type;
     }
 
+    std::shared_ptr<framebuffer> get_shadow_map()
+    {
+        return m_shadow_map;
+    }
+
 protected:
     glm::vec3 m_position;
     glm::vec3 m_diffuse;
@@ -31,6 +37,7 @@ protected:
     glm::vec3 m_specular;
 
     light_type m_type;
+    std::shared_ptr<framebuffer> m_shadow_map = nullptr; // Currently only supported on direcitonal lights
 };
 
 class directional_light : public light

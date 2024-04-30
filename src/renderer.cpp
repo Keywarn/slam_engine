@@ -36,6 +36,22 @@ namespace render_engine
     {
         m_camera->update(delta, m_window);
 
+        for (auto light : m_lights)
+        {
+            if (light->get_type() == light_type::directional)
+            {
+                std::shared_ptr<framebuffer> shadow_map = light->get_shadow_map();
+                glViewport(0, 0, shadow_map->get_width(), shadow_map->get_height());
+                glClear(GL_DEPTH_BUFFER_BIT);
+                shadow_map->bind();
+                draw_models(delta);
+            }
+        }
+
+        int width, height;
+        get_resolution(&width, &height);
+        glViewport(0, 0, width, height);
+
         if (m_framebuffers.size() > 0)
         {
             m_framebuffers.at(0)->bind();
@@ -43,6 +59,13 @@ namespace render_engine
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+        draw_models(delta);
+
+        post_render(delta);
+    }
+
+    void renderer::draw_models(float delta)
+    {
         for (model& model : m_models)
         {
             model.draw(delta);
