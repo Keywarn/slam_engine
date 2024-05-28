@@ -95,12 +95,21 @@ void material::use(glm::mat4 transform)
 
         m_shader->set_vec3("u_material.albedo", m_albedo);
     }
-    else
+    else if(m_shader->get_type() != shader_type::shadow_pass)
     {
         glm::mat4 view = glm::mat4(glm::mat3(renderer->get_view()));
         m_shader->set_mat4("view", view);
+        
     }
-    m_shader->set_mat4("projection", renderer->get_projection());
+    if (m_shader->get_type() != shader_type::shadow_pass)
+    {
+        m_shader->set_mat4("projection", renderer->get_projection());
+    }
+
+    if (m_shader->get_type() == shader_type::lit || m_shader->get_type() == shader_type::shadow_pass)
+    {
+        m_shader->set_mat4("light_space_matrix", renderer->get_current_pass_directional_light()->get_light_space_matrix());
+    }
 
     if (m_shader->get_type() == shader_type::lit)
     {

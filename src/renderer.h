@@ -105,6 +105,11 @@ public:
         glfwGetWindowSize(m_window, width, height);
     }
 
+    std::shared_ptr<directional_light> get_current_pass_directional_light()
+    {
+        return m_current_pass_directional_light;
+    }
+
 private:
     GLFWwindow* m_window;
     camera* m_camera;
@@ -117,6 +122,7 @@ private:
     std::vector<std::shared_ptr<framebuffer>> m_framebuffers;
 
     std::vector<std::shared_ptr<light>> m_lights;
+    std::shared_ptr<directional_light> m_current_pass_directional_light;
 
     bool m_wireframe = false;
     bool m_perspective = true;
