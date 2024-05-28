@@ -82,14 +82,14 @@ int main()
     // ========================================================
 
     // Models =================================================
-    render_engine::renderer::get_instance()->register_model("assets/models/backpack/backpack.obj", glm::mat4(1.f), 0);
-    render_engine::model* skybox_model = render_engine::renderer::get_instance()->register_model("assets/models/primitives/cube.obj", glm::mat4(1.f), 2);
+    renderer->register_model("assets/models/backpack/backpack.obj", glm::mat4(1.f), 0);
+    render_engine::model* skybox_model = renderer->register_model("assets/models/primitives/cube.obj", glm::mat4(1.f), 2);
     skybox_model->override_material(skybox_material);
 
     // Crate
     if (false)
     {
-        render_engine::model* crate_model = render_engine::renderer::get_instance()->register_model("assets/models/primitives/cube.obj", glm::mat4(1.f), 0);
+        render_engine::model* crate_model = renderer->register_model("assets/models/primitives/cube.obj", glm::mat4(1.f), 0);
         std::shared_ptr<render_engine::texture> crate_texture = renderer->get_register_texture("assets/textures/crate.png");
         std::shared_ptr<render_engine::texture> crate_specular = renderer->get_register_texture("assets/textures/crate_specular.png");
         std::shared_ptr<render_engine::material> crate_material = std::make_shared<render_engine::material>(lit_shader, crate_texture, 32.f, glm::vec3(1.f, 1.f, 1.f), 1.f, 1.f);
@@ -115,7 +115,7 @@ int main()
     // Gamma Correction
     std::shared_ptr<render_engine::shader> scene_texture_shader = renderer->register_shader("assets/shaders/vertex_screenspace.glsl", "assets/shaders/post_processing/gamma_correction.glsl", render_engine::shader_type::unlit);
 
-    std::shared_ptr<render_engine::framebuffer> framebuffer = render_engine::renderer::get_instance()->register_framebuffer(render_engine::framebuffer_type::colour_depth_stencil, scene_texture_shader);
+    std::shared_ptr<render_engine::framebuffer> framebuffer = renderer->register_framebuffer(render_engine::framebuffer_type::colour_depth_stencil, scene_texture_shader);
 
     //render_engine::model* plane_model = render_engine::renderer::get_instance()->register_model("assets/models/primitives/screen_plane.obj", glm::mat4(1.f), 3);
     //std::shared_ptr<render_engine::material> screen_texture_material = std::make_shared<render_engine::material>(scene_texture_shader, framebuffer->get_texture(), 32.f);
@@ -129,7 +129,7 @@ int main()
     glm::vec3 sun_position = glm::vec3(1.f, 1.f, 1.f);
     glm::vec3 sun_colour = glm::vec3(1, 1, 1);
 
-    render_engine::renderer::get_instance()->register_directional_light(sun_direction, sun_position, sun_colour, 1.f, 0.1f, 1.f);
+    renderer->register_directional_light(sun_direction, sun_position, sun_colour, 1.f, 0.1f, 1.f);
     //render_engine::renderer::get_instance()->register_point_light(1.0f, 0.09f, 0.032f, sun_position, glm::vec3(1,1,1), 0.5f, 0.1f, 1.f);
     //render_engine::renderer::get_instance()->register_spot_light(10.f, 20.f, sun_direction, sun_position, glm::vec3(0,1,0), 1.f, 0.1f, 1.f);
     // ====================================================
@@ -143,7 +143,7 @@ int main()
         // TODO handle input as a state/object rather than in individual components
         //process_input(window);
 
-        render_engine::renderer::get_instance()->render(delta);
+        renderer->render(delta);
 
         // Swap the buffers and poll
         glfwSwapBuffers(window);
@@ -154,7 +154,7 @@ int main()
         //std::cout << "FRAMETIME: " << delta * 1000 << "ms FPS: " << 1 / delta << std::endl;
     }
 
-    render_engine::renderer::get_instance()->free();
+    renderer->free();
 
     glfwTerminate();
     return 0;

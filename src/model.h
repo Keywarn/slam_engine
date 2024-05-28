@@ -18,7 +18,7 @@ public:
         load(path);
     }
 
-    void draw(float delta);
+    void draw(float delta, std::shared_ptr<material> override_material = nullptr);
 
     void free()
     {

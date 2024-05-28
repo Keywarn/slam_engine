@@ -64,11 +64,11 @@ namespace render_engine
         post_render(delta);
     }
 
-    void renderer::draw_models(float delta)
+    void renderer::draw_models(float delta, std::shared_ptr<material> override_material)
     {
         for (model& model : m_models)
         {
-            model.draw(delta);
+            model.draw(delta, override_material);
         }
     }
 

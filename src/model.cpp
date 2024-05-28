@@ -4,11 +4,11 @@
 
 namespace render_engine
 {
-void model::draw(float delta)
+void model::draw(float delta, std::shared_ptr<material> override_material)
 {
     for (unsigned int i = 0; i < m_meshes.size(); ++i)
     {
-        m_meshes[i].draw(delta, m_transform);
+        m_meshes[i].draw(delta, m_transform, override_material);
     }
 }
 

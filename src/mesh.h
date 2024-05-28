@@ -24,7 +24,7 @@ class mesh
 public:
     mesh(vertices vertices, faces faces, std::shared_ptr<material> material, glm::mat4 transform);
 
-    void draw(float delta, glm::mat4 parent_transform);
+    void draw(float delta, glm::mat4 parent_transform, std::shared_ptr<material> override_material = nullptr);
 
     void setup();
 
