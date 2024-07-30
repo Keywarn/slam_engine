@@ -80,7 +80,7 @@ private:
         else if (m_channels == 4)
         {
             internal_format = m_isSRGB ? GL_SRGB_ALPHA : GL_RGBA;
-            format = GL_RGB;
+            format = GL_RGBA;
         }
     }
 
