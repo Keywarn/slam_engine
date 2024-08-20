@@ -45,7 +45,7 @@ namespace render_engine
                 glViewport(0, 0, shadow_map->get_width(), shadow_map->get_height());
                 glClear(GL_DEPTH_BUFFER_BIT);
                 shadow_map->bind();
-                draw_models(delta);
+                draw_models(delta, m_shadow_pass_material);
             }
         }
 
@@ -152,6 +152,14 @@ namespace render_engine
 
     std::shared_ptr<directional_light> renderer::register_directional_light(glm::vec3 direction, glm::vec3 position, glm::vec3 colour, float diffuse, float ambient, float specular)
     {
+        // TODO this requires direcitonal lights to be registered first...
+        if (m_lights.size() == 0)
+        {
+            std::shared_ptr<shader> shadow_map_shader = register_shader("assets/shaders/to_depth_vertex.glsl", "assets/shaders/empty_fragment.glsl", render_engine::shader_type::shadow_pass);
+            m_shadow_pass_material = std::make_shared<material>(shadow_map_shader, nullptr, 0);
+            register_material(m_shadow_pass_material);
+        }
+
         std::shared_ptr<directional_light> light_ptr = std::make_shared<directional_light>(direction, position, colour, diffuse, ambient, specular);
         m_lights.push_back(light_ptr);
         return light_ptr;

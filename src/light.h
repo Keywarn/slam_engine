@@ -57,7 +57,7 @@ public:
         return m_direction;
     }
 
-    const glm::mat4& get_light_space_matrix()
+    const glm::mat4 get_light_space_matrix()
     {
         glm::mat4 view = glm::lookAt(m_position, m_position + m_direction, glm::vec3(0.f, 1.f, 0.f));
         

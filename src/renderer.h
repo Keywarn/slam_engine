@@ -123,6 +123,7 @@ private:
 
     std::vector<std::shared_ptr<light>> m_lights;
     std::shared_ptr<directional_light> m_current_pass_directional_light;
+    std::shared_ptr<material> m_shadow_pass_material;
 
     bool m_wireframe = false;
     bool m_perspective = true;
