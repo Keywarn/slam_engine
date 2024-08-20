@@ -68,7 +68,7 @@ void material::use(glm::mat4 transform)
             m_shader->set_bool("u_material.sample_albedo", true);
         }
     }
-    else
+    else if(m_shader->get_type() != shader_type::shadow_pass)
     {
         m_shader->set_bool("u_material.sample_albedo", false);
     }
@@ -79,7 +79,7 @@ void material::use(glm::mat4 transform)
         m_specular_map->bind();
         m_shader->set_bool("u_material.sample_specular", true);
     }
-    else
+    else if(m_shader->get_type() != shader_type::shadow_pass)
     {
         m_shader->set_bool("u_material.sample_specular", false);
     }
@@ -110,6 +110,7 @@ void material::use(glm::mat4 transform)
     {
         glm::mat4 light_space_matrix;
         light_space_matrix = renderer->get_current_pass_directional_light()->get_light_space_matrix();
+        m_shader->set_mat4("transform", transform);
         m_shader->set_mat4("light_space_matrix", light_space_matrix);
     }
 
