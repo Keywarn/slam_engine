@@ -118,6 +118,7 @@ void material::use(glm::mat4 transform)
     {
         m_shader->set_vec3("u_material.specular", m_specular);
         m_shader->set_float("u_material.shininess", m_shininess);
+        m_shader->set_mat4("light_space_matrix", renderer->get_current_pass_directional_light()->get_light_space_matrix());
 
         size_t point_count = 0;
         for (auto& light : renderer->get_lights())

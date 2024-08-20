@@ -53,12 +53,14 @@ struct spot_light
 uniform directional_light u_directional_light;
 uniform point_light u_point_lights[MAX_NUM_POINT_LIGHTS];
 uniform spot_light u_spot_light;
+uniform sampler2D u_shadow_map;
 
 uniform vec3 u_camera_position;
 
 in vec3 fragment_position;
 in vec3 normal;
 in vec2 uv;
+in vec4 fragment_position_light_Space;
 
 out vec4 fragment_colour;
 
@@ -84,8 +86,21 @@ vec3 get_specular()
     return specular;
 }
 
+float calculate_shadow(vec4 position_light_space)
+{
+    // Perspective divide
+    vec3 projected_coords = position_light_space.xyz / position_light_space.w;
+    projected_coords = projected_coords * 0.5 + 0.5;
+    float closest_depth = texture(u_shadow_map, projected_coords.xy).r;
+    float shadow = projected_coords.z > closest_depth ? 1.0 : 0.0;
+
+    return shadow;
+}
+
 vec3 calculate_directional_light(directional_light light, vec3 normal, vec3 view_direction)
 {
+    float shadow = calculate_shadow(fragment_position_light_Space);
+
     vec3 to_light = normalize(-light.direction);
 
     // Diffuse
@@ -100,7 +115,7 @@ vec3 calculate_directional_light(directional_light light, vec3 normal, vec3 view
     // Ambient
     vec3 ambient = light.light.ambient * get_albedo();
 
-    return (ambient + diffuse + specular);
+    return (ambient + (1 - shadow) * (diffuse + specular));
 
 }
 

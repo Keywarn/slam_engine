@@ -33,7 +33,9 @@ void directional_light::load_to_shader(std::shared_ptr<shader> shader, std::stri
 {
     light::load_to_shader(shader, prefix);
 
-    shader->set_vec3(prefix + ".direction", m_direction);
+    shader->set_vec3(prefix + ".direction", m_direction);             
+    glActiveTexture(GL_TEXTURE2);
+    m_shadow_map->get_texture()->bind();
 }
 
 point_light::point_light(float constant, float linear, float quadratic, glm::vec3 position, glm::vec3 colour, float diffuse, float ambient, float specular)

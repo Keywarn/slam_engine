@@ -40,6 +40,7 @@ namespace render_engine
         {
             if (light->get_type() == light_type::directional)
             {
+                // TODO shading in the render stage only actually supports a single directional light...
                 m_current_pass_directional_light = static_pointer_cast<directional_light>(light);
                 std::shared_ptr<framebuffer> shadow_map = light->get_shadow_map();
                 
