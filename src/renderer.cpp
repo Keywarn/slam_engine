@@ -42,9 +42,10 @@ namespace render_engine
             {
                 m_current_pass_directional_light = static_pointer_cast<directional_light>(light);
                 std::shared_ptr<framebuffer> shadow_map = light->get_shadow_map();
+                
                 glViewport(0, 0, shadow_map->get_width(), shadow_map->get_height());
-                glClear(GL_DEPTH_BUFFER_BIT);
                 shadow_map->bind();
+                glClear(GL_DEPTH_BUFFER_BIT);
                 draw_models(delta, m_shadow_pass_material);
             }
         }
