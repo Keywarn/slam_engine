@@ -8,30 +8,6 @@
 
 namespace render_engine
 {
-// TODO make these call the most descriptive ctor so we can do any processing for all
-// Just use the texture and set everything else to white
-material::material(std::shared_ptr<shader> shader, std::shared_ptr<texture> texture, float shininess)
-    : m_shader(shader)
-    , m_albedo_texture(texture)
-    , m_albedo(glm::vec3(1.f))
-    , m_specular(glm::vec3(1.f))
-    , m_shininess(shininess)
-{
-
-}
-
-// Same colour for all and just use strength values
-material::material(std::shared_ptr<shader> shader, std::shared_ptr<texture> texture, float shininess, glm::vec3 colour, float albedo, float specular)
-    : m_shader(shader)
-    , m_albedo_texture(texture)
-    , m_albedo(colour * albedo)
-    , m_specular(colour* specular)
-    , m_shininess(shininess)
-{
-
-}
-
-// Different colours for each property
 material::material(std::shared_ptr<shader> shader, std::shared_ptr<texture> texture, float shininess, glm::vec3 albedo, glm::vec3 specular)
     : m_shader(shader)
     , m_albedo_texture(texture)
@@ -42,7 +18,12 @@ material::material(std::shared_ptr<shader> shader, std::shared_ptr<texture> text
     m_shader->use();
     if (m_albedo_texture != nullptr)
     {
-        int albedo = glGetUniformLocation(m_shader->m_id, "u_material.albedo_texture");
+        std::string uniform = "u_material.albedo_texture";
+        if (m_shader->get_type() == shader_type::unlit_cube)
+        {
+            uniform = "skybox";
+        }
+        int albedo = glGetUniformLocation(m_shader->m_id, uniform.c_str());
 
         if (albedo == -1)
         {
@@ -50,6 +31,17 @@ material::material(std::shared_ptr<shader> shader, std::shared_ptr<texture> text
             return;
         }
         glUniform1i(albedo, 0);
+    }
+
+    if (m_shader->get_type() == shader_type::lit)
+    {
+        int shadow_map = glGetUniformLocation(m_shader->m_id, "u_shadow_map");
+        if (shadow_map == -1)
+        {
+            std::cout << "ERROR::MATERIAL::COULD NOT SET SHADOW MAP SAMPLER: " << std::endl;
+            return;
+        }
+        glUniform1i(shadow_map, 2);
     }
 }
 

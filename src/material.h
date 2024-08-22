@@ -10,9 +10,11 @@ class material
 {
 public:
     // Just use the texture and set everything else to white
-    material(std::shared_ptr<shader> shader, std::shared_ptr<texture> texture, float shininess);
+    material(std::shared_ptr<shader> shader, std::shared_ptr<texture> texture, float shininess)
+        : material(shader, texture, shininess, glm::vec3(1.f), glm::vec3(1.f)) {};
     // Same colour for all and just use strength values
-    material(std::shared_ptr<shader> shader, std::shared_ptr<texture> texture, float shininess, glm::vec3 colour, float albedo, float specular);
+    material(std::shared_ptr<shader> shader, std::shared_ptr<texture> texture, float shininess, glm::vec3 colour, float albedo, float specular)
+        : material(shader, texture, shininess, colour* albedo, colour* specular) {};
     // Different colours for each property
     material(std::shared_ptr<shader> shader, std::shared_ptr<texture> texture, float shininess, glm::vec3 albedo, glm::vec3 specular);
 
