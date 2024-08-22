@@ -60,7 +60,7 @@ uniform vec3 u_camera_position;
 in vec3 fragment_position;
 in vec3 normal;
 in vec2 uv;
-in vec4 fragment_position_light_Space;
+in vec4 fragment_position_light_space;
 
 out vec4 fragment_colour;
 
@@ -99,7 +99,7 @@ float calculate_shadow(vec4 position_light_space)
 
 vec3 calculate_directional_light(directional_light light, vec3 normal, vec3 view_direction)
 {
-    float shadow = calculate_shadow(fragment_position_light_Space);
+    float shadow = calculate_shadow(fragment_position_light_space);
 
     vec3 to_light = normalize(-light.direction);
 

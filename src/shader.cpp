@@ -9,6 +9,9 @@ namespace render_engine
 shader::shader(const char* vertex_path, const char* fragment_path, shader_type type)
     : m_type(type)
 {
+    m_vertex_path = vertex_path;
+    m_fragment_path = fragment_path;
+
     // Read in the vertex shader
     std::ifstream vertex_shader_file(vertex_path, std::fstream::in);
     vertex_shader_file.exceptions(std::ifstream::failbit | std::ifstream::badbit);

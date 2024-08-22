@@ -10,7 +10,7 @@
 
 #include "texture.h"
 
-#define SHADER_VERBOSE_ERRORS 0
+#define SHADER_VERBOSE_ERRORS 1
 
 namespace render_engine
 {
@@ -49,5 +49,8 @@ public:
 
 private:
     shader_type m_type = shader_type::unlit;
+    // Used for debug info
+    std::string m_vertex_path;
+    std::string m_fragment_path;
 };
 }

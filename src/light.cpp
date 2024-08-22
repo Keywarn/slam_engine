@@ -18,7 +18,7 @@ void light::load_to_shader(std::shared_ptr<shader> shader, std::string prefix) c
     shader->set_vec3(prefix + ".light.diffuse", m_diffuse);
     shader->set_vec3(prefix + ".light.ambient", m_ambient);
     shader->set_vec3(prefix + ".light.specular", m_specular);
-    shader->set_vec3(prefix + ".light.position", m_position);
+    // Position is handled by derived light as not all types need it (directional)
 }
 
 directional_light::directional_light(glm::vec3 direction, glm::vec3 position, glm::vec3 colour, float diffuse, float ambient, float specular)
@@ -33,7 +33,8 @@ void directional_light::load_to_shader(std::shared_ptr<shader> shader, std::stri
 {
     light::load_to_shader(shader, prefix);
 
-    shader->set_vec3(prefix + ".direction", m_direction);             
+    shader->set_vec3(prefix + ".direction", m_direction);
+    // TODO hardcoded slot value
     glActiveTexture(GL_TEXTURE2);
     m_shadow_map->get_texture()->bind();
 }
@@ -50,6 +51,7 @@ point_light::point_light(float constant, float linear, float quadratic, glm::vec
 void point_light::load_to_shader(std::shared_ptr<shader> shader, std::string prefix) const
 {
     light::load_to_shader(shader, prefix);
+    shader->set_vec3(prefix + ".light.position", m_position);
 
     shader->set_float(prefix + ".constant", m_constant);
     shader->set_float(prefix + ".linear", m_linear);
@@ -68,6 +70,7 @@ spot_light::spot_light(float angle, float outer_angle, glm::vec3 direction, glm:
 void spot_light::load_to_shader(std::shared_ptr<shader> shader, std::string prefix) const
 {
     light::load_to_shader(shader, prefix);
+    shader->set_vec3(prefix + ".light.position", m_position);
 
     shader->set_float(prefix + ".angle_cos", glm::cos(glm::radians(m_angle)));
     shader->set_float(prefix + ".outer_angle_cos", glm::cos(glm::radians(m_outer_angle)));
