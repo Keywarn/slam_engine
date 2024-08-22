@@ -86,22 +86,24 @@ vec3 get_specular()
     return specular;
 }
 
-float calculate_shadow(vec4 position_light_space)
+float calculate_shadow(vec4 position_light_space, vec3 normal, vec3 to_light)
 {
     // Perspective divide
     vec3 projected_coords = position_light_space.xyz / position_light_space.w;
     projected_coords = projected_coords * 0.5 + 0.5;
     float closest_depth = texture(u_shadow_map, projected_coords.xy).r;
-    float shadow = projected_coords.z > closest_depth ? 1.0 : 0.0;
+
+    float bias = max(0.05 * (1.0 - dot(normal, to_light)), 0.005);
+    float shadow = projected_coords.z - bias > closest_depth ? 1.0 : 0.0;
 
     return shadow;
 }
 
 vec3 calculate_directional_light(directional_light light, vec3 normal, vec3 view_direction)
 {
-    float shadow = calculate_shadow(fragment_position_light_space);
-
     vec3 to_light = normalize(-light.direction);
+    
+    float shadow = calculate_shadow(fragment_position_light_space, normal, to_light);
 
     // Diffuse
     float diffuse_factor = max(dot(normal, to_light), 0.0);
