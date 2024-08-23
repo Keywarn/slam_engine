@@ -6,6 +6,7 @@
 
 namespace render_engine
 {
+
 class material
 {
 public:
@@ -40,6 +41,11 @@ public:
     void set_name(std::string name)
     {
         m_name = name;
+    }
+
+    const shader_type get_shader_type() const
+    {
+        return m_shader->get_type();
     }
 
     const std::string& get_name() const

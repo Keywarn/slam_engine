@@ -2,6 +2,9 @@
 
 #define MAX_NUM_POINT_LIGHTS 4
 
+#define SHADOW_BIAS_MAX 0.001
+#define SHADOW_BIAS_MIN 0.0005
+
 struct material
 {
     vec3 albedo;
@@ -93,7 +96,7 @@ float calculate_shadow(vec4 position_light_space, vec3 normal, vec3 to_light)
     projected_coords = projected_coords * 0.5 + 0.5;
     float closest_depth = texture(u_shadow_map, projected_coords.xy).r;
 
-    float bias = max(0.05 * (1.0 - dot(normal, to_light)), 0.005);
+    float bias = max(SHADOW_BIAS_MAX * (1.0 - dot(normal, to_light)), SHADOW_BIAS_MIN);
     float shadow = projected_coords.z - bias > closest_depth ? 1.0 : 0.0;
 
     return shadow;

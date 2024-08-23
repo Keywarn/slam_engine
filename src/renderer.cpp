@@ -36,6 +36,8 @@ namespace render_engine
     {
         m_camera->update(delta, m_window);
 
+        // Shadow mapping pass
+        glCullFace(GL_FRONT);
         for (auto light : m_lights)
         {
             if (light->get_type() == light_type::directional)
@@ -50,6 +52,9 @@ namespace render_engine
                 draw_models(delta, m_shadow_pass_material);
             }
         }
+
+        // Normal pass
+        glCullFace(GL_BACK);
 
         int width, height;
         get_resolution(&width, &height);

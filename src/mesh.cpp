@@ -61,6 +61,10 @@ void mesh::draw(float delta, glm::mat4 parent_transform, std::shared_ptr<materia
     }
     else
     {
+        if (override_material->get_shader_type() == shader_type::shadow_pass && m_material->get_shader_type() == shader_type::unlit_cube)
+        {
+            return;
+        }
         override_material->use(parent_transform * m_transform);
     }
 
