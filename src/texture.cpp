@@ -97,8 +97,10 @@ void texture::set_gl_params(GLenum target)
     {
         glTexParameteri(target, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameteri(target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        glTexParameteri(target, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
-        glTexParameteri(target, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
+        glTexParameteri(target, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+        glTexParameteri(target, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+        float border_colour[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+        glTexParameterfv(target, GL_TEXTURE_BORDER_COLOR, border_colour);
         break;
     }
     case texture_type::cubemap:
