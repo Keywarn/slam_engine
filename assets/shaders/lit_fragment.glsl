@@ -91,19 +91,27 @@ vec3 get_specular()
 
 float calculate_shadow(vec4 position_light_space, vec3 normal, vec3 to_light)
 {
-    // Perspective divide
     vec3 projected_coords = position_light_space.xyz / position_light_space.w;
     projected_coords = projected_coords * 0.5 + 0.5;
     if(projected_coords.z > 1.0)
     {
         return 0.0;    
     }
-    float closest_depth = texture(u_shadow_map, projected_coords.xy).r;
 
     float bias = max(SHADOW_BIAS_MAX * (1.0 - dot(normal, to_light)), SHADOW_BIAS_MIN);
-    float shadow = projected_coords.z - bias > closest_depth ? 1.0 : 0.0;
+    vec2 texel_size = 1.0/textureSize(u_shadow_map, 0);
+    float shadow = 0.0;
 
-    return shadow;
+    for (int x = -1; x <= 1; ++x)
+    {
+        for (int y = -1; y <= 1; ++y)
+        {
+            float closest_depth = texture(u_shadow_map, projected_coords.xy + vec2(x,y) * texel_size).r;
+            shadow += projected_coords.z - bias > closest_depth ? 1.0 : 0.0;
+        }
+    }
+
+    return shadow / 9.0;
 }
 
 vec3 calculate_directional_light(directional_light light, vec3 normal, vec3 view_direction)
