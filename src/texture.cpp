@@ -20,9 +20,6 @@ texture::texture(std::string path, texture_type type, bool isSRGB)
     if (m_type == texture_type::texture_2d)
     {
         load_face(path, target, true);
-
-        glTexParameteri(target, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     }
     else if (m_type == texture_type::cubemap)
     {
@@ -32,16 +29,12 @@ texture::texture(std::string path, texture_type type, bool isSRGB)
             std::string extension = path.substr(path.find_last_of('.'));
             load_face(name + "_" + std::to_string(i) + extension, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, false);
         }
-        glTexParameteri(target, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        glTexParameteri(target, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-        glTexParameteri(target, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-        glTexParameteri(target, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
     }
     else
     {
         std::cout << "ERROR::TEXTURE::UNSUPPORTED TEXTURE TYPE:  " << (int)m_type << std::endl;
     }
+    set_gl_params(target);
     glBindTexture(target, 0);
 }
 
@@ -62,10 +55,7 @@ texture::texture(unsigned int width, unsigned int height, texture_type type, boo
     glBindTexture(target, m_id);
     glTexImage2D(target, 0, internal_format, width, height, 0, format, pixel_type, NULL);
 
-    glTexParameteri(target, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(target, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
-    glTexParameteri(target, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
+    set_gl_params(target);
     glBindTexture(target, 0);
 }
 
@@ -91,6 +81,41 @@ void texture::load_face(std::string path, GLenum target, bool generate_mips)
     }
 
     stbi_image_free(data);
+}
+
+void texture::set_gl_params(GLenum target)
+{
+    switch (m_type)
+    {
+    case texture_type::texture_2d:
+    {
+        glTexParameteri(target, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        break;
+    }
+    case texture_type::depth_2d:
+    {
+        glTexParameteri(target, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(target, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
+        glTexParameteri(target, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
+        break;
+    }
+    case texture_type::cubemap:
+    {
+        glTexParameteri(target, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(target, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(target, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        glTexParameteri(target, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+        break;
+    }
+    default:
+    {
+        std::cout << "ERROR::TEXTURE::NO GL PARAMS FOR TYPE " << std::endl;
+        break;
+    }
+    }
 }
 
 void texture::free()

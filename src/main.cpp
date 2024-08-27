@@ -91,7 +91,7 @@ int main()
     {
         glm::mat4 cube_transform(1.0f);
         cube_transform = glm::translate(cube_transform, glm::vec3(0.0f, -2.5f, 0.f));
-        cube_transform = glm::scale(cube_transform, glm::vec3(15.0f, 1.0f, 15.0f));
+        cube_transform = glm::scale(cube_transform, glm::vec3(150.0f, 1.0f, 150.0f));
         render_engine::model* crate_model = renderer->register_model("assets/models/primitives/cube.obj", cube_transform, 0);
         std::shared_ptr<render_engine::texture> crate_texture = renderer->get_register_texture("assets/textures/crate.png");
         std::shared_ptr<render_engine::texture> crate_specular = renderer->get_register_texture("assets/textures/crate_specular.png");

@@ -44,6 +44,7 @@ public:
 
 private:
     void load_face(std::string path, GLenum target, bool generate_mips);
+    void set_gl_params(GLenum target);
 
     const GLenum get_gl_target() const
     {
