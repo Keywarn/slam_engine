@@ -94,6 +94,10 @@ float calculate_shadow(vec4 position_light_space, vec3 normal, vec3 to_light)
     // Perspective divide
     vec3 projected_coords = position_light_space.xyz / position_light_space.w;
     projected_coords = projected_coords * 0.5 + 0.5;
+    if(projected_coords.z > 1.0)
+    {
+        return 0.0;    
+    }
     float closest_depth = texture(u_shadow_map, projected_coords.xy).r;
 
     float bias = max(SHADOW_BIAS_MAX * (1.0 - dot(normal, to_light)), SHADOW_BIAS_MIN);
