@@ -77,7 +77,7 @@ int main()
     std::shared_ptr<render_engine::shader> skybox_shader = renderer->register_shader("assets/shaders/skybox_vertex.glsl", "assets/shaders/skybox_fragment.glsl", render_engine::shader_type::unlit_cube);
 
     std::shared_ptr<render_engine::texture> skybox_texture = renderer->get_register_texture("assets/textures/skybox/miramar.tga", true, render_engine::texture_type::cubemap);
-    std::shared_ptr<render_engine::material> skybox_material = std::make_shared<render_engine::material>(skybox_shader, skybox_texture, 0);
+    std::shared_ptr<render_engine::material> skybox_material = std::make_shared<render_engine::material>(skybox_shader, skybox_texture, 0.f);
     renderer->register_material(skybox_material);
     // ========================================================
 
@@ -138,7 +138,7 @@ int main()
     // ====================================================
 
 
-    float previous_time = (float)glfwGetTime();
+    double previous_time = glfwGetTime();
     float delta = 0.f;
 
     while (!glfwWindowShouldClose(window))
@@ -151,7 +151,7 @@ int main()
         // Swap the buffers and poll
         glfwSwapBuffers(window);
         glfwPollEvents();
-        delta = glfwGetTime() - previous_time;
+        delta = static_cast<float>(glfwGetTime() - previous_time);
         previous_time = glfwGetTime();
 
         //std::cout << "FRAMETIME: " << delta * 1000 << "ms FPS: " << 1 / delta << std::endl;

@@ -69,7 +69,7 @@ void mesh::draw(float delta, glm::mat4 parent_transform, std::shared_ptr<materia
     }
 
     glBindVertexArray(m_vertex_array);
-    glDrawElements(GL_TRIANGLES, m_faces.size(), GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_TRIANGLES, GLsizei(m_faces.size()), GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
 
     if (override_material == nullptr)

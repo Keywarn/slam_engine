@@ -60,6 +60,8 @@ private:
             return GL_TEXTURE_CUBE_MAP;
         }
         }
+
+        return GL_TEXTURE_2D;
     }
 
     void get_gl_formats(GLenum& internal_format, GLenum& format, GLenum& pixel_type)

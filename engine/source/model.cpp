@@ -99,7 +99,6 @@ mesh model::process_mesh(aiMesh* ai_mesh, const aiScene* ai_scene)
         if(mesh_material == nullptr)
         {
             aiColor3D color(0.f, 0.f, 0.f);
-            float shininess;
 
             std::shared_ptr<texture> albedo, specular;
             // TODO support mulitple textures of each type per material
