@@ -1,6 +1,6 @@
 #include "shader.h"
 
-#include <glm/glm/gtc/type_ptr.hpp>
+#include <glm/gtc/type_ptr.hpp>
 #include "light.h"
 #include "renderer.h"
 

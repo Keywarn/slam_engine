@@ -1,7 +1,7 @@
 #pragma once
 
-#include <glm/glm/glm.hpp>
-#include <GLFW/glfw3.h>
+#include <glm/glm.hpp>
+#include <glfw/glfw3.h>
 
 namespace render_engine
 {

@@ -1,8 +1,8 @@
 #pragma once
 
-#include <iostream>
+#include <glad.h>
 
-#include <glad/glad.h>
+#include <iostream>
 
 #include "texture.h"
 #include "shader.h"

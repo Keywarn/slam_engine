@@ -1,8 +1,8 @@
 #pragma once
 
-#include <string>
-#include <glad/glad.h>
+#include <glad.h>
 
+#include <string>
 
 namespace render_engine
 {
