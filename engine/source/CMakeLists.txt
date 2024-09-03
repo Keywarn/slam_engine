@@ -30,6 +30,8 @@ add_library(${PROJECT_NAME} STATIC ${SOURCES})
 
 target_link_libraries(${PROJECT_NAME} 
     assimp
+    glm
+    glfw
 )
 
 util_setup_folder_structure(${PROJECT_NAME} SOURCES "engine")
