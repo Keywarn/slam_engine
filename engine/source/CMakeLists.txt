@@ -1,5 +1,7 @@
 project(engine C CXX)
 
+add_subdirectory(thirdparty)
+
 SET(SOURCES
     "camera.cpp"
     "camera.h"
@@ -22,9 +24,12 @@ SET(SOURCES
     "singleton.h"
     "texture.cpp"
     "texture.h"
-
 )
  
 add_library(${PROJECT_NAME} STATIC ${SOURCES})
+
+target_link_libraries(${PROJECT_NAME} 
+    assimp
+)
 
 util_setup_folder_structure(${PROJECT_NAME} SOURCES "engine")
