@@ -43,7 +43,7 @@ void process_input(GLFWwindow* window)
 
 }
 
-int main()
+int entry_point(int argc, char* argv[])
 {
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);

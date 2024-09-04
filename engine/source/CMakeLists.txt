@@ -9,6 +9,7 @@ SET(SOURCES
     "framebuffer.h"
     "light.cpp"
     "light.h"
+    "main.h"
     "main.cpp"
     "material.cpp"
     "material.h"
@@ -29,6 +30,7 @@ SET(SOURCES
 add_library(${PROJECT_NAME} STATIC ${SOURCES})
 
 target_link_libraries(${PROJECT_NAME} 
+    zlib
     assimp
     glm
     glfw

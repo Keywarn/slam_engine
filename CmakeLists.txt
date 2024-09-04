@@ -12,3 +12,7 @@ add_subdirectory(engine)
 # Add the game directory here
 add_subdirectory(game_sample)
 
+# TODO sort out asset loading properly
+#set visual studio's working directory for debugging
+set_property(TARGET game_sample  PROPERTY VS_DEBUGGER_WORKING_DIRECTORY ${ENV_ROOT_PATH})
+

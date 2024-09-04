@@ -10,5 +10,3 @@ macro(util_copy_all_dlls_to_output name)
         COMMAND_EXPAND_LISTS
     )
 endmacro()
-
-
