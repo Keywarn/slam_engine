@@ -2,19 +2,21 @@ project(engine C CXX)
 
 add_subdirectory(source/thirdparty)
  
-SET(SOURCES
-    "./source/camera.cpp"
-    "./source/framebuffer.cpp"
-    "./source/light.cpp"
-    "./source/main.cpp"
-    "./source/material.cpp"
-    "./source/mesh.cpp"
-    "./source/model.cpp"
-    "./source/renderer.cpp"
-    "./source/shader.cpp"
-    "./source/singleton.cpp"
-    "./source/texture.cpp"
+SET(FILES
+    camera
+    framebuffer
+    light
+    main
+    material
+    mesh
+    model
+    renderer
+    shader
+    singleton
+    texture
 )
+
+util_generate_sources("${FILES}")
 
 add_library(${PROJECT_NAME} STATIC ${SOURCES})
 target_include_directories(${PROJECT_NAME} PUBLIC ./include)
