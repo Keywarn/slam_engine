@@ -1,4 +1,4 @@
-# opengl-renderer
+# slam_engine
 
 ![image](https://github.com/Keywarn/opengl-renderer/assets/43956629/0cc8dce1-0dcf-481c-936b-c658f5eabe55)
 
