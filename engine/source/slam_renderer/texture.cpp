@@ -3,7 +3,7 @@
 #include <stb_image.h>
 #include <iostream>
 
-namespace render_engine
+namespace slam_renderer
 {
 texture::texture(std::string path, texture_type type, bool isSRGB)
     : m_path(path)

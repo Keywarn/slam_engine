@@ -10,10 +10,3 @@ macro(util_copy_all_dlls_to_output name)
         COMMAND_EXPAND_LISTS
     )
 endmacro()
-
-macro(util_generate_sources files)
-    foreach(file ${files})
-        list(APPEND SOURCES "./source/${file}.cpp")
-        list(APPEND SOURCES "./include/${file}.h")
-    endforeach()
-endmacro()

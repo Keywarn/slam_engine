@@ -7,7 +7,7 @@
 #include "texture.h"
 #include "shader.h"
 
-namespace render_engine
+namespace slam_renderer
 {
 
 enum class framebuffer_type

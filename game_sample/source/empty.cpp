@@ -1,5 +1,5 @@
 #pragma once
-#include <main.h>
+#include <slam_main/main.h>
 
 // Some of the windows header files need to be included in a very specific
 // order - this should probably go in a separate file/pch...

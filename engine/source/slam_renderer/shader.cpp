@@ -4,7 +4,7 @@
 #include "light.h"
 #include "renderer.h"
 
-namespace render_engine
+namespace slam_renderer
 {
 shader::shader(const char* vertex_path, const char* fragment_path, shader_type type)
     : m_type(type)

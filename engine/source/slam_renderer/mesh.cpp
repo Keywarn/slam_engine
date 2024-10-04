@@ -5,7 +5,7 @@
 
 #include "renderer.h"
 
-namespace render_engine
+namespace slam_renderer
 {
 mesh::mesh(vertices vertices, faces faces, std::shared_ptr<material> material, glm::mat4 transform)
     : m_transform(transform)

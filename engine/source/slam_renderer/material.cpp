@@ -6,7 +6,7 @@
 
 #define MAX_NUM_POINT_LIGHTS 4
 
-namespace render_engine
+namespace slam_renderer
 {
 material::material(std::shared_ptr<shader> shader, std::shared_ptr<texture> texture, float shininess, glm::vec3 albedo, glm::vec3 specular)
     : m_shader(shader)

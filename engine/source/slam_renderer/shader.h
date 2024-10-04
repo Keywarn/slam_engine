@@ -12,7 +12,7 @@
 
 #define SHADER_VERBOSE_ERRORS 1
 
-namespace render_engine
+namespace slam_renderer
 {
 enum class shader_type
 {

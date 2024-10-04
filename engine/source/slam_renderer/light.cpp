@@ -2,7 +2,7 @@
 
 #include "renderer.h"
 
-namespace render_engine
+namespace slam_renderer
 {
 light::light(glm::vec3 position, glm::vec3 colour, float diffuse, float ambient, float specular)
     : m_position(position)
@@ -26,7 +26,7 @@ directional_light::directional_light(glm::vec3 direction, glm::vec3 position, gl
     , m_direction(direction)
 {
     m_type = light_type::directional;
-    m_shadow_map = renderer::get_instance()->register_framebuffer(render_engine::framebuffer_type::depth, nullptr, 1024, 1024);
+    m_shadow_map = renderer::get_instance()->register_framebuffer(slam_renderer::framebuffer_type::depth, nullptr, 1024, 1024);
 }
 
 void directional_light::load_to_shader(std::shared_ptr<shader> shader, std::string prefix) const

@@ -15,8 +15,6 @@ namespace{
     };
 }
 
-namespace render_engine
-{
 framebuffer::framebuffer(unsigned int width, unsigned int height, std::shared_ptr<shader> shader, framebuffer_type type)
     : m_type(type)
     , m_width(width)
@@ -103,5 +101,4 @@ void framebuffer::draw(float delta)
 void framebuffer::bind()
 {
     glBindFramebuffer(GL_FRAMEBUFFER, m_id);
-}
 }

@@ -6,7 +6,7 @@
 
 #include "mesh.h"
 
-namespace render_engine
+namespace slam_renderer
 {
 class model
 {

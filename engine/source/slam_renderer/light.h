@@ -5,7 +5,7 @@
 #include "shader.h"
 #include "framebuffer.h"
 
-namespace render_engine
+namespace slam_renderer
 {
 
     enum class light_type {

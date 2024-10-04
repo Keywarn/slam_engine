@@ -4,7 +4,7 @@
 #include "texture.h"
 #include "shader.h"
 
-namespace render_engine
+namespace slam_renderer
 {
 
 class material

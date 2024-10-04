@@ -5,7 +5,7 @@
 
 #include "material.h"
 
-namespace render_engine
+namespace slam_renderer
 {
 class renderer;
 

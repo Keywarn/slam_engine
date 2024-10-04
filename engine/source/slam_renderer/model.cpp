@@ -2,7 +2,7 @@
 
 #include "renderer.h"
 
-namespace render_engine
+namespace slam_renderer
 {
 void model::draw(float delta, std::shared_ptr<material> override_material)
 {

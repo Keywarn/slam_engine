@@ -4,7 +4,7 @@
 
 #include <string>
 
-namespace render_engine
+namespace slam_renderer
 {
 enum class texture_type
 {

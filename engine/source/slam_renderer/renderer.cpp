@@ -1,6 +1,6 @@
 #include "renderer.h"
 
-namespace render_engine
+namespace slam_renderer
 {
 
     renderer::renderer(GLFWwindow* window)
@@ -162,7 +162,7 @@ namespace render_engine
         // TODO this requires direcitonal lights to be registered first...
         if (m_lights.size() == 0)
         {
-            std::shared_ptr<shader> shadow_map_shader = register_shader("assets/shaders/to_depth_vertex.glsl", "assets/shaders/empty_fragment.glsl", render_engine::shader_type::shadow_pass);
+            std::shared_ptr<shader> shadow_map_shader = register_shader("assets/shaders/to_depth_vertex.glsl", "assets/shaders/empty_fragment.glsl", slam_renderer::shader_type::shadow_pass);
             m_shadow_pass_material = std::make_shared<material>(shadow_map_shader, nullptr, 0.f);
             register_material(m_shadow_pass_material);
         }

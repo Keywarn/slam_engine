@@ -12,12 +12,13 @@
 #include "model.h"
 #include "texture.h"
 #include "camera.h"
-#include "singleton.h"
 #include "light.h"
 #include "material.h"
 #include "framebuffer.h"
 
-namespace render_engine
+#include <slam_utils/patterns/singleton.h>
+
+namespace slam_renderer
 {
 
 class renderer : public singleton<renderer>
@@ -42,7 +43,7 @@ public:
     std::shared_ptr<point_light> register_point_light(float constant, float linear, float quadratic, glm::vec3 position, glm::vec3 colour, float diffuse, float ambient, float specular);
     std::shared_ptr<spot_light> register_spot_light(float angle, float outer_angle, glm::vec3 direction, glm::vec3 position, glm::vec3 colour, float diffuse, float ambient, float specular);
 
-    std::shared_ptr<framebuffer> register_framebuffer(framebuffer_type type, std::shared_ptr<render_engine::shader> shader, int width = 0, int height = 0);
+    std::shared_ptr<framebuffer> register_framebuffer(framebuffer_type type, std::shared_ptr<slam_renderer::shader> shader, int width = 0, int height = 0);
 
     void free();
 
