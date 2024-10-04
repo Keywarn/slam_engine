@@ -50,7 +50,7 @@ int entry_point(int argc, char* argv[])
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    GLFWwindow* window = glfwCreateWindow(window_width, window_height, "OpenGL Renderer", nullptr, nullptr);
+    GLFWwindow* window = glfwCreateWindow(window_width, window_height, "slam_engine", nullptr, nullptr);
     if (window == nullptr)
     {
         std::cout << "Failed to create GLFW Window" << std::endl;
