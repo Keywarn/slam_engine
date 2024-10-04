@@ -6,7 +6,7 @@ set(ENV_ROOT_PATH "${CMAKE_CURRENT_SOURCE_DIR}")
 
 include(common)
 
-project(opengl_renderer C CXX)
+project(slam_engine C CXX)
 
 add_subdirectory(engine)
 # Add the game directory here
