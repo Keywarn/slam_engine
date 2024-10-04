@@ -1,0 +1,1 @@
+int entry_point(int argc, char* argv[]);

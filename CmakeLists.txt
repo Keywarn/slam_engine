@@ -1,0 +1,18 @@
+cmake_minimum_required(VERSION 3.26)
+
+set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/engine/tools/build;${CMAKE_MODULE_PATH}")
+set(ENV_SOURCE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/engine/source")
+set(ENV_ROOT_PATH "${CMAKE_CURRENT_SOURCE_DIR}")
+
+include(common)
+
+project(slam_engine C CXX)
+
+add_subdirectory(engine)
+# Add the game directory here
+add_subdirectory(game_sample)
+
+# TODO sort out asset loading properly
+#set visual studio's working directory for debugging
+set_property(TARGET game_sample  PROPERTY VS_DEBUGGER_WORKING_DIRECTORY ${ENV_ROOT_PATH})
+
