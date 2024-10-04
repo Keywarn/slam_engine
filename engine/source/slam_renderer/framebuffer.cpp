@@ -15,6 +15,8 @@ namespace{
     };
 }
 
+namespace slam_renderer
+{
 framebuffer::framebuffer(unsigned int width, unsigned int height, std::shared_ptr<shader> shader, framebuffer_type type)
     : m_type(type)
     , m_width(width)
@@ -76,7 +78,7 @@ void framebuffer::setup_quad()
     glEnableVertexAttribArray(0);
 
     // UVs
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2*sizeof(float)));
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
     glEnableVertexAttribArray(1);
 
     // Unbind
@@ -101,4 +103,5 @@ void framebuffer::draw(float delta)
 void framebuffer::bind()
 {
     glBindFramebuffer(GL_FRAMEBUFFER, m_id);
+}
 }

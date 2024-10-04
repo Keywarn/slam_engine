@@ -1,3 +1,5 @@
+include_directories(./)
+
 add_subdirectory(./slam_main)
 add_subdirectory(./slam_utils)
 
