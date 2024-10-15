@@ -44,6 +44,7 @@ protected:
     glm::vec3 m_specular;
 
     light_type m_type;
+    float m_projection_distance_multiplier = 25.f;
     std::shared_ptr<framebuffer> m_shadow_map = nullptr; // Currently only supported on direcitonal lights
 };
 
@@ -58,9 +59,14 @@ public:
         return m_direction;
     }
 
-    const glm::mat4 get_light_space_matrix()
+    const glm::mat4 get_light_space_matrix(glm::vec3 camera_position)
     {
-        glm::mat4 view = glm::lookAt(m_position, m_position + m_direction, glm::vec3(0.f, 1.f, 0.f));
+        // TODO: Investigate using a a bounding box for camera frustum to ensure we get the whole view in the shadow map
+        // TODO: Might need to 'step' the calc based on the size of the shadow map to avoid shimmering
+        glm::vec3 to_camera = camera_position - m_position;
+        float multiplier = glm::dot(to_camera, m_direction) <= 0.f ? -m_projection_distance_multiplier : m_projection_distance_multiplier;
+        glm::vec3 projection_position = camera_position + m_direction * multiplier;
+        glm::mat4 view = glm::lookAt(projection_position, projection_position + m_direction, glm::vec3(0.f, 1.f, 0.f));
         
         float near_plane = 0.5f, far_plane = 100.f;
         glm::mat4 projection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
