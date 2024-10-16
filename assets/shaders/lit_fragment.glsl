@@ -189,17 +189,17 @@ vec3 calculate_spot_light(spot_light light, vec3 normal, vec3 fragment_position,
 
 void main()
 {
-    vec3 output = vec3(0.0);
+    vec3 out_colour = vec3(0.0);
     vec3 view_direction = normalize(u_camera_position - fragment_position);
 
-    output += calculate_directional_light(u_directional_light, normal, view_direction);
+    out_colour += calculate_directional_light(u_directional_light, normal, view_direction);
 
     for(int i = 0; i < MAX_NUM_POINT_LIGHTS; i++)
     {
-        output += calculate_point_light(u_point_lights[i], normal, fragment_position, view_direction);
+        out_colour += calculate_point_light(u_point_lights[i], normal, fragment_position, view_direction);
     }
 
-    output += calculate_spot_light(u_spot_light, normal, fragment_position, view_direction);
+    out_colour += calculate_spot_light(u_spot_light, normal, fragment_position, view_direction);
 
-    fragment_colour = vec4(output, 1.0);
+    fragment_colour = vec4(out_colour, 1.0);
 }
