@@ -23,6 +23,11 @@ public:
         return m_position;
     }
 
+    glm::vec3 get_forwards()
+    {
+        return m_forwards;
+    }
+
     glm::mat4& get_view()
     {
         return m_view;

@@ -101,7 +101,7 @@ void material::use(glm::mat4 transform)
     if (m_shader->get_type() == shader_type::shadow_pass)
     {
         glm::mat4 light_space_matrix;
-        light_space_matrix = renderer->get_current_pass_directional_light()->get_light_space_matrix(renderer::get_instance()->get_camera()->get_position());
+        light_space_matrix = renderer->get_current_pass_directional_light()->get_light_space_matrix(renderer::get_instance()->get_camera()->get_position(), renderer::get_instance()->get_camera()->get_forwards());
         m_shader->set_mat4("transform", transform);
         m_shader->set_mat4("light_space_matrix", light_space_matrix);
     }
@@ -111,7 +111,7 @@ void material::use(glm::mat4 transform)
         m_shader->set_vec3("u_material.specular", m_specular);
         m_shader->set_float("u_material.shininess", m_shininess);
         glm::mat4 light_space_matrix;
-        light_space_matrix = renderer->get_current_pass_directional_light()->get_light_space_matrix(renderer::get_instance()->get_camera()->get_position());
+        light_space_matrix = renderer->get_current_pass_directional_light()->get_light_space_matrix(renderer::get_instance()->get_camera()->get_position(), renderer::get_instance()->get_camera()->get_forwards());
         m_shader->set_mat4("light_space_matrix", light_space_matrix);
 
         size_t point_count = 0;
