@@ -5,9 +5,10 @@
 
 namespace slam_renderer
 {
-texture::texture(std::string path, texture_type type, bool isSRGB)
+texture::texture(std::string path, texture_type type, bool isSRGB, int samples)
     : m_path(path)
     , m_type(type)
+    , m_samples(samples)
     , m_isSRGB(isSRGB)
 {
     GLenum target = get_gl_target();
@@ -38,12 +39,13 @@ texture::texture(std::string path, texture_type type, bool isSRGB)
     glBindTexture(target, 0);
 }
 
-texture::texture(unsigned int width, unsigned int height, texture_type type, bool isSRGB)
+texture::texture(unsigned int width, unsigned int height, texture_type type, bool isSRGB, int samples)
     : m_path("")
     , m_type(type)
     , m_width(width)
     , m_height(height)
     , m_channels(type == texture_type::depth_2d ? 1 : 4)
+    , m_samples(samples)
     , m_isSRGB(isSRGB)
 {
     glGenTextures(1, &m_id);
@@ -53,7 +55,14 @@ texture::texture(unsigned int width, unsigned int height, texture_type type, boo
     get_gl_formats(internal_format, format, pixel_type);
 
     glBindTexture(target, m_id);
-    glTexImage2D(target, 0, internal_format, width, height, 0, format, pixel_type, NULL);
+    if (samples > 1)
+    {
+        glTexImage2DMultisample(target, m_samples, internal_format, width, height, GL_TRUE);
+    }
+    else
+    {
+        glTexImage2D(target, 0, internal_format, width, height, 0, format, pixel_type, NULL);
+    }
 
     set_gl_params(target);
     glBindTexture(target, 0);

@@ -16,9 +16,9 @@ enum class texture_type
 class texture
 {
 public:
-    texture(std::string path, texture_type type = texture_type::texture_2d, bool isSRGB = false);
+    texture(std::string path, texture_type type = texture_type::texture_2d, bool isSRGB = false, int samples = 1);
 
-    texture(unsigned int width, unsigned int height, texture_type type = texture_type::texture_2d, bool isSRGB = false);
+    texture(unsigned int width, unsigned int height, texture_type type = texture_type::texture_2d, bool isSRGB = false, int samples = 1);
 
     void free();
 
@@ -53,7 +53,7 @@ private:
         case texture_type::texture_2d:
         case texture_type::depth_2d:
         {
-            return GL_TEXTURE_2D;
+            return m_samples > 1 ? GL_TEXTURE_2D_MULTISAMPLE : GL_TEXTURE_2D;
         }
         case texture_type::cubemap:
         {
@@ -93,6 +93,7 @@ private:
     int m_width;
     int m_height;
     int m_channels;
+    int m_samples;
     bool m_isSRGB = false;
 
     unsigned int m_id = 0;

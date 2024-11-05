@@ -13,6 +13,7 @@ namespace slam_renderer
         m_camera->recalculate_projections(m_window);
         glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
         glEnable(GL_DEPTH_TEST);
+        glEnable(GL_MULTISAMPLE);
 
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -99,7 +100,7 @@ namespace slam_renderer
         }
     }
 
-    std::shared_ptr<texture> renderer::get_register_texture(std::string path, bool isSRGB, texture_type type, int width, int height)
+    std::shared_ptr<texture> renderer::get_register_texture(std::string path, bool isSRGB, texture_type type, int width, int height, int samples)
     {
         auto predicate = [path](std::shared_ptr<texture>& texture)
             {
@@ -192,7 +193,9 @@ namespace slam_renderer
         {
             get_resolution(&width, &height);
         }
-        std::shared_ptr<framebuffer> framebuffer_ptr = std::make_shared<framebuffer>(width, height, shader, type);
+        // TODO defaulting to 4 for colour types
+        unsigned int samples = type < framebuffer_type::no_colour ? 4 : 1;
+        std::shared_ptr<framebuffer> framebuffer_ptr = std::make_shared<framebuffer>(width, height, samples, shader, type);
         m_framebuffers.push_back(framebuffer_ptr);
         return framebuffer_ptr;
     }

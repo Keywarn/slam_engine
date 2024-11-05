@@ -23,13 +23,13 @@ enum class framebuffer_type
 class framebuffer
 {
 public:
-    framebuffer(unsigned int width, unsigned int height, std::shared_ptr<shader> shader, framebuffer_type type = framebuffer_type::colour);
+    framebuffer(unsigned int width, unsigned int height, unsigned int samples, std::shared_ptr<shader> shader, framebuffer_type type = framebuffer_type::colour);
 
     void setup_quad();
     
     void draw(float delta);
 
-    void bind();
+    void bind(bool for_sampling = false);
 
     void free()
     {
@@ -59,6 +59,7 @@ public:
 private:
     unsigned int m_width = 0;
     unsigned int m_height = 0;
+    unsigned int m_samples = 0;
     unsigned int m_id = 0;
 
     //vbo
@@ -71,5 +72,10 @@ private:
 
     std::shared_ptr<texture> m_texture = nullptr;
     unsigned int m_render_buffer_object = 0;
+
+    // Intermediates for sampling
+    unsigned int m_sample_id = 0;
+    std::shared_ptr<texture> m_sample_texture = nullptr;
+    unsigned int m_samlpe_render_buffer_object = 0;
 };
 }
