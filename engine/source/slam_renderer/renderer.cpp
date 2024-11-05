@@ -120,12 +120,12 @@ namespace slam_renderer
         if (!path.empty())
         {
             std::cout << "TEXTURE::REGISTER: " << path  << " sRGB: " << isSRGB << std::endl;
-            texture_ptr = std::make_shared<texture>(path, type, isSRGB);
+            texture_ptr = std::make_shared<texture>(path, type, isSRGB, samples);
         }
         else if (width > 0 && height > 0)
         {
             std::cout << "TEXTURE::REGISTER: " << width << "x" << height << " sRGB: " << isSRGB << std::endl;
-            texture_ptr = std::make_shared<texture>(width, height, type, isSRGB);
+            texture_ptr = std::make_shared<texture>(width, height, type, isSRGB, samples);
         }
         else
         {

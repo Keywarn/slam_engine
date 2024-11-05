@@ -83,7 +83,7 @@ framebuffer::framebuffer(unsigned int width, unsigned int height, unsigned int s
         }
         else
         {
-            std::cout << "FRAMEBUFFER: Created " << m_id << std::endl;
+            std::cout << "FRAMEBUFFER: Created " << m_sample_id << std::endl;
         }
     }
 
@@ -115,6 +115,7 @@ void framebuffer::setup_quad()
 void framebuffer::draw(float delta)
 {
     bind(true);
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
     glDisable(GL_DEPTH_TEST);
     glClear(GL_COLOR_BUFFER_BIT);
     m_shader->use();
