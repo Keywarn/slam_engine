@@ -3,7 +3,8 @@ project(game_sample C CXX)
 include_directories("${ENV_ROOT_PATH}/engine/source")
 
 SET(SOURCES
-    "empty.cpp"
+    game_sample.h
+    game_sample.cpp
 )
 
 add_executable(${PROJECT_NAME} WIN32 ${SOURCES})

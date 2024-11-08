@@ -1,6 +1,7 @@
 include_directories(./)
 
 add_subdirectory(./slam_main)
+add_subdirectory(./slam_main.windows)
 add_subdirectory(./slam_utils)
 
 add_subdirectory(./slam_renderer)

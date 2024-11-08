@@ -1,4 +1,4 @@
-#include <slam_renderer/renderer.h>
+#include "game_sample.h"
 
 #define SCREEN_TEXTURE 1
 
@@ -6,6 +6,11 @@ unsigned int window_width = 1280;
 unsigned int window_height = 720;
 
 bool cursor_enabled = false;
+
+std::shared_ptr<slam::game> make_app()
+{
+    return std::make_shared<game_sample>();
+}
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
@@ -43,7 +48,7 @@ void process_input(GLFWwindow* window)
 
 }
 
-int entry_point(int argc, char* argv[])
+int game_sample::start()
 {
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -51,14 +56,14 @@ int entry_point(int argc, char* argv[])
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_SAMPLES, 4);
 
-    GLFWwindow* window = glfwCreateWindow(window_width, window_height, "slam_engine", nullptr, nullptr);
-    if (window == nullptr)
+    m_window = glfwCreateWindow(window_width, window_height, "slam_engine", nullptr, nullptr);
+    if (m_window == nullptr)
     {
         std::cout << "Failed to create GLFW Window" << std::endl;
         glfwTerminate();
         return -1;
     }
-    glfwMakeContextCurrent(window);
+    glfwMakeContextCurrent(m_window);
 
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
@@ -66,12 +71,12 @@ int entry_point(int argc, char* argv[])
         return -1;
     }
 
-    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-    glfwSetKeyCallback(window, key_callback);
-    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    glfwSetFramebufferSizeCallback(m_window, framebuffer_size_callback);
+    glfwSetKeyCallback(m_window, key_callback);
+    glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
     // Setup renderer, shaders and textures ===================
-    slam_renderer::renderer* renderer = new slam_renderer::renderer(window);
+    slam_renderer::renderer* renderer = new slam_renderer::renderer(m_window);
 
     std::shared_ptr<slam_renderer::shader> lit_shader = renderer->register_shader("assets/shaders/vertex.glsl", "assets/shaders/lit_fragment.glsl", slam_renderer::shader_type::lit);
     std::shared_ptr<slam_renderer::shader> unlit_shader = renderer->register_shader("assets/shaders/vertex.glsl", "assets/shaders/unlit_fragment.glsl");
@@ -107,7 +112,7 @@ int entry_point(int argc, char* argv[])
 
     // Standard shader
     //std::shared_ptr<slam_renderer::shader> scene_texture_shader = renderer->register_shader("assets/shaders/vertex_screenspace.glsl", "assets/shaders/textured_fragment.glsl", slam_renderer::shader_type::unlit);
-    
+
     // Inversion
     //std::shared_ptr<slam_renderer::shader> scene_texture_shader = renderer->register_shader("assets/shaders/vertex_screenspace.glsl", "assets/shaders/post_processing/inversion.glsl", slam_renderer::shader_type::unlit);
     // Greyscale
@@ -141,25 +146,33 @@ int entry_point(int argc, char* argv[])
 
     double previous_time = glfwGetTime();
     float delta = 0.f;
+    return true;
+}
 
-    while (!glfwWindowShouldClose(window))
+void game_sample::step(float delta)
+{
+    if (!glfwWindowShouldClose(m_window))
     {
         // TODO handle input as a state/object rather than in individual components
-        //process_input(window);
+       //process_input(window);
 
-        renderer->render(delta);
+        slam_renderer::renderer::get_instance()->render(delta);
 
         // Swap the buffers and poll
-        glfwSwapBuffers(window);
+        glfwSwapBuffers(m_window);
         glfwPollEvents();
-        delta = static_cast<float>(glfwGetTime() - previous_time);
-        previous_time = glfwGetTime();
 
         //std::cout << "FRAMETIME: " << delta * 1000 << "ms FPS: " << 1 / delta << std::endl;
     }
+    else
+    {
+        quit();
+    }
+}
 
-    renderer->free();
-
+int game_sample::stop()
+{
+    slam_renderer::renderer::get_instance()->free();
     glfwTerminate();
-    return 0;
+    return true;
 }

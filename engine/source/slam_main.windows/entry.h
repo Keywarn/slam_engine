@@ -1,9 +1,6 @@
 #pragma once
-#include <slam_main/main.h>
 
 // Some of the windows header files need to be included in a very specific
-// order - this should probably go in a separate file/pch...
-
 #define NOMINMAX
 
 #include <winsock2.h>
@@ -19,17 +16,7 @@
 #include <wrl/client.h>
 
 #ifndef _WINDOWS
-int main(int argc, char* argv[])
-{
-    return cx::entry_point(argc, argv);
-}
+int main(int argc, char* argv[]);
 #else
-//{
-//    return entry_point(__argc, __argv);
-//}
-
-int main()
-{
-    return entry_point(__argc, __argv);
-}
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow);
 #endif

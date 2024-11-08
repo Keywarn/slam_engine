@@ -8,10 +8,10 @@ set(LINK_OPTIONS "")
 if (WIN32)
     set(COMPILE_OPTIONS ${COMPILE_OPTIONS} -D_CRT_SECURE_NO_WARNINGS=1)
     set(COMPILE_OPTIONS ${COMPILE_OPTIONS} -D_CRT_SECURE_NO_WARNINGS_GLOBALS=1)
+    set(COMPILE_OPTIONS ${COMPILE_OPTIONS} -D_WINDOWS)
 
     # Platform type define.
-    # TODO this should probably be _WINDOWS eventually with a proper console alternative...
-    set(LINK_OPTIONS ${LINK_OPTIONS} /SUBSYSTEM:CONSOLE)
+    set(LINK_OPTIONS ${LINK_OPTIONS} /SUBSYSTEM:WINDOWS)
 endif()
 
 # Generate debug information for all configs
