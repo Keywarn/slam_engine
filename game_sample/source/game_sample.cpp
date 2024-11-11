@@ -7,7 +7,7 @@ unsigned int window_height = 720;
 
 bool cursor_enabled = false;
 
-std::shared_ptr<slam::game> make_app()
+std::shared_ptr<slam::game> make_game()
 {
     return std::make_shared<game_sample>();
 }

@@ -11,6 +11,7 @@ add_library(${PROJECT_NAME} STATIC ${SOURCES})
 
 target_link_libraries(${PROJECT_NAME} 
     slam_renderer
+    slam_main.windows
 )
 
 util_setup_folder_structure(${PROJECT_NAME} SOURCES "engine/main")

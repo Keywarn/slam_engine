@@ -7,7 +7,6 @@
 class game_sample : public slam::game
 {
 public:
-    virtual std::string get_name() override;
 
 protected:
     virtual int start() override;

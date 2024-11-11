@@ -19,8 +19,6 @@ public:
     int run();
     void quit();
 
-    virtual std::string get_name() = 0;
-
 protected:
 
     virtual int start();

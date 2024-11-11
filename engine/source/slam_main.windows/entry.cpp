@@ -16,5 +16,5 @@
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
-    return entry_point(__argc, __argv);
+    return slam::entry_point(__argc, __argv);
 }
