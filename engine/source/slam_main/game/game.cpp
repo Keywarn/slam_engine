@@ -34,7 +34,9 @@ namespace slam
         while (!is_quitting())
         {
             step(delta);
-            current_time = std::chrono::high_resolution_clock::now();
+            auto time_now = std::chrono::high_resolution_clock::now();
+            delta = std::chrono::duration<float, std::chrono::seconds::period>(time_now - current_time).count();
+            current_time = time_now;
         }
 
         return true;
