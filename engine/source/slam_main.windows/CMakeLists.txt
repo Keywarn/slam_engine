@@ -4,6 +4,7 @@ SET(SOURCES
     entry.cpp
     entry.h
     windows_headers.h
+    debug.cpp
 )
 
 add_library(${PROJECT_NAME} STATIC ${SOURCES})
