@@ -10,6 +10,7 @@ texture::texture(std::string path, texture_type type, bool isSRGB, int samples)
     , m_type(type)
     , m_samples(samples)
     , m_isSRGB(isSRGB)
+    , m_mips(true)
 {
     GLenum target = get_gl_target();
 
@@ -20,7 +21,7 @@ texture::texture(std::string path, texture_type type, bool isSRGB, int samples)
 
     if (m_type == texture_type::texture_2d)
     {
-        load_face(path, target, true);
+        load_face(path, target);
     }
     else if (m_type == texture_type::cubemap)
     {
@@ -28,7 +29,7 @@ texture::texture(std::string path, texture_type type, bool isSRGB, int samples)
         {
             std::string name = path.substr(0, path.find_last_of('.'));
             std::string extension = path.substr(path.find_last_of('.'));
-            load_face(name + "_" + std::to_string(i) + extension, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, false);
+            load_face(name + "_" + std::to_string(i) + extension, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i);
         }
     }
     else
@@ -47,6 +48,7 @@ texture::texture(unsigned int width, unsigned int height, texture_type type, boo
     , m_channels(type == texture_type::depth_2d ? 1 : 4)
     , m_samples(samples)
     , m_isSRGB(isSRGB)
+    , m_mips(false)
 {
     glGenTextures(1, &m_id);
 
@@ -68,7 +70,7 @@ texture::texture(unsigned int width, unsigned int height, texture_type type, boo
     glBindTexture(target, 0);
 }
 
-void texture::load_face(std::string path, GLenum target, bool generate_mips)
+void texture::load_face(std::string path, GLenum target)
 {
     unsigned char* data = stbi_load(path.c_str(), &m_width, &m_height, &m_channels, 0);
 
@@ -84,7 +86,7 @@ void texture::load_face(std::string path, GLenum target, bool generate_mips)
 
     glTexImage2D(target, 0, internal_format, m_width, m_height, 0, format, pixel_type, data);
     
-    if (generate_mips)
+    if (m_mips)
     {
         glGenerateMipmap(target);
     }
@@ -98,8 +100,17 @@ void texture::set_gl_params(GLenum target)
     {
     case texture_type::texture_2d:
     {
-        glTexParameteri(target, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        if (m_mips)
+        {
+            glTexParameteri(target, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
+        }
+        else
+        {
+            glTexParameteri(target, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        }
         glTexParameteri(target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(target, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+        glTexParameteri(target, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
         break;
     }
     case texture_type::depth_2d:

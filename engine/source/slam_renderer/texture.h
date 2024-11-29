@@ -1,5 +1,4 @@
 #pragma once
-
 #include <glad.h>
 
 #include <string>
@@ -43,7 +42,7 @@ public:
     }
 
 private:
-    void load_face(std::string path, GLenum target, bool generate_mips);
+    void load_face(std::string path, GLenum target);
     void set_gl_params(GLenum target);
 
     const GLenum get_gl_target() const
@@ -95,6 +94,7 @@ private:
     int m_channels;
     int m_samples;
     bool m_isSRGB = false;
+    bool m_mips = true;
 
     unsigned int m_id = 0;
 
