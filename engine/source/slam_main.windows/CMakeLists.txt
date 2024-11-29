@@ -3,6 +3,7 @@ project(slam_main.windows C CXX)
 SET(SOURCES
     entry.cpp
     entry.h
+    windows_headers.h
 )
 
 add_library(${PROJECT_NAME} STATIC ${SOURCES})

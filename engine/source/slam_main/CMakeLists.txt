@@ -5,6 +5,8 @@ SET(SOURCES
     entry.cpp
     ./game/game.h
     ./game/game.cpp
+    ./debug/debug.h
+    ./debug/debug.cpp
 )
 
 add_library(${PROJECT_NAME} STATIC ${SOURCES})
