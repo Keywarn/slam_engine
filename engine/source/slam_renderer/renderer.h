@@ -43,7 +43,7 @@ public:
     std::shared_ptr<point_light> register_point_light(float constant, float linear, float quadratic, glm::vec3 position, glm::vec3 colour, float diffuse, float ambient, float specular);
     std::shared_ptr<spot_light> register_spot_light(float angle, float outer_angle, glm::vec3 direction, glm::vec3 position, glm::vec3 colour, float diffuse, float ambient, float specular);
 
-    std::shared_ptr<framebuffer> register_framebuffer(framebuffer_type type, std::shared_ptr<slam_renderer::shader> shader, int width = 0, int height = 0);
+    std::shared_ptr<framebuffer> register_framebuffer(framebuffer_type type, std::shared_ptr<slam_renderer::shader> shader, int width = 0, int height = 0, int samples = 1);
 
     void free();
 

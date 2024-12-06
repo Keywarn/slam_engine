@@ -124,7 +124,7 @@ int game_sample::start()
     // Gamma Correction
     std::shared_ptr<slam_renderer::shader> scene_texture_shader = renderer->register_shader("assets/shaders/vertex_screenspace.glsl", "assets/shaders/post_processing/gamma_correction.glsl", slam_renderer::shader_type::unlit);
 
-    std::shared_ptr<slam_renderer::framebuffer> framebuffer = renderer->register_framebuffer(slam_renderer::framebuffer_type::colour_depth_stencil, scene_texture_shader);
+    std::shared_ptr<slam_renderer::framebuffer> framebuffer = renderer->register_framebuffer(slam_renderer::framebuffer_type::colour_depth_stencil, scene_texture_shader, 0, 0, 4);
 
     //slam_renderer::model* plane_model = slam_renderer::renderer::get_instance()->register_model("assets/models/primitives/screen_plane.obj", glm::mat4(1.f), 3);
     //std::shared_ptr<slam_renderer::material> screen_texture_material = std::make_shared<slam_renderer::material>(scene_texture_shader, framebuffer->get_texture(), 32.f);

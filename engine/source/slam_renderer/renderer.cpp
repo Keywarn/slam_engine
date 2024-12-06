@@ -91,7 +91,7 @@ namespace slam_renderer
                 toggle_wireframe();
             }
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
-            m_framebuffers.at(0)->draw(delta);
+            m_framebuffers.at(0)->draw(delta, true);
 
             if (was_wireframe)
             {
@@ -187,14 +187,12 @@ namespace slam_renderer
         return light_ptr;
     }
 
-    std::shared_ptr<framebuffer> renderer::register_framebuffer(framebuffer_type type, std::shared_ptr<shader> shader, int width, int height)
+    std::shared_ptr<framebuffer> renderer::register_framebuffer(framebuffer_type type, std::shared_ptr<shader> shader, int width, int height, int samples)
     {
         if (width == 0 && height == 0)
         {
             get_resolution(&width, &height);
         }
-        // TODO defaulting to 4 for colour types
-        unsigned int samples = type < framebuffer_type::no_colour ? 4 : 1;
         std::shared_ptr<framebuffer> framebuffer_ptr = std::make_shared<framebuffer>(width, height, samples, shader, type);
         m_framebuffers.push_back(framebuffer_ptr);
         return framebuffer_ptr;

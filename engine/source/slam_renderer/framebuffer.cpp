@@ -112,15 +112,16 @@ void framebuffer::setup_quad()
     glBindVertexArray(0);
 }
 
-void framebuffer::draw(float delta)
+void framebuffer::draw(float delta, bool draw_multisampled)
 {
-    bind(true);
+    bind(draw_multisampled);
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     glDisable(GL_DEPTH_TEST);
     glClear(GL_COLOR_BUFFER_BIT);
     m_shader->use();
     glBindVertexArray(m_vertex_array);
     glActiveTexture(GL_TEXTURE0);
+    // TODO CHANGE THIS TO BIND THE CORRECT MULTISAMPLED TYPE
     if (m_samples > 1)
     {
         m_sample_texture->bind();
@@ -135,15 +136,15 @@ void framebuffer::draw(float delta)
     glEnable(GL_DEPTH_TEST);
 }
 
-void framebuffer::bind(bool for_sampling)
+void framebuffer::bind(bool draw_multisampled)
 {
     // Write to the buffer as normal
-    if (!for_sampling || m_samples == 1)
+    if (!draw_multisampled || m_samples == 1)
     {
         glBindFramebuffer(GL_FRAMEBUFFER, m_id);
     }
     // Reading requires a downsample first
-    else
+    else if (draw_multisampled)
     {
         glBindFramebuffer(GL_READ_FRAMEBUFFER, m_id);
         glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_sample_id);

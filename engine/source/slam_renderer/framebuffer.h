@@ -27,9 +27,9 @@ public:
 
     void setup_quad();
     
-    void draw(float delta);
+    void draw(float delta, bool draw_multisampled = false);
 
-    void bind(bool for_sampling = false);
+    void bind(bool draw_multisampled = false);
 
     void free()
     {
