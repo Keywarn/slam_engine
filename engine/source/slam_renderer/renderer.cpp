@@ -91,7 +91,10 @@ namespace slam_renderer
                 toggle_wireframe();
             }
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
-            m_framebuffers.at(0)->draw(delta, true);
+            // Default OpenGL MSAA
+            //m_framebuffers.at(0)->draw(delta, true);
+            //Custom MSAA
+            m_framebuffers.at(0)->draw(delta, false);
 
             if (was_wireframe)
             {

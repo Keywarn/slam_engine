@@ -122,8 +122,10 @@ int game_sample::start()
     // Blur
     //std::shared_ptr<slam_renderer::shader> scene_texture_shader = renderer->register_shader("assets/shaders/vertex_screenspace.glsl", "assets/shaders/post_processing/blur.glsl", slam_renderer::shader_type::unlit);
     // Gamma Correction
-    std::shared_ptr<slam_renderer::shader> scene_texture_shader = renderer->register_shader("assets/shaders/vertex_screenspace.glsl", "assets/shaders/post_processing/gamma_correction.glsl", slam_renderer::shader_type::unlit);
-
+    //std::shared_ptr<slam_renderer::shader> scene_texture_shader = renderer->register_shader("assets/shaders/vertex_screenspace.glsl", "assets/shaders/post_processing/gamma_correction.glsl", slam_renderer::shader_type::unlit);
+    //Gamma and custom MSAA
+    std::shared_ptr<slam_renderer::shader> scene_texture_shader = renderer->register_shader("assets/shaders/vertex_screenspace.glsl", "assets/shaders/post_processing/gamma_msaa.glsl", slam_renderer::shader_type::unlit);
+    
     std::shared_ptr<slam_renderer::framebuffer> framebuffer = renderer->register_framebuffer(slam_renderer::framebuffer_type::colour_depth_stencil, scene_texture_shader, 0, 0, 4);
 
     //slam_renderer::model* plane_model = slam_renderer::renderer::get_instance()->register_model("assets/models/primitives/screen_plane.obj", glm::mat4(1.f), 3);

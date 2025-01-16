@@ -121,8 +121,8 @@ void framebuffer::draw(float delta, bool draw_multisampled)
     m_shader->use();
     glBindVertexArray(m_vertex_array);
     glActiveTexture(GL_TEXTURE0);
-    // TODO CHANGE THIS TO BIND THE CORRECT MULTISAMPLED TYPE
-    if (m_samples > 1)
+
+    if (m_samples > 1 && draw_multisampled)
     {
         m_sample_texture->bind();
     }
