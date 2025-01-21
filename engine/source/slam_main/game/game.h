@@ -1,9 +1,11 @@
 #pragma once
 
-#include <string>
-#include <chrono>
-
 #include <slam_utils/patterns/singleton.h>
+#include <slam_renderer/renderer.h>
+#include <slam_window/window.h>
+
+#include <chrono>
+#include <string>
 
 namespace slam
 {
@@ -28,6 +30,9 @@ protected:
     virtual void step(float delta) {};
 
     bool is_quitting();
+
+    window* m_main_window = nullptr;
+    slam_renderer::renderer* m_renderer = nullptr;
 
 private:
 
