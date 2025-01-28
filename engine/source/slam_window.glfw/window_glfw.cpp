@@ -1,4 +1,4 @@
-#include "window.h"
+#include "window_glfw.h"
 
 #include <iostream>
 
@@ -72,11 +72,16 @@ bool window_glfw::init(unsigned int width, unsigned int height, const char* titl
     return true;
 }
 
+void window_glfw::update(float delta)
+{
+    //TODO
+}
+
 void window_glfw::resize(unsigned int width, unsigned int height)
 {
     glViewport(0, 0, width, height);
     // TODO Make the renderer recalc matrices if dirty
-    m_dirty_size = true;
+    m_dirty = true;
 }
 
 void window_glfw::set_title(const char* name)

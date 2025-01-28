@@ -13,6 +13,7 @@
 #include "framebuffer.h"
 
 #include <slam_utils/patterns/singleton.h>
+#include <slam_window.glfw/window_glfw.h>
 
 namespace slam_renderer
 {

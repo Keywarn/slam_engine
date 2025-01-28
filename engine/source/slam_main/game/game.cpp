@@ -1,6 +1,6 @@
 #include "game.h"
 
-#include <slam_window.glfw/window.h>
+#include <slam_window.glfw/window_glfw.h>
 
 namespace slam
 {

@@ -1,3 +1,5 @@
+#pragma once
+
 #include <slam_window/window.h>
 
 #include <glad.h>
@@ -11,6 +13,7 @@ namespace slam
         window_glfw() {};
 
         bool init(unsigned int width, unsigned int height, const char* title) override;
+        void update(float delta) override;
         void resize(unsigned int width, unsigned int height) override;
         void set_title(const char* name) override;
 
@@ -21,6 +24,5 @@ namespace slam
 
     private:
         GLFWwindow* m_window = nullptr;
-        bool m_dirty_size = false;
     };
 }

@@ -1,6 +1,6 @@
 #include "game_sample.h"
 
-#include <slam_window.glfw/window.h>
+#include <slam_window.glfw/window_glfw.h>
 
 #define SCREEN_TEXTURE 1
 

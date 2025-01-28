@@ -1,8 +1,8 @@
 project(slam_window.glfw C CXX)
  
 SET(SOURCES
-    window.h
-    window.cpp
+    window_glfw.h
+    window_glfw.cpp
 )
 
 add_library(${PROJECT_NAME} STATIC ${SOURCES})
