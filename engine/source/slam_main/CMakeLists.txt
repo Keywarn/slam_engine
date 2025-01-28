@@ -17,6 +17,8 @@ target_link_libraries(${PROJECT_NAME}
     slam_main.windows
     slam_window
     slam_window.glfw
+    slam_input
+    slam_input.glfw
 )
 
 util_setup_folder_structure(${PROJECT_NAME} SOURCES "engine/main")

@@ -6,6 +6,8 @@ add_subdirectory(./slam_utils)
 
 add_subdirectory(./slam_window)
 add_subdirectory(./slam_window.glfw)
+add_subdirectory(./slam_input)
+add_subdirectory(./slam_input.glfw)
 
 add_subdirectory(./slam_renderer)
 
