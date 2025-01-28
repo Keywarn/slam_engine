@@ -3,11 +3,11 @@
 namespace slam_renderer
 {
 
-    renderer::renderer(GLFWwindow* window)
+    renderer::renderer(slam::window* window)
         : m_window(window)
     {
-        int window_width, window_height;
-        glfwGetWindowSize(window, &window_width, &window_height);
+        unsigned int window_width, window_height;
+        m_window->get_dimensions(&window_width, &window_height);
         m_camera = new camera(glm::vec3(0.f, 0.f, 5.f), { window_width / 2.f, window_height / 2.f });
 
         m_camera->recalculate_projections(m_window);
@@ -36,7 +36,7 @@ namespace slam_renderer
     void renderer::render(float delta)
     {
         // TODO, change to hold the engine window
-        //m_window->update(delta);
+        m_window->update(delta);
         m_camera->update(delta, m_window);
 
         // Shadow mapping pass
@@ -59,7 +59,7 @@ namespace slam_renderer
         // Normal pass
         glCullFace(GL_BACK);
 
-        int width, height;
+        unsigned int width, height;
         get_resolution(&width, &height);
         glViewport(0, 0, width, height);
 
@@ -192,7 +192,7 @@ namespace slam_renderer
         return light_ptr;
     }
 
-    std::shared_ptr<framebuffer> renderer::register_framebuffer(framebuffer_type type, std::shared_ptr<shader> shader, int width, int height, int samples)
+    std::shared_ptr<framebuffer> renderer::register_framebuffer(framebuffer_type type, std::shared_ptr<shader> shader, unsigned int width, unsigned int height, unsigned int samples)
     {
         if (width == 0 && height == 0)
         {

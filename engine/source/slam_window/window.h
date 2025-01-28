@@ -19,6 +19,8 @@ public:
     virtual void resize(unsigned int width, unsigned int height) = 0;
     virtual void set_title(const char* name) = 0;
 
+    virtual void get_cursor_position(double* x, double* y) = 0;
+
     unsigned int get_width()
     {
         return m_width;
@@ -29,10 +31,10 @@ public:
         return m_height;
     }
 
-    void get_dimensions(unsigned int& width, unsigned int& height)
+    void get_dimensions(unsigned int* width, unsigned int* height)
     {
-        width = m_width;
-        height = m_height;
+        *width = m_width;
+        *height = m_height;
     }
 
 protected:

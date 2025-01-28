@@ -17,6 +17,8 @@ namespace slam
         void resize(unsigned int width, unsigned int height) override;
         void set_title(const char* name) override;
 
+        void get_cursor_position(double* x, double* y) override;
+
         GLFWwindow* get_window()
         {
             return m_window;

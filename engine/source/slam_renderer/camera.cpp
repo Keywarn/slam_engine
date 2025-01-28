@@ -18,7 +18,7 @@ namespace slam_renderer
         m_view = glm::lookAt(m_position, m_position + m_forwards, m_up);
     }
 
-    void camera::update(float delta, GLFWwindow* window)
+    void camera::update(float delta, slam::window* window)
     {
         first_person_aim(delta, window);
         move(delta, window);
@@ -26,10 +26,10 @@ namespace slam_renderer
         m_view = glm::lookAt(m_position, m_position + m_forwards, m_up);
     }
 
-    void camera::first_person_aim(float delta, GLFWwindow* window)
+    void camera::first_person_aim(float delta, slam::window* window)
     {
         double cursor_x, cursor_y;
-        glfwGetCursorPos(window, &cursor_x, &cursor_y);
+        window->get_cursor_position(&cursor_x, &cursor_y);
 
         glm::vec2 cursor_delta = { cursor_x - m_last_cursor_position.x, m_last_cursor_position.y - cursor_y };
         m_last_cursor_position = { cursor_x, cursor_y };
@@ -52,11 +52,12 @@ namespace slam_renderer
         m_up = glm::normalize(glm::cross(m_right, m_forwards));
     }
 
-    void camera::move(float delta, GLFWwindow* window)
+    void camera::move(float delta, slam::window* window)
     {
         glm::vec3 camera_move(0.f);
 
-        if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+        // TODO Input
+        /*if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
         {
             camera_move.z += 1.f;
         }
@@ -79,20 +80,20 @@ namespace slam_renderer
         if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
         {
             camera_move.y -= 1.f;
-        }
+        }*/
 
         camera_move *= m_speed * delta;
 
         m_position += m_right * camera_move.x + world_up * camera_move.y + m_forwards * camera_move.z;
     }
 
-    void camera::recalculate_projections(GLFWwindow* window)
+    void camera::recalculate_projections(slam::window* window)
     {
-        int window_width, window_height;
-        glfwGetWindowSize(window, &window_width, &window_height);
+        unsigned int window_width, window_height;
+        window->get_dimensions(&window_width, &window_height);
 
         // Recalculate projections
         m_perspective = glm::perspective(glm::radians(45.0f), (float)window_width / (float)window_height, 0.1f, 100.0f);
-        m_orthographic = glm::ortho(-window_width / m_orthographic_size, window_width / m_orthographic_size, -window_height / m_orthographic_size, window_height / m_orthographic_size, 0.01f, 100.0f);
+        m_orthographic = glm::ortho(-int(window_width) / m_orthographic_size, window_width / m_orthographic_size, -int(window_height) / m_orthographic_size, window_height / m_orthographic_size, 0.01f, 100.0f);
     }
 }

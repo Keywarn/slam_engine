@@ -74,7 +74,7 @@ bool window_glfw::init(unsigned int width, unsigned int height, const char* titl
 
 void window_glfw::update(float delta)
 {
-    //TODO
+
 }
 
 void window_glfw::resize(unsigned int width, unsigned int height)
@@ -87,5 +87,10 @@ void window_glfw::resize(unsigned int width, unsigned int height)
 void window_glfw::set_title(const char* name)
 {
     // TODO GLFW SPECIFICS
+}
+
+void window_glfw::get_cursor_position(double* x, double* y)
+{
+    glfwGetCursorPos(m_window, x, y);
 }
 }

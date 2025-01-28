@@ -8,7 +8,7 @@ namespace slam
     {
         m_main_window = new window_glfw();
         m_main_window->init(1280, 720, "slam_engine");
-        m_renderer = new slam_renderer::renderer(static_cast<window_glfw*>(m_main_window)->get_window());
+        m_renderer = new slam_renderer::renderer(m_main_window);
     }
 
     game::~game()

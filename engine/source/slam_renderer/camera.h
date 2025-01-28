@@ -1,7 +1,8 @@
 #pragma once
 
 #include <glm/glm.hpp>
-#include <glfw/glfw3.h>
+
+#include <slam_window/window.h>
 
 namespace slam_renderer
 {
@@ -11,12 +12,12 @@ class camera
 public:
     camera(glm::vec3 position, glm::vec2 window_centre);
 
-    void update(float delta, GLFWwindow* window);
+    void update(float delta, slam::window* window);
 
-    void first_person_aim(float delta, GLFWwindow* window);
-    void move(float delta, GLFWwindow* window);
+    void first_person_aim(float delta, slam::window* window);
+    void move(float delta, slam::window* window);
 
-    void recalculate_projections(GLFWwindow* window);
+    void recalculate_projections(slam::window* window);
 
     glm::vec3 get_position()
     {

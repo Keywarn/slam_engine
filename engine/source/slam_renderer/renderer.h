@@ -13,7 +13,7 @@
 #include "framebuffer.h"
 
 #include <slam_utils/patterns/singleton.h>
-#include <slam_window.glfw/window_glfw.h>
+#include <slam_window/window.h>
 
 namespace slam_renderer
 {
@@ -22,7 +22,7 @@ class renderer : public singleton<renderer>
 {
 public:
     friend class singleton;
-    renderer(GLFWwindow* window);
+    renderer(slam::window* window);
 
     void render(float delta);
     void draw_models(float delta, std::shared_ptr<material> override_material = nullptr);
@@ -40,7 +40,7 @@ public:
     std::shared_ptr<point_light> register_point_light(float constant, float linear, float quadratic, glm::vec3 position, glm::vec3 colour, float diffuse, float ambient, float specular);
     std::shared_ptr<spot_light> register_spot_light(float angle, float outer_angle, glm::vec3 direction, glm::vec3 position, glm::vec3 colour, float diffuse, float ambient, float specular);
 
-    std::shared_ptr<framebuffer> register_framebuffer(framebuffer_type type, std::shared_ptr<slam_renderer::shader> shader, int width = 0, int height = 0, int samples = 1);
+    std::shared_ptr<framebuffer> register_framebuffer(framebuffer_type type, std::shared_ptr<slam_renderer::shader> shader, unsigned int width = 0, unsigned int height = 0, unsigned int samples = 1);
 
     void free();
 
@@ -98,9 +98,9 @@ public:
         return m_shaders[index];
     }
 
-    void get_resolution(int* width, int* height) const
+    void get_resolution(unsigned int* width, unsigned int* height) const
     {
-        glfwGetWindowSize(m_window, width, height);
+        m_window->get_dimensions(width, height);
     }
 
     std::shared_ptr<directional_light> get_current_pass_directional_light()
@@ -109,7 +109,7 @@ public:
     }
 
 private:
-    GLFWwindow* m_window;
+    slam::window* m_window;
     camera* m_camera;
 
     std::vector<std::shared_ptr<texture>> m_textures;
