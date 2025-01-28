@@ -35,8 +35,6 @@ namespace slam_renderer
 
     void renderer::render(float delta)
     {
-        // TODO, change to hold the engine window
-        m_window->update(delta);
         m_camera->update(delta, m_window);
 
         // Shadow mapping pass

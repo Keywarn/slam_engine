@@ -37,6 +37,16 @@ public:
         *height = m_height;
     }
 
+    bool get_dirty()
+    {
+        return m_dirty;
+    }
+
+    void set_dirty(bool dirty)
+    {
+        m_dirty = dirty;
+    }
+
 protected:
     unsigned int m_width = 0;
     unsigned int m_height = 0;

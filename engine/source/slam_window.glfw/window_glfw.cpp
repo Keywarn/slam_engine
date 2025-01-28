@@ -80,7 +80,6 @@ void window_glfw::update(float delta)
 void window_glfw::resize(unsigned int width, unsigned int height)
 {
     glViewport(0, 0, width, height);
-    // TODO Make the renderer recalc matrices if dirty
     m_dirty = true;
 }
 

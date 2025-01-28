@@ -20,6 +20,11 @@ namespace slam_renderer
 
     void camera::update(float delta, slam::window* window)
     {
+        if (window->get_dirty())
+        {
+            recalculate_projections(window);
+            window->set_dirty(false);
+        }
         first_person_aim(delta, window);
         move(delta, window);
 
