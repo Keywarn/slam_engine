@@ -4,11 +4,13 @@
 #include <string>
 #include <glm/glm.hpp>
 
+#include <slam_window/window.h>
+
 #include "input_enums.h"
 
 namespace slam
 {
-enum input_type
+enum class input_type
 {
     glfw,
     none
@@ -17,10 +19,8 @@ enum input_type
 class input_manager
 {
 public:
-    input_manager() = default;
     ~input_manager() = default;
 
-    virtual void init() = 0;
     virtual void update(float delta);
 
     bool is_key_down(kbm_key key);          // Currently down
@@ -38,12 +38,14 @@ public:
 
 protected:
     void update_key(int key, bool down);
-    virtual void get_platform_key_down(size_t key) = 0;
+    virtual bool get_platform_key_down(size_t key) = 0;
 
     // Threshold for inputs to count as a 'tap'
     inline static constexpr float k_tap_threshold = 0.3f;
 
     std::array<unsigned int, (int)kbm_key::count> m_kbm_key_states;
     std::array<double, (int)kbm_key::count> m_kbm_key_down_start_time;
+
+    input_type m_input_type = input_type::none;
 };
 }

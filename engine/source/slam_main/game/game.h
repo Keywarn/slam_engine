@@ -3,6 +3,7 @@
 #include <slam_utils/patterns/singleton.h>
 #include <slam_renderer/renderer.h>
 #include <slam_window/window.h>
+#include <slam_input/input_manager.h>
 
 #include <chrono>
 #include <string>
@@ -33,6 +34,7 @@ protected:
 
     window* m_main_window = nullptr;
     slam_renderer::renderer* m_renderer = nullptr;
+    input_manager* m_input_manager = nullptr;
 
 private:
     inline static game* s_instance = nullptr;

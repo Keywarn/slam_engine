@@ -2,7 +2,7 @@
 
 namespace slam
 {
-enum window_type
+enum class window_type
 {
     glfw,
     none
@@ -52,7 +52,7 @@ protected:
     unsigned int m_height = 0;
 
     const char* m_title = "";
-    window_type m_type = none;
+    window_type m_type = window_type::none;
     bool m_dirty = false;
 
 };

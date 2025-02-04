@@ -41,7 +41,7 @@ bool window_glfw::init(unsigned int width, unsigned int height, const char* titl
     m_width = width;
     m_height = height;
     m_title = title;
-    m_type = glfw;
+    m_type = window_type::glfw;
 
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);

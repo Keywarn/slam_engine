@@ -9,6 +9,7 @@ add_library(${PROJECT_NAME} STATIC ${SOURCES})
 
 target_link_libraries(${PROJECT_NAME} 
     slam_input
+    glad
     glfw
 )
 

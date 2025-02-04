@@ -1,6 +1,7 @@
 #include "game.h"
 
 #include <slam_window.glfw/window_glfw.h>
+#include <slam_input.glfw/input_manager_glfw.h>
 
 namespace slam
 {
@@ -8,6 +9,7 @@ namespace slam
     {
         m_main_window = new window_glfw();
         m_main_window->init(1280, 720, "slam_engine");
+        m_input_manager = new input_manager_glfw(m_main_window);
         m_renderer = new slam_renderer::renderer(m_main_window);
 
         start_time = std::chrono::high_resolution_clock::now();
