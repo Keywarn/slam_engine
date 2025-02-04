@@ -16,10 +16,10 @@ public:
     game();
     virtual ~game();
 
-    static game& instance();
-
     int run();
     void quit();
+
+    double time_since_start();
 
 protected:
 
@@ -35,8 +35,8 @@ protected:
     slam_renderer::renderer* m_renderer = nullptr;
 
 private:
-
     inline static game* s_instance = nullptr;
     bool m_quit_requested = false;
+    std::chrono::high_resolution_clock::time_point start_time;
 };
 };

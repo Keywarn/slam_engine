@@ -9,6 +9,8 @@ namespace slam
         m_main_window = new window_glfw();
         m_main_window->init(1280, 720, "slam_engine");
         m_renderer = new slam_renderer::renderer(m_main_window);
+
+        start_time = std::chrono::high_resolution_clock::now();
     }
 
     game::~game()
@@ -60,5 +62,13 @@ namespace slam
     bool game::is_quitting()
     {
         return m_quit_requested;
+    }
+
+    double game::time_since_start()
+    {
+        std::chrono::high_resolution_clock::time_point current_time = std::chrono::high_resolution_clock::now();
+        double time = std::chrono::duration<double, std::chrono::seconds::period>(current_time - start_time).count();
+
+        return time;
     }
 };

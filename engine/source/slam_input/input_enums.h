@@ -7,7 +7,7 @@ enum class key_state_flags : unsigned int
     pressed = 1,
     down = 2,
     released = 4,
-    hit = 8
+    tap = 8
 };
 
 enum class kbm_key
