@@ -22,6 +22,8 @@ public:
 
     double time_since_start();
 
+    input_manager& get_input_manager();
+
 protected:
 
     virtual int start();
@@ -34,7 +36,7 @@ protected:
 
     window* m_main_window = nullptr;
     slam_renderer::renderer* m_renderer = nullptr;
-    input_manager* m_input_manager = nullptr;
+    std::unique_ptr<input_manager> m_input_manager = nullptr;
 
 private:
     inline static game* s_instance = nullptr;

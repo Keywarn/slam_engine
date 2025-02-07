@@ -85,20 +85,7 @@ int game_sample::start()
 
 void game_sample::step(float delta)
 {
-    if (!glfwWindowShouldClose(static_cast<slam::window_glfw*>(m_main_window)->get_window()))
-    {
-        slam_renderer::renderer::get_instance()->render(delta);
 
-        // Swap the buffers and poll
-        glfwSwapBuffers(static_cast<slam::window_glfw*>(m_main_window)->get_window());
-        glfwPollEvents();
-
-        //std::cout << "FRAMETIME: " << delta * 1000 << "ms FPS: " << 1 / delta << std::endl;
-    }
-    else
-    {
-        quit();
-    }
 }
 
 int game_sample::stop()

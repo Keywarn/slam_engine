@@ -12,6 +12,8 @@ target_link_libraries(${PROJECT_NAME}
 
     glad
     glfw
+    glm
+    assimp
 )
 
 util_setup_folder_structure(${PROJECT_NAME} SOURCES "engine/window")

@@ -1,6 +1,7 @@
 #include "window_glfw.h"
 
 #include <iostream>
+#include <slam_main/game/game.h>
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
@@ -74,7 +75,10 @@ bool window_glfw::init(unsigned int width, unsigned int height, const char* titl
 
 void window_glfw::update(float delta)
 {
-
+    if (glfwWindowShouldClose(m_window))
+    {
+        game::get_instance()->quit();
+    }
 }
 
 void window_glfw::resize(unsigned int width, unsigned int height)

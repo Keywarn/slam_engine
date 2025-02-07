@@ -3,6 +3,9 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <algorithm>
 
+#include <slam_input/input_manager.h>
+#include <slam_main/game/game.h>
+
 static const glm::vec3 world_up = glm::vec3(0.0f, 1.0f, 0.0f);
 
 namespace slam_renderer
@@ -60,32 +63,32 @@ namespace slam_renderer
     void camera::move(float delta, slam::window* window)
     {
         glm::vec3 camera_move(0.f);
+        slam::input_manager& input = slam::game::get_instance()->get_input_manager();
 
-        // TODO Input
-        /*if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+        if (input.is_key_down(slam::kbm_key::w))
         {
             camera_move.z += 1.f;
         }
-        if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+        if (input.is_key_down(slam::kbm_key::s))
         {
             camera_move.z -= 1.f;
         }
-        if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+        if (input.is_key_down(slam::kbm_key::a))
         {
             camera_move.x -= 1.f;
         }
-        if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+        if (input.is_key_down(slam::kbm_key::d))
         {
             camera_move.x += 1.f;
         }
-        if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
+        if (input.is_key_down(slam::kbm_key::space))
         {
             camera_move.y += 1.f;
         }
-        if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+        if (input.is_key_down(slam::kbm_key::left_ctrl))
         {
             camera_move.y -= 1.f;
-        }*/
+        }
 
         camera_move *= m_speed * delta;
 
