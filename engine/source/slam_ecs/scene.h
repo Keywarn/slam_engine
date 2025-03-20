@@ -24,11 +24,14 @@ public:
     entity_id new_entity();
 
     template<typename component_type>
-    void assign_component(entity_id id);
+    component_type* assign_component(entity_id id);
+
+    template<typename component_type>
+    component_type* get_component(entity_id id);
 
 private:
     std::vector<entity_data> m_entities;
-    std::vector<component_pool> component_pools;
+    std::vector<component_pool> m_component_pools;
 };
 
 
