@@ -5,6 +5,8 @@ SET(SOURCES
     system.h
     scene.h
     scene.cpp
+    scene_view.h
+    scene_view.cpp
     component_pool.h
     
     ./components/transform_component.h
