@@ -12,6 +12,9 @@ public:
 
     struct iterator;
 
+    const iterator begin() const;
+    const iterator end() const;
+
     //const iterator begin() const;
     //const iterator end() const;
 

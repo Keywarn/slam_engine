@@ -19,4 +19,24 @@ scene_view<component_types...>::scene_view(scene& scene)
         }
     }
 }
+
+template<typename... component_types>
+const typename scene_view<component_types...>::iterator scene_view<component_types...>::begin() const
+{
+    int index = 0;
+    while (index < m_scene->m_entities.size() &&
+        (m_mask != (m_mask & m_scene->m_entities[index].m_mask)
+            || !is_entity_valid(m_scene->m_entities[index].m_id)))
+    {
+        index++;
+    }
+    return iterator(m_scene, index, m_mask, m_all);
+}
+
+template<typename... component_types>
+const typename scene_view<component_types...>::iterator scene_view<component_types...>::end() const
+{
+    return iterator(m_scene, entity_index(m_scene->m_entities.size()), m_mask, m_all);
+}
+
 };
